@@ -1,0 +1,104 @@
+@font-face {
+  font-family: 'MesloLGS NF', sans-serif;
+  src: url('/assets/fonts/MesloLGS-NF-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  height: 100%;
+}
+
+.container {
+  font-family: 'MesloLGS NF', sans-serif;
+}
+
+.available-zone {
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - 20px);
+}
+.selected-zone {
+  height: 45%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espace entre le titre et l'input */
+  margin-bottom: 10px;
+}
+
+.header input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+$card-height: 80px;
+$card-width: 100px;
+
+.object-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  height: 350px;
+  max-width: auto;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  overflow: auto;
+  font-size: 14px;
+}
+
+.object-item, .grid-item {
+  font-family: 'MesloLGS NF', sans-serif;
+  height: $card-height;
+  width: $card-width;
+  text-align: center;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: grab;
+  user-select: none;
+  background: darkgrey;
+  overflow: hidden;
+}
+
+.single-module-list {
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  height: calc($card-height + 20px);
+  width: calc($card-width + 20px);
+  overflow: hidden;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+}
+
+.single-module-item, .grid-item {
+  height: $card-height;
+  width: $card-width;
+  overflow: hidden;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: grab;
+  user-select: none;
+  background: darkgrey;
+}
+
+img {
+  max-width: 40px;
+  height: auto;
+}

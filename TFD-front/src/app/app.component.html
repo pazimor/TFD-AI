@@ -1,0 +1,40 @@
+<div class="container">
+  <!-- Zone des objets sélectionnés -->
+  <div class="selected-zone">
+    <h2>Build</h2>
+    <div
+      cdkDropList
+      id="selectedList"
+      [cdkDropListData]="selectedObjects"
+      [cdkDropListConnectedTo]="['availableList']"
+      class="single-module-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div class="single-module-item" *ngFor="let obj of selectedObjects$ | async" cdkDrag [cdkDragDisabled]="obj.drag">
+        <img [src]="obj.display_data.img" alt="{{ obj.name }}" />
+        <p>{{ obj.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone des objets disponibles -->
+  <div class="available-zone">
+    <div class="header">
+      <h2>Modules</h2>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher..." />
+    </div>
+    <div
+      cdkDropList
+      id="availableList"
+      [cdkDropListData]="availableObjects"
+      [cdkDropListConnectedTo]="['selectedList']"
+      class="object-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div class="object-item" *ngFor="let obj of filteredObjects() | async" cdkDrag>
+        <img [src]="obj.display_data.img" alt="{{ obj.name }}" />
+        <p>{{ obj.name }}</p>
+      </div>
+    </div>
+  </div>
+</div>

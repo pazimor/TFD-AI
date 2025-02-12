@@ -1,0 +1,160 @@
+import json
+import requests
+import sql.crud as crud
+from sql.database import (SessionLocal)
+from sqlalchemy import text
+
+# URL de l'API Nexon pour les modules
+lang = "fr"
+
+BASE_URL = f"https://open.api.nexon.com/static/tfd/meta/{lang}"
+EXTERNAL_COMPONENT_URL = f"{BASE_URL}/external-component.json"
+REACTORS_URL = f"{BASE_URL}/reactor.json"
+STATISTICS_URL = f"{BASE_URL}/stat.json"
+MODULES_URL = f"{BASE_URL}/module.json"
+
+def fetch_urls(url):
+    """Récupère les modules depuis l'URL spécifiée."""
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        modules = response.json()
+        return modules
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Erreur lors de la récupération : {e}")
+        return []
+
+def parse_module(module):
+    """Parse un module pour correspondre aux paramètres de la procédure stockée."""
+
+    type = module["module_type"] or "None"
+    clas = module["module_class"] or "None"
+    weatype = module["available_weapon_type"] or "None"
+    if type == "None":
+        type = module["available_module_slot_type"] or "None"
+        if type != "None":
+            type = type[0]
+            if type == "Main":
+                type = "None"
+
+    totale = f"Module, {type}, {clas}"
+    if weatype != "None":
+        totale = f"Module, {type}, {clas}, {weatype[0]}"
+
+    displaydata = { "img": module["image_url"], "tier": module["module_tier_id"] }
+
+    parsed = {
+        "id": int(module["module_id"]),
+        "name": module["module_name"],
+        "type": totale,
+        "statistics": module["module_stat"][-1]["value"],
+        "stack_id": "1" if type != "None" else "10",
+        "stack_description": None,
+        "displaydata": displaydata
+    }
+    return parsed
+
+#TODO: implementer les statistiques optionels (aleatoire)
+def parse_external(externalComponant, stat):
+    """Parse un composant externe pour correspondre aux paramètres de la procédure stockée."""
+
+    base_stat = externalComponant["base_stat"][99]
+    statId = base_stat["stat_id"]
+    statValue = base_stat["stat_value"]
+
+    description = None
+    if len(externalComponant["set_option_detail"]) >= 1:
+        description = " ".join(
+            f"{item['set_option']}, stack: {item['set_count']}, effect: {item['set_option_effect']}"
+            for i, item in enumerate(externalComponant["set_option_detail"])
+        )
+
+    displaydata = {"img": externalComponant["image_url"], "tier": externalComponant["external_component_tier_id"]}
+
+    parsed = {
+        "id": int(externalComponant["external_component_id"]),
+        "name": externalComponant["external_component_name"],
+        "type": f"ExternalComponant, {externalComponant['external_component_equipment_type']}, Légataire",
+        "statistics": f"{stat[statId]} +{statValue}",
+        "stack_id": "4",
+        "stack_description": description,
+        "displaydata": displaydata
+    }
+    return parsed
+
+#TODO: implementer les statistiques optionels (aleatoire)
+def parse_reactor(reactor, stat):
+    """Parse un composant externe pour correspondre aux paramètres de la procédure stockée."""
+
+    reactor_stat = reactor["reactor_skill_power"][99]
+
+    statistics = " ".join(
+        f" {stat[item['coefficient_stat_id']]} +{item['coefficient_stat_value']} %"
+        for i, item in enumerate(reactor_stat["skill_power_coefficient"])
+    )
+    weapon = reactor["optimized_condition_type"]
+    if isinstance(weapon, tuple) and len(weapon) == 1:
+        weapon = weapon[0]
+
+    displaydata = {"img": reactor["image_url"], "tier": reactor["reactor_tier_id"]}
+
+    parsed = {
+        "id": int(reactor["reactor_id"]),
+        "name": reactor["reactor_name"],
+        "type": f"reactor, {weapon}, Légataire",
+        "statistics": f"{statistics}",
+        "stack_id": "1",
+        "stack_description": None,
+        "displaydata": displaydata
+    }
+    return parsed
+
+def add_modifier(session, modifier):
+    """Ajoute ou met à jour un modifier en base de données en utilisant les procédures stockées."""
+    try:
+        existing = session.execute(
+            text("CALL GetModifier(:id)"),
+            {"id": modifier["id"]}
+        ).fetchone()
+
+        display_json = json.dumps(modifier["displaydata"], ensure_ascii=False)
+
+        if not existing:
+            crud.add_modifier(modifier["id"], modifier["name"], modifier["type"], modifier["statistics"], modifier["stack_id"], modifier["stack_description"], display_json)
+        else:
+            crud.update_modifier(modifier["id"], modifier["name"], modifier["type"], modifier["statistics"], modifier["stack_id"], modifier["stack_description"], display_json)
+    except Exception as e:
+        print(f"❌ Erreur lors de l'ajout/mise à jour du modifier '{modifier['name']}': {e}")
+        session.rollback()
+
+def main():
+    """Fonction principale pour remplir la table des modifiers."""
+
+    session = SessionLocal()
+    try:
+        """ Statistics """
+        stats = fetch_urls(STATISTICS_URL)
+        stats_dict = {stat["stat_id"]: stat["stat_name"] for stat in stats}
+
+        """ Modules """
+        modules = fetch_urls(MODULES_URL)
+        for module in modules:
+            parsed_module = parse_module(module)
+            add_modifier(session, parsed_module)
+
+        """ External Components """
+        externals = fetch_urls(EXTERNAL_COMPONENT_URL)
+        for external in externals:
+            parsed_external = parse_external(external, stats_dict)
+            add_modifier(session, parsed_external)
+
+        """ Reactor """
+        reactors = fetch_urls(REACTORS_URL)
+        for reactor in reactors:
+            parsed_reactor = parse_reactor(reactor, stats_dict)
+            add_modifier(session, parsed_reactor)
+    finally:
+        session.close()
+
+if __name__ == "__main__":
+    main()
