@@ -26,7 +26,7 @@
         cdkDrag
         appTooltip>
         <img class="{{obj.display_data.tier}}" [src]="obj.display_data.img" />
-        <p>{{ this.languageListComponent?.getstring(obj) }}</p>
+        <p *ngIf="languageListComponent">{{ this.languageListComponent.getstring(obj) }}</p>
       </div>
     </div>
   </div>
