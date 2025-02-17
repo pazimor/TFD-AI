@@ -1,0 +1,39 @@
+.Tier1 {
+  background-blend-mode: multiply;
+  background: linear-gradient(
+      to bottom right,
+      #4d7897 0%,
+      rgba(77, 120, 151, 0.50) 50%,
+      #4d7897 100%
+  );
+}
+
+.Tier2 {
+  background-blend-mode: multiply;
+  background: linear-gradient(
+      to bottom right,
+      #89639b 0%,
+      rgba(137, 99, 155, 0.5) 50%,
+      #89639b 100%
+  );
+}
+
+.Tier3 {
+  background-blend-mode: multiply;
+  background: linear-gradient(
+      to bottom right,
+      #756d4f 0%,
+      rgb(117, 109, 79, 0.5) 50%,
+      #756d4f 100%
+  );
+}
+
+.Tier4 {
+  background-blend-mode: multiply;
+  background: linear-gradient(
+      to bottom right,
+      #84483f 0%,
+      rgb(132, 72, 63, 0.5) 50%,
+      #84483f 100%
+  );
+}

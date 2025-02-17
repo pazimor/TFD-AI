@@ -20,8 +20,6 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    # Vérifier si 'item_displaydata' existe déjà
-    op.add_column('items', sa.Column('item_displaydata', sa.JSON(), nullable=True))
     # Vérifier si 'modifier_displaydata' existe déjà
     op.add_column('modifiers', sa.Column('modifier_displaydata', sa.JSON(), nullable=True))
 
@@ -38,7 +36,7 @@ def upgrade() -> None:
     op.execute("""
         CREATE PROCEDURE AddItem(
             IN p_item_id INT,
-            IN p_item_name VARCHAR(255),
+            IN p_item_name JSON,
             IN p_item_type VARCHAR(50),
             IN p_item_goals VARCHAR(50),
             IN p_item_capabilities TEXT,
@@ -54,7 +52,7 @@ def upgrade() -> None:
     op.execute("""
         CREATE PROCEDURE UpdateItem(
             IN p_item_id INT,
-            IN p_item_name VARCHAR(255),
+            IN p_item_name JSON,
             IN p_item_type VARCHAR(50),
             IN p_item_goals VARCHAR(50),
             IN p_item_capabilities TEXT,

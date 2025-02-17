@@ -12,14 +12,19 @@ CORS(app)
 def get_module_for_ui():
     data = crud.get_modifiers_by_type("Module")
     # Définition des clés correspondant aux colonnes de la table SQL
-    keys = ["id", "name", "type", "statistiques", "optional_statistiques", "stack_id", "stack_description", "display_data"]
+    keys = ["id", "type", "statistiques", "optional_statistiques", "stack_id", "stack_description", "display_data", "name"]
 
     result = []
     for row in data:
         row_dict = dict(zip(keys, row))
+        if "name" in row_dict and isinstance(row_dict["name"], str):
+            try:
+                row_dict["name"] = json.loads(row_dict["name"])
+            except json.JSONDecodeError:
+                pass  # Laisser tel quel si ce n'est pas un JSON valide
         if "display_data" in row_dict and isinstance(row_dict["display_data"], str):
             try:
-                row_dict["display_data"] = json.loads(row_dict["display_data"])  # Convertir la chaîne JSON en dict
+                row_dict["display_data"] = json.loads(row_dict["display_data"])
             except json.JSONDecodeError:
                 pass  # Laisser tel quel si ce n'est pas un JSON valide
 

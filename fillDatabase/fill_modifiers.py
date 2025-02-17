@@ -5,13 +5,13 @@ from sql.database import (SessionLocal)
 from sqlalchemy import text
 
 # URL de l'API Nexon pour les modules
-lang = "fr"
+languages = ["fr", "ko", "en", "de", "ja", "zh-CN", "zh-TW", "it", "pl", "pt", "ru", "es"]
 
-BASE_URL = f"https://open.api.nexon.com/static/tfd/meta/{lang}"
-EXTERNAL_COMPONENT_URL = f"{BASE_URL}/external-component.json"
-REACTORS_URL = f"{BASE_URL}/reactor.json"
-STATISTICS_URL = f"{BASE_URL}/stat.json"
-MODULES_URL = f"{BASE_URL}/module.json"
+BASE_URL = f"https://open.api.nexon.com/static/tfd/meta"
+EXTERNAL_COMPONENT_URL = f"{BASE_URL}/fr/external-component.json"
+REACTORS_URL = f"{BASE_URL}/fr/reactor.json"
+STATISTICS_URL = f"{BASE_URL}/fr/stat.json"
+MODULES_URL = "module.json"
 
 def fetch_urls(url):
     """Récupère les modules depuis l'URL spécifiée."""
@@ -24,7 +24,16 @@ def fetch_urls(url):
         print(f"❌ Erreur lors de la récupération : {e}")
         return []
 
-def parse_module(module):
+def fetch_all_modules(base_url):
+    all_modules = {}
+    for lang in languages:
+        url = f"{base_url}/{lang}/{MODULES_URL}"
+        modules = fetch_urls(url)
+        if modules is not None:
+            all_modules[lang] = modules
+    return all_modules
+
+def parse_module(lang, module):
     """Parse un module pour correspondre aux paramètres de la procédure stockée."""
 
     type = module["module_type"] or "None"
@@ -43,9 +52,11 @@ def parse_module(module):
 
     displaydata = { "img": module["image_url"], "tier": module["module_tier_id"] }
 
+    name = { lang: module["module_name"] }
+
     parsed = {
         "id": int(module["module_id"]),
-        "name": module["module_name"],
+        "name": name,
         "type": totale,
         "statistics": module["module_stat"][-1]["value"],
         "stack_id": "1" if type != "None" else "10",
@@ -73,7 +84,7 @@ def parse_external(externalComponant, stat):
 
     parsed = {
         "id": int(externalComponant["external_component_id"]),
-        "name": externalComponant["external_component_name"],
+        "name": {"fr": externalComponant["external_component_name"]},
         "type": f"ExternalComponant, {externalComponant['external_component_equipment_type']}, Légataire",
         "statistics": f"{stat[statId]} +{statValue}",
         "stack_id": "4",
@@ -98,9 +109,11 @@ def parse_reactor(reactor, stat):
 
     displaydata = {"img": reactor["image_url"], "tier": reactor["reactor_tier_id"]}
 
+    name = {"fr": reactor["reactor_name"]}
+
     parsed = {
         "id": int(reactor["reactor_id"]),
-        "name": reactor["reactor_name"],
+        "name": name,
         "type": f"reactor, {weapon}, Légataire",
         "statistics": f"{statistics}",
         "stack_id": "1",
@@ -118,11 +131,13 @@ def add_modifier(session, modifier):
         ).fetchone()
 
         display_json = json.dumps(modifier["displaydata"], ensure_ascii=False)
+        print(modifier["name"])
+        name = json.dumps(modifier["name"], ensure_ascii=False)
 
         if not existing:
-            crud.add_modifier(modifier["id"], modifier["name"], modifier["type"], modifier["statistics"], modifier["stack_id"], modifier["stack_description"], display_json)
+            crud.add_modifier(modifier["id"], name, modifier["type"], modifier["statistics"], modifier["stack_id"], modifier["stack_description"], display_json)
         else:
-            crud.update_modifier(modifier["id"], modifier["name"], modifier["type"], modifier["statistics"], modifier["stack_id"], modifier["stack_description"], display_json)
+            crud.update_modifier(modifier["id"], name, modifier["type"], modifier["statistics"], modifier["stack_id"], modifier["stack_description"], display_json)
     except Exception as e:
         print(f"❌ Erreur lors de l'ajout/mise à jour du modifier '{modifier['name']}': {e}")
         session.rollback()
@@ -137,10 +152,20 @@ def main():
         stats_dict = {stat["stat_id"]: stat["stat_name"] for stat in stats}
 
         """ Modules """
-        modules = fetch_urls(MODULES_URL)
-        for module in modules:
-            parsed_module = parse_module(module)
-            add_modifier(session, parsed_module)
+        modules_by_lang = fetch_all_modules(BASE_URL)
+        all_modules = {}
+
+        for lang, modules in modules_by_lang.items():
+            for module in modules:
+                module_id = int(module["module_id"])
+                parsed_module = parse_module(lang, module)
+                if module_id in all_modules:
+                    all_modules[module_id]["name"] = {**all_modules[module_id]["name"], **parsed_module["name"]}
+                else:
+                    all_modules[module_id] = parsed_module
+
+        for module in all_modules.values():
+            add_modifier(session, module)
 
         """ External Components """
         externals = fetch_urls(EXTERNAL_COMPONENT_URL)

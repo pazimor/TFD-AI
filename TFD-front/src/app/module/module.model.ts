@@ -1,6 +1,6 @@
 export interface Module {
     id: number;
-    name: string;
+    name: Record<string, string>;
     type: string;
     statistiques: string;
     optional_statistiques: string;
@@ -11,4 +11,20 @@ export interface Module {
         tier: string;
     }
     drag: boolean;
+}
+
+
+export const defaultModule: Module = {
+  id: 0,
+  name: {fr: ""},
+  type: "",
+  statistiques: "",
+  optional_statistiques: "",
+  stack_id: "",
+  stack_description: "",
+  display_data: {
+    img: "",
+    tier: "",
+  },
+  drag: true
 }

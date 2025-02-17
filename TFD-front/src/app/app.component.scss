@@ -6,13 +6,7 @@
 }
 
 .container {
-  display: flex;
-  justify-content: space-around;
-  flex-direction: column;
-  height: 100%;
-}
-
-.container {
+  color: #ffffff;
   font-family: 'MesloLGS NF', sans-serif;
 }
 
@@ -22,9 +16,6 @@
   bottom: 0;
   left: 0;
   width: calc(100% - 20px);
-}
-.selected-zone {
-  height: 45%;
 }
 
 .header {
@@ -41,7 +32,7 @@
   border-radius: 4px;
 }
 
-$card-height: 80px;
+$card-height: 150px;
 $card-width: 100px;
 
 .object-list {
@@ -50,55 +41,37 @@ $card-width: 100px;
   gap: 10px;
   padding: 10px;
   height: 350px;
-  max-width: auto;
-  border: 2px dashed #ccc;
   border-radius: 10px;
   overflow: auto;
   font-size: 14px;
 }
 
-.object-item, .grid-item {
-  font-family: 'MesloLGS NF', sans-serif;
-  height: $card-height;
-  width: $card-width;
-  text-align: center;
-  background: white;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: grab;
-  user-select: none;
-  background: darkgrey;
-  overflow: hidden;
-}
-
-.single-module-list {
-  font-size: 14px;
+.item {
+  // background
+  position: relative;
+  background: url('/assets/images/module.png') no-repeat center center;
+  background-size: cover;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px;
-  height: calc($card-height + 20px);
-  width: calc($card-width + 20px);
-  overflow: hidden;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-}
+  flex-direction: column;
+  align-items: center;
 
-.single-module-item, .grid-item {
+  //
   height: $card-height;
   width: $card-width;
-  overflow: hidden;
   text-align: center;
-  border: 1px solid #ddd;
-  padding: 10px;
+  border: none;
   border-radius: 5px;
   cursor: grab;
   user-select: none;
-  background: darkgrey;
+  overflow: hidden;
+
+  // font
+  font-size: 10px;
+  color: #ffffff;
 }
 
-img {
-  max-width: 40px;
+.item img {
+  margin-top: 18px;
+  max-width: 58px;
   height: auto;
 }
