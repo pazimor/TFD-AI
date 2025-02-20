@@ -1,25 +1,16 @@
-import {AfterViewInit, Component, signal} from '@angular/core';
+import { AfterViewInit, Component, inject, Signal, signal } from '@angular/core';
+import { appStore } from '../store/data.store'
 import { CommonModule } from '@angular/common';
 import { Module } from '../module/module.model';
 
 @Component({
-  standalone: true,
   imports: [CommonModule],
   selector: 'app-language-list',
   templateUrl: './language-list.component.html',
   styleUrls: ['./language-list.component.scss']
 })
-export class LanguageListComponent implements AfterViewInit {
-
-  selected$$ = signal<string>('fr');
-  isLanguageListReady = false;
-
-  ngAfterViewInit(): void {
-    // On utilise setTimeout pour forcer la détection de changement après l'initialisation
-    setTimeout(() => {
-      this.isLanguageListReady = true;
-    });
-  }
+export class LanguageListComponent {
+  readonly store = inject(appStore);
 
   // Liste des langues supportées
   languages = [
@@ -38,10 +29,10 @@ export class LanguageListComponent implements AfterViewInit {
   ];
 
   getstring(obj: Module): string {
-    return obj.name[this.selected$$()]
+    return obj.name[this.store.language()]
   }
 
   onLanguageChange(selectedCode: string): void {
-    this.selected$$.set(selectedCode)
+    this.store.set_lang(selectedCode)
   }
 }

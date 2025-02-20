@@ -16,7 +16,7 @@ export interface Module {
 
 export const defaultModule: Module = {
   id: 0,
-  name: {fr: ""},
+  name: {},
   type: "",
   statistiques: "",
   optional_statistiques: "",

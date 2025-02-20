@@ -1,0 +1,21 @@
+<div class="module">
+  <div class="position">
+    <div class="background">
+      <img class="{{currentModule().display_data.tier}}" [src]="currentModule().display_data.img" />
+      <p *ngIf="language$$()">{{ currentModule().name[language$$()] }}</p>
+
+      <div class="statistics">
+        <div class="{{currentModule().display_data.tier}}">
+          <div class="module-header">
+            <h2>{{ currentModule().name[language$$()] }}</h2>
+            <img [src]="currentModule().display_data.img" />
+          </div>
+          <div>
+            {{currentModule().statistiques}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

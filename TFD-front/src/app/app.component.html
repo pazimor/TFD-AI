@@ -2,31 +2,27 @@
   <app-language-list></app-language-list>
 
   <!-- Zone des objets sélectionnés -->
-  <app-build
-    [searchTerm]="searchTerm"
-  ></app-build>
+  <app-build [searchTerm]="searchTerm"></app-build>
 
   <!-- Zone des objets disponibles -->
   <div class="available-zone">
     <div class="header">
       <h2>Modules</h2>
-      <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher..." />
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search ..." />
     </div>
     <div
       cdkDropList
       id="availableList"
-      [cdkDropListData]="availableObjects$$()"
-      [cdkDropListConnectedTo]="['selectedList']"
+      [cdkDropListData]="availableModules$$()"
+      [cdkDropListConnectedTo]="['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']"
       class="object-list"
       (cdkDropListDropped)="drop($event)"
     >
       <div
         class="item"
-        *ngFor="let obj of getFilteredObjects();"
-        cdkDrag
-        appTooltip>
-        <img class="{{obj.display_data.tier}}" [src]="obj.display_data.img" />
-        <p *ngIf="languageListComponent">{{ this.languageListComponent.getstring(obj) }}</p>
+        *ngFor="let obj of viewModules();"
+        cdkDrag>
+        <Module-item [currentModule]="obj"></Module-item>
       </div>
     </div>
   </div>

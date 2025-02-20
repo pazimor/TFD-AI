@@ -32,8 +32,23 @@
   border-radius: 4px;
 }
 
-$card-height: 150px;
-$card-width: 100px;
+.cdk-drag-placeholder {
+  visibility: hidden;
+  opacity: 0;
+  mso-endnote-display: none;
+}
+
+/* Style de la barre de défilement (scrollbar) */
+::-webkit-scrollbar {
+  width: 12px; /* Largeur */
+}
+::-webkit-scrollbar-thumb {
+  background: #484a4f; /* Couleur de la scrollbar */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #333333;
+}
 
 .object-list {
   display: flex;
@@ -44,34 +59,4 @@ $card-width: 100px;
   border-radius: 10px;
   overflow: auto;
   font-size: 14px;
-}
-
-.item {
-  // background
-  position: relative;
-  background: url('/assets/images/module.png') no-repeat center center;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  //
-  height: $card-height;
-  width: $card-width;
-  text-align: center;
-  border: none;
-  border-radius: 5px;
-  cursor: grab;
-  user-select: none;
-  overflow: hidden;
-
-  // font
-  font-size: 10px;
-  color: #ffffff;
-}
-
-.item img {
-  margin-top: 18px;
-  max-width: 58px;
-  height: auto;
 }

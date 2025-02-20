@@ -1,0 +1,79 @@
+$card-height: 150px;
+$card-width: 100px;
+
+.module {
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: grab;
+  user-select: none;
+
+  // font
+  font-size: 10px;
+  color: #ffffff;
+}
+
+.position {
+  position: relative;
+}
+
+.background {
+  // background
+  background: url('/assets/images/module.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: $card-height;
+  width: $card-width;
+}
+
+.module img {
+  margin-top: 18px;
+  max-width: 58px;
+  height: auto;
+}
+
+.background .statistics {
+  display: none;
+}
+
+.background:hover .statistics {
+  display: block;
+}
+
+.statistics {
+  width: 300px;
+  height: fit-content;
+  background-color: rgba(71, 73, 76);
+
+  border-width: thin;
+  border-style: solid;
+  border-radius: 10px;
+
+  position: absolute;
+  left: calc($card-width + 10px);
+  top: 0px;
+  z-index: 10;
+}
+
+.module-header {
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.module-header img {
+  width: 40px; /* Ajuste la taille */
+  height: auto;
+  object-fit: contain;
+  margin: 0; /* Supprime les marges parasites */
+  align-self: center; /* Assure que l’image est bien centrée */
+}
