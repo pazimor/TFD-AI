@@ -8,7 +8,7 @@ from sqlalchemy import text
 languages = ["fr", "ko", "en", "de", "ja", "zh-CN", "zh-TW", "it", "pl", "pt", "ru", "es"]
 
 BASE_URL = f"https://open.api.nexon.com/static/tfd/meta"
-EXTERNAL_COMPONENT_URL = f"{BASE_URL}/fr/external-component.json"
+EXTERNAL_COMPONENT_URL = "external-component.json"
 REACTORS_URL = f"{BASE_URL}/fr/reactor.json"
 STATISTICS_URL = f"{BASE_URL}/fr/stat.json"
 MODULES_URL = "module.json"
@@ -24,10 +24,10 @@ def fetch_urls(url):
         print(f"❌ Erreur lors de la récupération : {e}")
         return []
 
-def fetch_all_modules(base_url):
+def fetch_all(target_url):
     all_modules = {}
     for lang in languages:
-        url = f"{base_url}/{lang}/{MODULES_URL}"
+        url = f"{BASE_URL}/{lang}/{target_url}"
         modules = fetch_urls(url)
         if modules is not None:
             all_modules[lang] = modules
@@ -66,7 +66,7 @@ def parse_module(lang, module):
     return parsed
 
 #TODO: implementer les statistiques optionels (aleatoire)
-def parse_external(externalComponant, stat):
+def parse_external(lang, externalComponant, stat):
     """Parse un composant externe pour correspondre aux paramètres de la procédure stockée."""
 
     base_stat = externalComponant["base_stat"][99]
@@ -82,9 +82,10 @@ def parse_external(externalComponant, stat):
 
     displaydata = {"img": externalComponant["image_url"], "tier": externalComponant["external_component_tier_id"]}
 
+    name = { lang: externalComponant["external_component_name"] }
     parsed = {
         "id": int(externalComponant["external_component_id"]),
-        "name": {"fr": externalComponant["external_component_name"]},
+        "name": name,
         "type": f"ExternalComponant, {externalComponant['external_component_equipment_type']}, Légataire",
         "statistics": f"{stat[statId]} +{statValue}",
         "stack_id": "4",
@@ -97,12 +98,15 @@ def parse_external(externalComponant, stat):
 def parse_reactor(reactor, stat):
     """Parse un composant externe pour correspondre aux paramètres de la procédure stockée."""
 
-    reactor_stat = reactor["reactor_skill_power"][99]
+    statistics = ""
+    if len(reactor["reactor_skill_power"]) >= 99:
+        reactor_stat = reactor["reactor_skill_power"][99]
 
-    statistics = " ".join(
-        f" {stat[item['coefficient_stat_id']]} +{item['coefficient_stat_value']} %"
-        for i, item in enumerate(reactor_stat["skill_power_coefficient"])
-    )
+        statistics = " ".join(
+            f"{stat[item['coefficient_stat_id']]} +{item['coefficient_stat_value']}%"
+            for i, item in enumerate(reactor_stat["skill_power_coefficient"])
+        )
+
     weapon = reactor["optimized_condition_type"]
     if isinstance(weapon, tuple) and len(weapon) == 1:
         weapon = weapon[0]
@@ -131,7 +135,6 @@ def add_modifier(session, modifier):
         ).fetchone()
 
         display_json = json.dumps(modifier["displaydata"], ensure_ascii=False)
-        print(modifier["name"])
         name = json.dumps(modifier["name"], ensure_ascii=False)
 
         if not existing:
@@ -151,8 +154,9 @@ def main():
         stats = fetch_urls(STATISTICS_URL)
         stats_dict = {stat["stat_id"]: stat["stat_name"] for stat in stats}
 
+        '''
         """ Modules """
-        modules_by_lang = fetch_all_modules(BASE_URL)
+        modules_by_lang = fetch_all(MODULE_URL)
         all_modules = {}
 
         for lang, modules in modules_by_lang.items():
@@ -166,18 +170,30 @@ def main():
 
         for module in all_modules.values():
             add_modifier(session, module)
+        '''
 
         """ External Components """
-        externals = fetch_urls(EXTERNAL_COMPONENT_URL)
-        for external in externals:
-            parsed_external = parse_external(external, stats_dict)
-            add_modifier(session, parsed_external)
+        externals_by_lang = fetch_all(EXTERNAL_COMPONENT_URL)
+        all_externals = {}
+
+        for lang, externals in externals_by_lang.items():
+            for external in externals:
+                parsed_external = parse_external(lang, external, stats_dict)
+                external_id = int(parsed_external["id"])
+                if external_id in all_externals:
+                    all_externals[external_id]["name"] = {**all_externals[external_id]["name"], **parsed_external["name"]}
+                else:
+                    all_externals[external_id] = parsed_external
+
+        for external in all_externals.values():
+            add_modifier(session, external)
 
         """ Reactor """
         reactors = fetch_urls(REACTORS_URL)
         for reactor in reactors:
             parsed_reactor = parse_reactor(reactor, stats_dict)
-            add_modifier(session, parsed_reactor)
+            if (parsed_reactor["name"]["fr"] is not None):
+                add_modifier(session, parsed_reactor)
     finally:
         session.close()
 

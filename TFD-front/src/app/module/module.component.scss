@@ -1,9 +1,8 @@
 $card-height: 150px;
-$card-width: 100px;
+$card-width: 110px;
 
 .module {
   text-align: center;
-  border: none;
   border-radius: 5px;
   cursor: grab;
   user-select: none;
@@ -25,6 +24,7 @@ $card-width: 100px;
   flex-direction: column;
   align-items: center;
 
+  border-radius: 3px;
   height: $card-height;
   width: $card-width;
 }
@@ -44,6 +44,7 @@ $card-width: 100px;
 }
 
 .statistics {
+  display: none;
   width: 300px;
   height: fit-content;
   background-color: rgba(71, 73, 76);
@@ -53,13 +54,22 @@ $card-width: 100px;
   border-radius: 10px;
 
   position: absolute;
+  transition: all 0.2s ease;
   left: calc($card-width + 10px);
   top: 0px;
   z-index: 10;
+
+  &.show {
+    display: block;
+  }
+
+  &.flipLeft {
+    left: auto;
+    right: calc($card-width + 10px);
+  }
 }
 
 .module-header {
-
   display: flex;
   align-items: center;
   justify-content: space-between;

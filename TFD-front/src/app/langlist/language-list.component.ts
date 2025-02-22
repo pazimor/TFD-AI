@@ -5,7 +5,7 @@ import { Module } from '../module/module.model';
 
 @Component({
   imports: [CommonModule],
-  selector: 'app-language-list',
+  selector: 'language-list',
   templateUrl: './language-list.component.html',
   styleUrls: ['./language-list.component.scss']
 })

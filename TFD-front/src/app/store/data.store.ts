@@ -1,17 +1,18 @@
-import {inject, signal} from '@angular/core';
+import {inject} from '@angular/core';
 import {signalStore, withState, withMethods, withHooks, patchState } from '@ngrx/signals';
 import { Module } from '../module/module.model';
 import { HttpClient } from '@angular/common/http';
-import {switchMap} from 'rxjs';
 
 
 export type store = {
   language: string;
+  searchTerms: string;
   modules_availables: Module[];
 }
 
 const initialState: store = {
   language: "ko",
+  searchTerms: "",
   modules_availables: []
 };
 
@@ -33,6 +34,9 @@ export const appStore = signalStore(
     get_lang: () => store.language(),
     set_lang: (lang: string) => {
       patchState(store, {language: lang})
+    },
+    set_Search: (search: string) => {
+      patchState(store, {searchTerms: search})
     }
   }))
   );

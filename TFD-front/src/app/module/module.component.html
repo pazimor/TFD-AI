@@ -1,10 +1,14 @@
 <div class="module">
   <div class="position">
-    <div class="background">
+    <div class="background"
+         (mouseenter)="onTooltipEnter()"
+         (mouseleave)="onTooltipLeave()">
       <img class="{{currentModule().display_data.tier}}" [src]="currentModule().display_data.img" />
       <p *ngIf="language$$()">{{ currentModule().name[language$$()] }}</p>
 
-      <div class="statistics">
+      <div class="statistics"
+           #statsDiv
+           [class.show]="showTooltip">
         <div class="{{currentModule().display_data.tier}}">
           <div class="module-header">
             <h2>{{ currentModule().name[language$$()] }}</h2>

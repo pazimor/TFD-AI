@@ -1,0 +1,50 @@
+.available-zone {
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - 20px);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espace entre le titre et l'input */
+  margin-bottom: 10px;
+}
+
+.header input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.cdk-drag-placeholder {
+  visibility: hidden;
+  opacity: 0;
+  mso-endnote-display: none;
+}
+
+/* Style de la barre de défilement (scrollbar) */
+::-webkit-scrollbar {
+  width: 12px; /* Largeur */
+}
+::-webkit-scrollbar-thumb {
+  background: #484a4f; /* Couleur de la scrollbar */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #333333;
+}
+
+.object-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  height: 350px;
+  border-radius: 10px;
+  overflow: auto;
+  font-size: 14px;
+}
