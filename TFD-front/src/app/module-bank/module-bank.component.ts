@@ -39,7 +39,7 @@ export class ModuleBankComponent implements OnInit {
 
   onSearchTermChange(newValue: any) {
     if (newValue.inputType === 'deleteContentBackward') {
-      this.searchTerm = this.searchTerm.slice(0, -1); //
+      this.searchTerm = this.searchTerm.slice(0, -1);
     } else if (newValue.inputType === 'insertText') {
       this.searchTerm += newValue.data
     }

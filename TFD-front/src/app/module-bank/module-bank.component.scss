@@ -21,8 +21,21 @@
 }
 
 .cdk-drag-placeholder {
-  display: none;
-}
+  opacity: 0;                /* Rendu totalement transparent */
+  pointer-events: none;      /* Évite toute interaction */
+
+  /* 2) Conserver la même taille que la carte (ou le module) d’origine */
+  max-width: 110px;              /* Ajustez selon votre .background ou .module */
+  max-height: 150px;             /* Ajustez selon votre .background ou .module */
+
+  /* 3) Supprimer tout fond ou bordure résiduels */
+  background: transparent;
+  border: none;
+
+  /* Si besoin, on peut s’assurer que le placeholder n’a pas de margin/padding */
+  margin: 0;
+  padding: 0;
+ }
 
 /* Style de la barre de défilement (scrollbar) */
 ::-webkit-scrollbar {

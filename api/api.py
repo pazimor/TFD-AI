@@ -22,6 +22,12 @@ def get_module_for_ui():
                 row_dict["name"] = json.loads(row_dict["name"])
             except json.JSONDecodeError:
                 pass  # Laisser tel quel si ce n'est pas un JSON valide
+        if "statistiques" in row_dict and isinstance(row_dict["statistiques"], str):
+            try:
+                row_dict["statistiques"] = json.loads(row_dict["statistiques"])
+            except json.JSONDecodeError:
+                print("pas cool")
+                pass  # Laisser tel quel si ce n'est pas un JSON valide
         if "display_data" in row_dict and isinstance(row_dict["display_data"], str):
             try:
                 row_dict["display_data"] = json.loads(row_dict["display_data"])

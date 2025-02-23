@@ -9,7 +9,7 @@ languages = ["fr", "ko", "en", "de", "ja", "zh-CN", "zh-TW", "it", "pl", "pt", "
 
 BASE_URL = f"https://open.api.nexon.com/static/tfd/meta"
 EXTERNAL_COMPONENT_URL = "external-component.json"
-REACTORS_URL = f"{BASE_URL}/fr/reactor.json"
+REACTORS_URL = f"reactor.json"
 STATISTICS_URL = f"{BASE_URL}/fr/stat.json"
 MODULES_URL = "module.json"
 
@@ -53,12 +53,13 @@ def parse_module(lang, module):
     displaydata = { "img": module["image_url"], "tier": module["module_tier_id"] }
 
     name = { lang: module["module_name"] }
+    statistics = {lang: module["module_stat"][-1]["value"]}
 
     parsed = {
         "id": int(module["module_id"]),
         "name": name,
         "type": totale,
-        "statistics": module["module_stat"][-1]["value"],
+        "statistics": statistics,
         "stack_id": "1" if type != "None" else "10",
         "stack_description": None,
         "displaydata": displaydata
@@ -83,11 +84,12 @@ def parse_external(lang, externalComponant, stat):
     displaydata = {"img": externalComponant["image_url"], "tier": externalComponant["external_component_tier_id"]}
 
     name = { lang: externalComponant["external_component_name"] }
+    statistics = {lang: f"{stat[statId]} +{statValue}"}
     parsed = {
         "id": int(externalComponant["external_component_id"]),
         "name": name,
         "type": f"ExternalComponant, {externalComponant['external_component_equipment_type']}, Légataire",
-        "statistics": f"{stat[statId]} +{statValue}",
+        "statistics": statistics,
         "stack_id": "4",
         "stack_description": description,
         "displaydata": displaydata
@@ -95,7 +97,7 @@ def parse_external(lang, externalComponant, stat):
     return parsed
 
 #TODO: implementer les statistiques optionels (aleatoire)
-def parse_reactor(reactor, stat):
+def parse_reactor(lang, reactor, stat):
     """Parse un composant externe pour correspondre aux paramètres de la procédure stockée."""
 
     statistics = ""
@@ -113,13 +115,15 @@ def parse_reactor(reactor, stat):
 
     displaydata = {"img": reactor["image_url"], "tier": reactor["reactor_tier_id"]}
 
-    name = {"fr": reactor["reactor_name"]}
+    name = {lang: reactor["reactor_name"]}
+    stats = {lang: statistics}
+
 
     parsed = {
         "id": int(reactor["reactor_id"]),
         "name": name,
         "type": f"reactor, {weapon}, Légataire",
-        "statistics": f"{statistics}",
+        "statistics": stats,
         "stack_id": "1",
         "stack_description": None,
         "displaydata": displaydata
@@ -136,11 +140,14 @@ def add_modifier(session, modifier):
 
         display_json = json.dumps(modifier["displaydata"], ensure_ascii=False)
         name = json.dumps(modifier["name"], ensure_ascii=False)
+        statistics = json.dumps(modifier["statistics"], ensure_ascii=False)
 
+        print(
+            f"Modifier ID: {modifier['id']}, JSON Length: {len(json.dumps(modifier['statistics'], ensure_ascii=False))}")
         if not existing:
-            crud.add_modifier(modifier["id"], name, modifier["type"], modifier["statistics"], modifier["stack_id"], modifier["stack_description"], display_json)
+            crud.add_modifier(modifier["id"], name, modifier["type"], statistics, modifier["stack_id"], modifier["stack_description"], display_json)
         else:
-            crud.update_modifier(modifier["id"], name, modifier["type"], modifier["statistics"], modifier["stack_id"], modifier["stack_description"], display_json)
+            crud.update_modifier(modifier["id"], name, modifier["type"], statistics, modifier["stack_id"], modifier["stack_description"], display_json)
     except Exception as e:
         print(f"❌ Erreur lors de l'ajout/mise à jour du modifier '{modifier['name']}': {e}")
         session.rollback()
@@ -154,9 +161,8 @@ def main():
         stats = fetch_urls(STATISTICS_URL)
         stats_dict = {stat["stat_id"]: stat["stat_name"] for stat in stats}
 
-        '''
         """ Modules """
-        modules_by_lang = fetch_all(MODULE_URL)
+        modules_by_lang = fetch_all(MODULES_URL)
         all_modules = {}
 
         for lang, modules in modules_by_lang.items():
@@ -165,12 +171,12 @@ def main():
                 parsed_module = parse_module(lang, module)
                 if module_id in all_modules:
                     all_modules[module_id]["name"] = {**all_modules[module_id]["name"], **parsed_module["name"]}
+                    all_modules[module_id]["statistics"] = {**all_modules[module_id]["statistics"], **parsed_module["statistics"]}
                 else:
                     all_modules[module_id] = parsed_module
 
         for module in all_modules.values():
             add_modifier(session, module)
-        '''
 
         """ External Components """
         externals_by_lang = fetch_all(EXTERNAL_COMPONENT_URL)
@@ -189,11 +195,20 @@ def main():
             add_modifier(session, external)
 
         """ Reactor """
-        reactors = fetch_urls(REACTORS_URL)
-        for reactor in reactors:
-            parsed_reactor = parse_reactor(reactor, stats_dict)
-            if (parsed_reactor["name"]["fr"] is not None):
-                add_modifier(session, parsed_reactor)
+        reactors_by_lang = fetch_all(REACTORS_URL)
+        all_reactors = {}
+
+        for lang, reactors in reactors_by_lang.items():
+            for reactor in reactors:
+                parsed_reactor = parse_reactor(lang, reactor, stats_dict)
+                reactor_id = int(parsed_reactor["id"])
+                if reactor_id in all_reactors:
+                    all_reactors[reactor_id]["name"] = {**all_reactors[reactor_id]["name"], **parsed_reactor["name"]}
+                else:
+                    all_reactors[reactor_id] = parsed_reactor
+
+        for reactor in all_reactors.values():
+            add_modifier(session, reactor)
     finally:
         session.close()
 
