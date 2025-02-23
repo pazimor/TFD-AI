@@ -3,8 +3,13 @@
     <div class="background"
          (mouseenter)="onTooltipEnter()"
          (mouseleave)="onTooltipLeave()">
-      <img class="{{currentModule().display_data.tier}}" [src]="currentModule().display_data.img" />
-      <p *ngIf="language$$()">{{ currentModule().name[language$$()] }}</p>
+      <div class="type" [ngClass]="{'Sub': currentModule().type.split(',')[1]?.trim() === 'Sub' && isSelected(),
+                       'Skill': currentModule().type.split(',')[1]?.trim() === 'Skill' && isSelected()}">
+        <img class="{{currentModule().display_data.tier}}" [src]="currentModule().display_data.img" />
+        <p *ngIf="language$$()">{{ currentModule().name[language$$()] }}</p>
+        <a class="constraint"
+           *ngIf="language$$()">{{ currentModule().type.split(",")[1]?.trim() ?? "" }}</a>
+      </div>
 
       <div class="statistics"
            #statsDiv
@@ -19,7 +24,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

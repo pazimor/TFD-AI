@@ -13,6 +13,8 @@ import { appStore } from '../store/data.store';
 
 export class ModuleComponent {
   readonly currentModule: InputSignal<Module> = input.required<Module>()
+  readonly isSelected: InputSignal<Boolean> = input.required<Boolean>()
+
   readonly store = inject(appStore);
 
   @ViewChild('statsDiv') statsDiv!: ElementRef;
@@ -20,6 +22,7 @@ export class ModuleComponent {
   showTooltip = false;
 
   language$$ = this.store.language;
+  //contrainte = this.currentModule().type.split(',')[1]?.trim()
 
   onTooltipEnter() {
     // On l’affiche (classe .show => display: block)
