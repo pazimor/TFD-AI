@@ -38,6 +38,20 @@ def get_item(id):
     finally:
         session.close()
 
+def get_items_by_type(item_type):
+    session = SessionLocal()
+    try:
+        result = session.execute(
+            text("CALL GetItemsByType(:type)"),
+            {"type": item_type}
+        )
+        modifiers = result.fetchall()
+        return modifiers
+    except Exception as e:
+        print(f"❌ Erreur : {e}")
+    finally:
+        session.close()
+
 def update_item(id, name, goals, item_type, capabilities, statistiques, display_json):
     session = SessionLocal()
     try:

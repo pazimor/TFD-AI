@@ -1,0 +1,26 @@
+<!-- Barre latérale -->
+
+
+<nav #sidebar class="sidebar" [ngClass]="{'open': isOpen}">
+  <button id="hamburger" class="hamburger" (click)="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="list">
+    <div *ngFor="let descendant of characters$$()" >
+      <div *ngIf="selected$$() === 0">
+        <character [smallview]="isOpen" [character]="descendant"></character>
+      </div>
+      <div *ngIf="selected$$() === descendant.id">
+        <character [smallview]="isOpen" [character]="descendant"></character>
+      </div>
+      <ng-template #simpleDescendant>
+
+      </ng-template>
+    </div>
+  </div>
+
+</nav>
+
