@@ -1,0 +1,8 @@
+version: '3'
+services:
+  angular-app:
+    build: .
+    container_name: angular-node
+    restart: unless-stopped
+    ports:
+      - "3000:3000"

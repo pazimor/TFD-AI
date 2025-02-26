@@ -1,29 +1,23 @@
 .displayCharacter {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.small {
-  display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .notname {
   display: none;
-  transition: width 0.3s ease-out;
-  transition: width 0.3s ease-in;
+  transition: width 0.3s ease;
   pointer-events: none;
 }
 
-.small .name{
+.name{
   width: 100%;
   align-items: center;
   align-content: center;
   text-align: center;
 }
 
-.small .profile{
+.profile{
   width: 50px;
   border-radius: 25px;
   border-width: thin;

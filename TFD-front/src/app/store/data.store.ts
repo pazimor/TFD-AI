@@ -2,7 +2,8 @@ import {inject} from '@angular/core';
 import {signalStore, withState, withMethods, withHooks, patchState } from '@ngrx/signals';
 import { Module } from '../module/module.model';
 import { HttpClient } from '@angular/common/http';
-import {Character} from '../character/character.model';
+import { Character } from '../character/character.model';
+import { Weapon } from '../weapon/weapon.model'
 
 
 export type store = {
@@ -11,6 +12,7 @@ export type store = {
   modules_availables: Module[];
   selectedDescendant: number;
   descendants: Character[];
+  weapons: Weapon[];
 }
 
 const initialState: store = {
@@ -18,7 +20,8 @@ const initialState: store = {
   searchTerms: "",
   modules_availables: [],
   selectedDescendant: 101000001,
-  descendants: []
+  descendants: [],
+  weapons: []
 };
 
 export const appStore = signalStore(
@@ -29,12 +32,16 @@ export const appStore = signalStore(
     onInit(store, http = inject(HttpClient)) {
       const apimoduleurl = 'http://192.168.1.35:4201/api/modules/ui';
       const apidescendanturl = 'http://192.168.1.35:4201/api/descendants/ui';
+      const apiweaponurl = 'http://192.168.1.35:4201/api/weapons/ui';
 
       http.get<Module[]>(apimoduleurl).subscribe(
         (modules) => patchState(store, { modules_availables: modules })
       );
       http.get<Character[]>(apidescendanturl).subscribe(
         (descendants) => patchState(store, { descendants: descendants })
+      );
+      http.get<Weapon[]>(apiweaponurl).subscribe(
+        (weapons) => patchState(store, { weapons: weapons })
       );
     }
   }),

@@ -1,0 +1,8 @@
+<div class="displayCharacter">
+  <!-- <a>{{ weapon().name[language$$()] }}</a> -->
+  <button class="nobutton">
+    <img class="profile"
+         [ngClass]="{'small': !smallview(), 'extend': smallview()}"
+         [src]="weapon().display_data.img" />
+  </button>
+</div>

@@ -1,0 +1,29 @@
+.profile{
+  border-radius: 25px;
+  border-width: thin;
+  border-color: #cccccc;
+}
+
+.small {
+  width: 50px;
+  transition: width 0.3s ease;
+}
+
+.extend {
+  width: 169px;
+  transition: width 0.3s ease;
+}
+
+.nobutton {
+  background: transparent;
+  border-radius: 30px;
+  border-color: #cccccc;
+  border-style: solid;
+  padding: 0;
+  margin: 2px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
