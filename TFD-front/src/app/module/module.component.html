@@ -3,12 +3,12 @@
     <div class="background"
          (mouseenter)="onTooltipEnter()"
          (mouseleave)="onTooltipLeave()">
-      <div class="type" [ngClass]="{'Sub': currentModule().type.split(',')[1]?.trim() === 'Sub' && isSelected(),
-                       'Skill': currentModule().type.split(',')[1]?.trim() === 'Skill' && isSelected()}">
+      <div class="type" [ngClass]="{'Sub': contrainte() === 'Sub' && isSelected(),
+                       'Skill': contrainte() === 'Skill' && isSelected()}">
         <img class="{{currentModule().display_data.tier}}" [src]="currentModule().display_data.img" />
         <p *ngIf="language$$()">{{ currentModule().name[language$$()] }}</p>
         <a class="constraint"
-           *ngIf="language$$()">{{ currentModule().type.split(",")[1]?.trim() ?? "" }}</a>
+           *ngIf="language$$()">{{ contrainte() }}</a>
       </div>
 
       <div class="statistics"

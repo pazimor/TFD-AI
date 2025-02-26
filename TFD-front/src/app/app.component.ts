@@ -15,7 +15,7 @@ import {sidebarComponent} from './sidebar/sidebar.component';
 
 
 @Component({
-  imports: [CommonModule, FormsModule, BuildComponent, LanguageListComponent, ModuleBankComponent, LanguageListComponent, CharacterComponent, sidebarComponent],
+  imports: [CommonModule, FormsModule, BuildComponent, LanguageListComponent, ModuleBankComponent, LanguageListComponent, sidebarComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss', './module/modules-tiers.scss']
@@ -24,7 +24,6 @@ export class AppComponent {
   @ViewChild(BuildComponent) buildComponent!: BuildComponent;
   @ViewChild(LanguageListComponent) languageListComponent!: LanguageListComponent;
   @ViewChild(ModuleBankComponent) moduleBankComponent!: ModuleBankComponent;
-  @ViewChild(CharacterComponent) characterComponent!: CharacterComponent;
 
   title = 'TFD-front';
 }

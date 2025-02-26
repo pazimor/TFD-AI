@@ -5,19 +5,20 @@
 }
 
 .notname {
-  display: none;
   transition: width 0.3s ease;
+  display: none;
   pointer-events: none;
 }
 
-.name{
+.name {
+  transition: width 0.3s ease;
   width: 100%;
   align-items: center;
   align-content: center;
   text-align: center;
 }
 
-.profile{
+.profile {
   width: 50px;
   border-radius: 25px;
   border-width: thin;

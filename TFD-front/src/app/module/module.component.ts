@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, inject, input, InputSignal, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, computed, ElementRef, inject, input, InputSignal, ViewChild} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { Module } from './module.model';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,7 @@ export class ModuleComponent {
   showTooltip = false;
 
   language$$ = this.store.language;
-  //contrainte = this.currentModule().type.split(',')[1]?.trim()
+  contrainte = computed(() => this.currentModule().type?.split(',')[1]?.trim() ?? "")
 
   onTooltipEnter() {
     // On l’affiche (classe .show => display: block)
