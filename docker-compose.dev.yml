@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: api_flask
+    ports:
+      - "4201:4201"
+    environment:
+      - ENV=production
+    volumes:
+      - ./api/api.py:/app/api.py
+      - ./sql:/app/sql
+    restart: always
+
+  front:
+    build: ./TFD-front
+    container_name: front_dev
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./TFD-front:/app
+      - /app/node_modules
+    command: ng serve --host 0.0.0.0 --port 4200

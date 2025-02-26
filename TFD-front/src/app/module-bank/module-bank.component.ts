@@ -1,10 +1,8 @@
 import {
   Component,
-  ElementRef, inject,
+  inject,
   OnInit,
-  QueryList, Signal,
-  signal,
-  ViewChild,
+  Signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
@@ -44,7 +42,7 @@ export class ModuleBankComponent implements OnInit {
       this.searchTerm += newValue.data
     }
 
-    this.store.set_Search(this.searchTerm)
+    this.store.set_search(this.searchTerm)
   }
 
   viewModules() {

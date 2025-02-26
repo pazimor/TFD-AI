@@ -2,18 +2,11 @@
 FROM node:18-alpine
 LABEL authors="pazimor"
 
-
-# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
+COPY ./dist/tfd-front/browser /app
+COPY package.json package-lock.json ./
 
-# Copier les fichiers de l'application Angular dans le conteneur
-COPY ./dist/tfd-front /app
+RUN npm install -g @angular/cli && npm install
 
-# Installer un serveur web simple pour servir Angular
-RUN npm install -g serve
-
-# Exposer le port 3000
 EXPOSE 3000
-
-# Lancer l'application Angular avec "serve"
-CMD ["serve", "-s", "/app", "-l", "3000"]
+CMD ["serve", "-s", "/app", "-l", "4200"]

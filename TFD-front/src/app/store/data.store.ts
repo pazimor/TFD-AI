@@ -51,7 +51,7 @@ export const appStore = signalStore(
     set_lang: (lang: string) => {
       patchState(store, {language: lang})
     },
-    set_Search: (search: string) => {
+    set_search: (search: string) => {
       patchState(store, {searchTerms: search})
     },
     set_selectedDescendant: (selectedDescendant: number) => {

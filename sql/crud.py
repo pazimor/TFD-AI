@@ -5,7 +5,7 @@ from sqlalchemy import text
 # ================================
 # CRUD pour ITEMS
 # ================================
-def add_item(id, name, item_type, goals, capabilities, statistiques, display_json):
+def add_item(id, name, item_type, goals, capabilities, stats, display_json):
     session = SessionLocal()
     try:
         session.execute(
@@ -16,7 +16,7 @@ def add_item(id, name, item_type, goals, capabilities, statistiques, display_jso
                 "type": item_type,
                 "goals": goals,
                 "capabilities": capabilities,
-                "statistiques": statistiques,
+                "statistiques": stats,
                 "displaydata": display_json
             }
         )
@@ -52,7 +52,7 @@ def get_items_by_type(item_type):
     finally:
         session.close()
 
-def update_item(id, name, goals, item_type, capabilities, statistiques, display_json):
+def update_item(id, name, goals, item_type, capabilities, stats, display_json):
     session = SessionLocal()
     try:
         session.execute(
@@ -63,7 +63,7 @@ def update_item(id, name, goals, item_type, capabilities, statistiques, display_
                 "goals": goals,
                 "type": item_type,
                 "capabilities": capabilities,
-                "statistiques": statistiques,
+                "statistiques": stats,
                 "displaydata": display_json
             }
         )
@@ -89,7 +89,7 @@ def delete_item(id):
 # ================================
 # CRUD pour MODIFIERS
 # ================================
-def add_modifier(id, name, modifier_type, statistiques, stack_id, stack_description, displaydata):
+def add_modifier(id, name, modifier_type, stats, stack_id, stack_description, displaydata):
     session = SessionLocal()
     try:
         session.execute(
@@ -98,7 +98,7 @@ def add_modifier(id, name, modifier_type, statistiques, stack_id, stack_descript
                 "id": id,
                 "name": name,
                 "type": modifier_type,
-                "stats": statistiques,
+                "stats": stats,
                 "stack_id": stack_id,
                 "stack_description": stack_description,
                 "displaydata": displaydata
@@ -111,7 +111,7 @@ def add_modifier(id, name, modifier_type, statistiques, stack_id, stack_descript
     finally:
         session.close()
 
-def update_modifier(id, name, modifier_type, statistiques, stack_id, stack_description, displaydata):
+def update_modifier(id, name, modifier_type, stats, stack_id, stack_description, displaydata):
     session = SessionLocal()
     try:
         session.execute(
@@ -120,7 +120,7 @@ def update_modifier(id, name, modifier_type, statistiques, stack_id, stack_descr
                 "id": id,
                 "name": name,
                 "type": modifier_type,
-                "stats": statistiques,
+                "stats": stats,
                 "stack_id": stack_id,
                 "stack_description": stack_description,
                 "displaydata": displaydata
