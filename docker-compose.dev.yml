@@ -14,11 +14,12 @@ services:
     restart: always
 
   front:
-    build: ./TFD-front
+    build:
+      context: ./TFD-front
+      dockerfile: Dockerfile.dev
     container_name: front_dev
-    restart: unless-stopped
     ports:
-      - "4200:4200"
+      - "80:4200"
     volumes:
       - ./TFD-front:/app
       - /app/node_modules

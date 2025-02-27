@@ -1,12 +1,12 @@
-# Utiliser l'image officielle de Node.js
-FROM node:18-alpine
+FROM node:18-alpine as builder
 LABEL authors="pazimor"
-
 WORKDIR /app
-COPY ./dist/tfd-front/browser /app
-COPY package.json package-lock.json ./
-
+COPY package*.json ./
 RUN npm install -g @angular/cli && npm install
+COPY . .
+RUN ng build
 
-EXPOSE 3000
-CMD ["serve", "-s", "/app", "-l", "4200"]
+FROM nginx:alpine
+COPY --from=builder /app/dist/tfd-front/browser /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
