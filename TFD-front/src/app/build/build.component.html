@@ -1,0 +1,24 @@
+<div>
+  <h2>Build</h2>
+  <div class="grid">
+    <div *ngFor="let obj of selectedModule$$(); let i = index">
+      <div class="hidepreview"
+        cdkDropList
+        [id]="i.toString()"
+        [cdkDropListData]="selectedModule$$()"
+        [cdkDropListConnectedTo]="connectedDropLists"
+        cdkDropListAutoScrollDisabled="true"
+        (cdkDropListDropped)="drop($event)"
+        (dragstart)="onDragStart($event)"
+      >
+        <div
+          cdkDrag
+          [cdkDragDisabled]="obj.drag">
+          <ng-template cdkDragPlaceholder let-item>
+          </ng-template>
+          <Module-item [currentModule]="obj" [isSelected]="true"></Module-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

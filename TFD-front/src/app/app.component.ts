@@ -8,9 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BuildComponent } from './build/build.component';
 import { LanguageListComponent } from './langlist/language-list.component';
-import { appStore } from './store/data.store';
 import { ModuleBankComponent } from './module-bank/module-bank.component';
-import { CharacterComponent } from './character/character.component';
 import {sidebarComponent} from './sidebar/sidebar.component';
 
 

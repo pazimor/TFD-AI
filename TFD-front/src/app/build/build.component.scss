@@ -1,0 +1,36 @@
+$card-height: 150px;
+$card-width: 100px;
+
+.grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  margin: 0 auto;
+  width: fit-content;
+  justify-content: center;
+}
+
+.Module-item {
+  position: relative;
+}
+
+
+.hidepreview {
+  max-height: 150px;
+}
+
+.custom-placeholder {
+  position: absolute;
+  width: 110px;
+  height: 150px;
+  pointer-events: none;
+  opacity: 0;      // ou 0.2 si tu veux un léger ghost
+  top: 0;
+  left: 0;
+}
+
+img {
+  max-width: 40px;
+  height: auto;
+}
