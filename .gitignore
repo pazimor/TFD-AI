@@ -172,5 +172,4 @@ cython_debug/
 # alembic
 alembic.ini
 sql/alembic/env.py
-connectionString.py
 

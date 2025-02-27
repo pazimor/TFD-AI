@@ -8,5 +8,5 @@ RUN ng build
 
 FROM nginx:alpine
 COPY --from=builder /app/dist/tfd-front/browser /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 42
 CMD ["nginx", "-g", "daemon off;"]
