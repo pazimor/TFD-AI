@@ -6,8 +6,4 @@ services:
     container_name: api_flask
     ports:
       - "4201:4201"
-    expose:
-      - "4201"
-    environment:
-      - ENV=production
     restart: always
