@@ -19,7 +19,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: front_dev
     environment:
-      - API_URL=http://localhost:4201
+      - API_URL=http://localhost:82
     ports:
       - "4200:4200"
     volumes:
