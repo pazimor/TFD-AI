@@ -8,4 +8,4 @@ services:
       - API_URL=https://theory-crafter-api.pazimor.dev
     restart: unless-stopped
     ports:
-      - "444:443"
+      - "82:80"

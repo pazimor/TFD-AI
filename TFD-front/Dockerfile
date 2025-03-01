@@ -19,4 +19,3 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 80
 EXPOSE 443
-## CMD ["nginx", "-g", "daemon off;"] //i suppose i don't need this anymore
