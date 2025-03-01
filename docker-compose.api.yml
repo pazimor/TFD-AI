@@ -11,13 +11,3 @@ services:
     environment:
       - ENV=production
     restart: always
-
-  front:
-    build: ./TFD-front
-    container_name: front
-    environment:
-      - API_URL=https://pazimor.dev
-    restart: unless-stopped
-    ports:
-      - "81:80"
-      - "444:443"

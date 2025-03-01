@@ -1,0 +1,10 @@
+services:
+  front:
+    build: ./TFD-front
+    container_name: front
+    environment:
+      - API_URL=https://theory-crafter.pazimor.dev:4201
+    restart: unless-stopped
+    ports:
+      - "81:80"
+      - "444:443"
