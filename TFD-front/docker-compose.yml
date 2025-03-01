@@ -5,8 +5,11 @@ services:
       dockerfile: Dockerfile
     container_name: front
     environment:
-      - API_URL=https://theory-crafter.pazimor.dev:4201
+      - API_URL=https://theory-crafter-api.pazimor.dev
     restart: unless-stopped
+    volumes:
+      - /volume1/docker/certificates/fullchain.pem:/etc/nginx/certs/fullchain.pem:ro
+      - /volume1/docker/certificates/privkey.pem:/etc/nginx/certs/privkey.pem:ro
+      - /volume1/docker/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
-      - "81:80"
       - "444:443"
