@@ -1,7 +1,7 @@
 import json
 import requests
-import sql.crud as crud
-from sql.database import SessionLocal
+import api.sql.crud as crud
+from api.sql import SessionLocal
 from sqlalchemy import text
 
 # Langues supportées

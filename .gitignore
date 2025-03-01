@@ -171,5 +171,5 @@ cython_debug/
 
 # alembic
 alembic.ini
-sql/alembic/env.py
+api/sql/alembic/env.py
 

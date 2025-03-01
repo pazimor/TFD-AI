@@ -4,10 +4,10 @@ LABEL authors="pazimor"
 WORKDIR /app
 ENV PYTHONPATH=/app
 
-COPY ./api/api.py .
-COPY ./sql/ ./sql
+COPY api.py .
+COPY sql/ ./sql
 
-COPY ./api/requirements.txt .
+COPY ./requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 4201
