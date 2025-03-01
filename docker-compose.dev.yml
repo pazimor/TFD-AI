@@ -6,8 +6,8 @@ services:
     container_name: api_flask
     ports:
       - "4201:4201"
-    environment:
-      - ENV=production
+    expose:
+      - "4201"
     volumes:
       - ./api/api.py:/app/api.py
       - ./sql:/app/sql
@@ -18,8 +18,10 @@ services:
       context: ./TFD-front
       dockerfile: Dockerfile.dev
     container_name: front_dev
+    environment:
+      - API_URL=http://localhost:4201
     ports:
-      - "80:4200"
+      - "4200:4200"
     volumes:
       - ./TFD-front:/app
       - /app/node_modules

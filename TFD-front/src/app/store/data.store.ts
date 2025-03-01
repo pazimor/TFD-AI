@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Character } from '../character/character.model';
 import { Weapon } from '../weapon/weapon.model'
 
+const apiBaseUrl: string = (window as any).APP_CONFIG?.apiBaseUrl ?? 'http://localhost:4201';
 
 export type store = {
   language: string;
@@ -30,9 +31,9 @@ export const appStore = signalStore(
   },
   withHooks({
     onInit(store, http = inject(HttpClient)) {
-      const apimoduleurl = 'http://192.168.1.35:4201/api/modules/ui';
-      const apidescendanturl = 'http://192.168.1.35:4201/api/descendants/ui';
-      const apiweaponurl = 'http://192.168.1.35:4201/api/weapons/ui';
+      const apimoduleurl = `${apiBaseUrl}/api/modules/ui`;
+      const apidescendanturl = `${apiBaseUrl}/api/descendants/ui`;
+      const apiweaponurl = `${apiBaseUrl}/api/weapons/ui`;
 
       http.get<Module[]>(apimoduleurl).subscribe(
         (modules) => patchState(store, { modules_availables: modules })

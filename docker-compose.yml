@@ -6,6 +6,8 @@ services:
     container_name: api_flask
     ports:
       - "4201:4201"
+    expose:
+      - "4201"
     environment:
       - ENV=production
     restart: always
@@ -13,6 +15,9 @@ services:
   front:
     build: ./TFD-front
     container_name: front
+    environment:
+      - API_URL=https://pazimor.dev
     restart: unless-stopped
     ports:
-      - "42:42"
+      - "81:80"
+      - "444:443"
