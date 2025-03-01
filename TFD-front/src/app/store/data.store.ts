@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Character } from '../character/character.model';
 import { Weapon } from '../weapon/weapon.model'
 
-const apiBaseUrl: string = (window as any).APP_CONFIG?.apiBaseUrl ?? 'https://theory-crafter.pazimor.dev:82';
+const apiBaseUrl: string = (window as any).APP_CONFIG?.apiBaseUrl ?? 'https://theory-crafter-api.pazimor.dev';
 
 export type store = {
   language: string;
