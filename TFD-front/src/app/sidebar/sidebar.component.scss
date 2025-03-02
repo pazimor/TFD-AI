@@ -7,14 +7,23 @@
   width: 57px;
   padding: 10px;
   transition: width 0.4s;
-  background-color: #333333;
+  background: linear-gradient(
+      to right,
+      #1c1c1c 99%,
+      rgb(28, 28, 28, 0) 100%
+  );
   display: flex;
   flex-direction: column;
 }
 
 /* Lorsque la sidebar est ouverte, on augmente sa largeur */
 .sidebar.open {
-  width: 169px;
+  width: 170px;
+  background: linear-gradient(
+      to right,
+      #1c1c1c 99%,
+      rgb(28, 28, 28, 0) 100%
+  );
 }
 
 .list {
@@ -29,6 +38,7 @@
 }
 
 .hamburger {
+
   background: none;
   border: none;
   cursor: pointer;
@@ -44,5 +54,5 @@
   width: 100%;
   height: 3px;
   background-color: #fff;
-  margin: 4px 0;
+  margin: 5px 0;
 }

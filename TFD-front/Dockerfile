@@ -4,12 +4,11 @@ LABEL authors="pazimor"
 WORKDIR /app
 COPY . .
 RUN npm install -g npm@11.1.0 && npm install -g @angular/cli && npm install
-RUN ng build --prod
+RUN ng build --configuration production
 
 FROM nginx:alpine
 
 COPY --from=builder /app/dist/tfd-front/browser /usr/share/nginx/html
-COPY config.template.json /usr/share/nginx/html/assets/config.template.json
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
