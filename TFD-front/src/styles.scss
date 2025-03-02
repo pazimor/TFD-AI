@@ -3,3 +3,16 @@
 .back {
   background: #333333;
 }
+
+/* Style de la barre de défilement (scrollbar) */
+
+::-webkit-scrollbar {
+  width: 12px; /* Largeur */
+}
+::-webkit-scrollbar-thumb {
+  background: #484a4f;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #333333;
+}

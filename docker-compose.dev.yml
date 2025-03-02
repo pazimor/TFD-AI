@@ -1,16 +1,14 @@
 services:
   api:
     build:
-      context: .
-      dockerfile: api/Dockerfile
+      context: ./api
+      dockerfile: Dockerfile
     container_name: api_flask
     ports:
       - "4201:4201"
-    expose:
-      - "4201"
     volumes:
       - ./api/api.py:/app/api.py
-      - ./sql:/app/sql
+      - ./api/sql:/app/sql
     restart: always
 
   front:

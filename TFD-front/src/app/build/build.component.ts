@@ -10,14 +10,14 @@ import {ModuleComponent} from '../module/module.component';
   imports: [CommonModule, DragDropModule, ModuleComponent],
   selector: 'build',
   templateUrl: './build.component.html',
-  styleUrls: ['./build.component.scss', '../module/modules-tiers.scss', '../app.component.scss']
+  styleUrls: ['./build.component.scss', '../app.component.scss']
 })
 export class BuildComponent implements OnInit {
   readonly store = inject(appStore);
 
   nbslots: number = 10;
   defaultModules: Module[] = []
-  // Initialisez un tableau pour les objets sélectionnés
+
   searchTerms$$ = this.store.searchTerms
   selectedModule$$ = signal<Module[]>([defaultModule]);
   language$$ = this.store.language;

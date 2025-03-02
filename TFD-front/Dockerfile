@@ -4,7 +4,7 @@ LABEL authors="pazimor"
 WORKDIR /app
 COPY . .
 RUN npm install -g npm@11.1.0 && npm install -g @angular/cli && npm install
-RUN ng build
+RUN ng build --prod
 
 FROM nginx:alpine
 

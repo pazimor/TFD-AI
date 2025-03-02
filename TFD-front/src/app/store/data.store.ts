@@ -4,12 +4,12 @@ import { Module } from '../module/module.model';
 import { HttpClient } from '@angular/common/http';
 import { Character } from '../character/character.model';
 import { Weapon } from '../weapon/weapon.model'
-
-const apiBaseUrl: string = (window as any).APP_CONFIG?.apiBaseUrl ?? 'https://theory-crafter-api.pazimor.dev';
+import { environment } from '../../env/environement'
 
 export type store = {
   language: string;
   searchTerms: string;
+  isSidebarOpen: boolean;
   modules_availables: Module[];
   selectedDescendant: number;
   descendants: Character[];
@@ -19,6 +19,7 @@ export type store = {
 const initialState: store = {
   language: "ko",
   searchTerms: "",
+  isSidebarOpen: false,
   modules_availables: [],
   selectedDescendant: 101000001,
   descendants: [],
@@ -31,9 +32,9 @@ export const appStore = signalStore(
   },
   withHooks({
     onInit(store, http = inject(HttpClient)) {
-      const apimoduleurl = `${apiBaseUrl}/api/modules/ui`;
-      const apidescendanturl = `${apiBaseUrl}/api/descendants/ui`;
-      const apiweaponurl = `${apiBaseUrl}/api/weapons/ui`;
+      const apimoduleurl = `${environment.apiBaseUrl}/api/modules/ui`;
+      const apidescendanturl = `${environment.apiBaseUrl}/api/descendants/ui`;
+      const apiweaponurl = `${environment.apiBaseUrl}/api/weapons/ui`;
 
       http.get<Module[]>(apimoduleurl).subscribe(
         (modules) => patchState(store, { modules_availables: modules })
@@ -57,6 +58,9 @@ export const appStore = signalStore(
     },
     set_selectedDescendant: (selectedDescendant: number) => {
       patchState(store, {selectedDescendant: selectedDescendant})
+    },
+    set_sidebar: (sidebar: boolean) => {
+      patchState(store, {isSidebarOpen: sidebar})
     }
   }))
   );

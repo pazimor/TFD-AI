@@ -11,9 +11,7 @@
            *ngIf="language$$()">{{ contrainte() }}</a>
       </div>
 
-      <div class="statistics"
-           #statsDiv
-           [class.show]="showTooltip">
+      <div [ngClass]="{'statistics': currentModule().id !== 0}" #statsDiv>
         <div class="{{currentModule().display_data.tier}}">
           <div class="module-header">
             <h2>{{ currentModule().name[language$$()] }}</h2>

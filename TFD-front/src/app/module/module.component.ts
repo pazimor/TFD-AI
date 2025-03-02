@@ -6,7 +6,7 @@ import { appStore } from '../store/data.store';
 
 @Component({
   imports: [CommonModule, DragDropModule],
-  selector: 'Module-item',
+  selector: 'module-item',
   templateUrl: './module.component.html',
   styleUrls: ['./module.component.scss', './modules-tiers.scss']
 })
@@ -18,39 +18,30 @@ export class ModuleComponent {
   readonly store = inject(appStore);
 
   @ViewChild('statsDiv') statsDiv!: ElementRef;
-  // Initialisez un tableau pour les objets sélectionnés
-  showTooltip = false;
 
+  showTooltip = false;
   language$$ = this.store.language;
   contrainte = computed(() => this.currentModule().type?.split(',')[1]?.trim() ?? "")
 
-  onTooltipEnter() {
-    // On l’affiche (classe .show => display: block)
+  onTooltipEnter(): void {
     this.showTooltip = true;
 
-    // On attend le rendu pour pouvoir mesurer la tooltip
     setTimeout(() => {
       if (!this.statsDiv) return;
 
-      // Récupère la position de la tooltip
       const tooltipRect = this.statsDiv.nativeElement.getBoundingClientRect();
-
-      // Pour la taille de l'écran :
       const screenWidth = window.innerWidth || document.documentElement.clientWidth;
 
-      // Vérifie si la tooltip dépasse à droite
       if (tooltipRect.right > screenWidth) {
         this.statsDiv.nativeElement.classList.add('flipLeft');
       } else {
         this.statsDiv.nativeElement.classList.remove('flipLeft');
       }
-    }, 0); // On peut aussi utiliser requestAnimationFrame
+    }, 0);
   }
 
-  onTooltipLeave() {
-    // On masque la tooltip
+  onTooltipLeave(): void {
     this.showTooltip = false;
-    // On retire la classe flipLeft pour la prochaine fois
     if (this.statsDiv) {
       this.statsDiv.nativeElement.classList.remove('flipLeft');
     }

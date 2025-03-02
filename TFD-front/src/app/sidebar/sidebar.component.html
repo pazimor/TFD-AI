@@ -1,7 +1,7 @@
 <!-- Barre latérale -->
 
 
-<nav #sidebar class="sidebar" [ngClass]="{'open': isOpen}">
+<nav #sidebar class="sidebar" [ngClass]="{'open': isOpen()}">
   <button id="hamburger" class="hamburger" (click)="toggleSidebar()">
     <span></span>
     <span></span>
@@ -11,10 +11,10 @@
   <div class="list">
     <div *ngFor="let descendant of characters$$()" >
       <div *ngIf="selected$$() === 0">
-        <character [smallview]="isOpen" [character]="descendant"></character>
+        <character [smallview]="isOpen()" [character]="descendant"></character>
       </div>
       <div *ngIf="selected$$() === descendant.id">
-        <character [smallview]="isOpen" [character]="descendant"></character>
+        <character [smallview]="isOpen()" [character]="descendant"></character>
       </div>
       <ng-template #simpleDescendant>
 
@@ -23,9 +23,9 @@
   </div>
 
   <div>
-    <weapon [smallview]="isOpen" [weapon]="weapon$$()[5]"></weapon>
-    <weapon [smallview]="isOpen" [weapon]="weapon$$()[35]"></weapon>
-    <weapon [smallview]="isOpen" [weapon]="weapon$$()[72]"></weapon>
+    <weapon [smallview]="isOpen()" [weapon]="weapon$$()[5]"></weapon>
+    <weapon [smallview]="isOpen()" [weapon]="weapon$$()[35]"></weapon>
+    <weapon [smallview]="isOpen()" [weapon]="weapon$$()[72]"></weapon>
   </div>
 
 </nav>

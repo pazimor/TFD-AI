@@ -1,5 +1,4 @@
 <div>
-  <h2>Build</h2>
   <div class="grid">
     <div *ngFor="let obj of selectedModule$$(); let i = index">
       <div class="hidepreview"
@@ -16,7 +15,7 @@
           [cdkDragDisabled]="obj.drag">
           <ng-template cdkDragPlaceholder let-item>
           </ng-template>
-          <Module-item [currentModule]="obj" [isSelected]="true"></Module-item>
+          <module-item [currentModule]="obj" [isSelected]="true"></module-item>
         </div>
       </div>
     </div>

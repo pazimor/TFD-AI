@@ -1,10 +1,11 @@
-import {Component, inject, input, InputSignal, Signal, ViewChild} from '@angular/core';
+import {Component, inject, input, InputSignal, signal, Signal, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CharacterComponent } from '../character/character.component';
 import { WeaponComponent } from '../weapon/weapon.component';
 import { appStore } from '../store/data.store';
 import { Character } from '../character/character.model';
 import {Weapon} from '../weapon/weapon.model';
+import {defaultModule, Module} from '../module/module.model';
 
 
 
@@ -24,9 +25,9 @@ export class sidebarComponent {
   characters$$: Signal<Character[]> = this.store.descendants;
   weapon$$: Signal<Weapon[]> = this.store.weapons;
 
-  isOpen = false;
+  isOpen = this.store.isSidebarOpen;
 
   toggleSidebar() {
-    this.isOpen = !this.isOpen;
+    this.store.set_sidebar(!this.isOpen());
   }
 }

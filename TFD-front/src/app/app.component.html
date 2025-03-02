@@ -1,12 +1,13 @@
 <div class="container">
   <language-list></language-list>
 
+  <sidebar></sidebar>
 
-  <div style="margin-left: 200px">
+  <div class="working-zone" [ngClass]="{'sidebar-small': !isSidebarOpen$$(), 'sidebar-big': isSidebarOpen$$()}">
     <build></build>
     <module-bank></module-bank>
   </div>
 
 
-  <sidebar></sidebar>
+
 </div>

@@ -19,7 +19,7 @@ import { ModuleComponent } from '../module/module.component';
   providers: [BuildComponent],
   selector: 'module-bank',
   templateUrl: './module-bank.component.html',
-  styleUrls: ['./module-bank.component.scss', '../module/modules-tiers.scss']
+  styleUrls: ['./module-bank.component.scss']
 })
 export class ModuleBankComponent implements OnInit {
 
@@ -27,6 +27,7 @@ export class ModuleBankComponent implements OnInit {
 
   searchTerm: string = "";
   availableModules$$: Signal<Module[]> = this.store.modules_availables
+
 
   ngOnInit(): void {}
 

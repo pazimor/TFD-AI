@@ -10,5 +10,18 @@
   font-family: 'MesloLGS NF', sans-serif;
 }
 
+.working-zone {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 35px);
+}
 
+.sidebar-small {
+  left: 70px;
+  max-width: calc(100% - 80px);
+}
 
+.sidebar-big {
+  left: 200px;
+  width: calc(100% - 210px);
+}
