@@ -4,7 +4,7 @@ import { Module } from '../module/module.model';
 import { HttpClient } from '@angular/common/http';
 import { Character } from '../character/character.model';
 import { Weapon } from '../weapon/weapon.model'
-import { environment } from '../../env/environement'
+import { environment } from '../../env/environnement'
 
 export type store = {
   language: string;
