@@ -10,18 +10,26 @@
   font-family: 'MesloLGS NF', sans-serif;
 }
 
-.working-zone {
-  position: absolute;
-  width: 100%;
+.tabs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: calc(100% - 35px);
 }
 
+.spacing {
+  margin-top: 20px;
+}
+
 .sidebar-small {
-  left: 70px;
+  position: absolute;
+  width: 100%;
+  left: 80px;
   max-width: calc(100% - 80px);
 }
 
 .sidebar-big {
+  position: absolute;
   left: 190px;
-  width: calc(100% - 200px);
+  width: calc(100% - 190px);
 }

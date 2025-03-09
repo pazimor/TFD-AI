@@ -1,10 +1,21 @@
-import {ChangeDetectorRef, Component, inject, input, InputSignal, OnInit, signal, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  computed,
+  inject,
+  input,
+  InputSignal,
+  OnInit, Signal,
+  signal,
+  ViewChild
+} from '@angular/core';
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import { Module, defaultModule } from '../module/module.model';
 import { CommonModule } from '@angular/common';
 import { ModuleService } from '../module/module.service';
 import {appStore} from '../store/data.store';
 import {ModuleComponent} from '../module/module.component';
+import {Character} from '../character/character.model';
 
 @Component({
   imports: [CommonModule, DragDropModule, ModuleComponent],
@@ -15,23 +26,28 @@ import {ModuleComponent} from '../module/module.component';
 export class BuildComponent implements OnInit {
   readonly store = inject(appStore);
 
-  nbslots: number = 10;
-  defaultModules: Module[] = []
+  readonly isDescendantBuild: InputSignal<boolean> = input.required<boolean>();
 
-  searchTerms$$ = this.store.searchTerms
+  defaultModules: Module[] = []
+  searchTerms$$ = this.store.searchTerms;
+  slots = signal<number>(10);
   selectedModule$$ = signal<Module[]>([defaultModule]);
   language$$ = this.store.language;
 
   constructor(
     private cdr: ChangeDetectorRef,
     private objectService: ModuleService) {
-    for (let i = 0; i < this.nbslots; i++) {
-      this.defaultModules.push(defaultModule);
-    }
+
     this.selectedModule$$ = signal<Module[]>(this.defaultModules);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.slots.set(this.isDescendantBuild() ? 12 : 10);
+
+    for (let i = 0; i < this.slots(); i++) {
+      this.defaultModules.push(defaultModule);
+    }
+  }
 
   public get connectedDropLists(): string[] {
     return this.selectedModule$$().map((_, index) => index.toString());
@@ -57,23 +73,21 @@ export class BuildComponent implements OnInit {
 
     let toMove = +event.container.id
     let cameFromSelected = !isNaN(Number(event.previousContainer.id));
+    const constraint = this.objectService.getContraint(cameFromSelected
+      ? this.selectedModule$$()[+event.previousContainer.id]
+      : droppedModule)
 
-    if (this.nbslots === 12) {
-      let constraint = this.objectService.getContraint(cameFromSelected
-        ? this.selectedModule$$()[event.previousIndex]
-        : droppedModule)
-      console.log(droppedModule, constraint)
-      if (constraint === "Sub" && !cameFromSelected) {
+
+    if (this.slots() === 12) {
+      if (constraint === "Sub") {
         toMove = 1
-      } else if (constraint === "Skill" && !cameFromSelected) {
+      } else if (constraint === "Skill") {
         toMove = 0
       } else if (toMove <= 1 && !cameFromSelected) {
         toMove += 2
         if (Number(event.previousContainer.id) === toMove) {
           return;
         }
-      } else if (cameFromSelected) {
-        return;
       }
     }
 
@@ -87,7 +101,7 @@ export class BuildComponent implements OnInit {
       return updatedModules;
     });
 
-    if (cameFromSelected) {
+    if (cameFromSelected && constraint !== "Sub" && constraint !== "Skill") {
       this.reset(+ event.previousContainer.id)
     }
   }
@@ -101,8 +115,6 @@ export class BuildComponent implements OnInit {
       const modType = mod.type.split(",");
       const modName = mod.name;
       const modConstraint = modType.length > 1 ? modType[1].trim() : "None";
-
-      console.log(mod)
 
       if (modName["ko"] === droppedModule.name["ko"]) {
         return true;

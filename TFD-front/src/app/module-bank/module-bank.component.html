@@ -1,7 +1,6 @@
 <!-- Zone des objets disponibles -->
-<div class="available-zone">
+<div>
   <div class="header">
-    <h2>Modules</h2>
     <input type="text" (input)="onSearchTermChange($event)" placeholder="Search ..." />
   </div>
   <div
@@ -10,8 +9,7 @@
     [cdkDropListData]="viewModules()"
     [cdkDropListConnectedTo]="['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']"
     class="object-list"
-    (cdkDropListDropped)="drop($event)"
-  >
+    (cdkDropListDropped)="drop($event)">
     <div
       cdkDrag
       *ngFor="let obj of viewModules();">

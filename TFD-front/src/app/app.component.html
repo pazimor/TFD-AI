@@ -1,13 +1,40 @@
+
+
 <div class="container">
   <language-list></language-list>
-
   <sidebar></sidebar>
 
-  <div class="working-zone" [ngClass]="{'sidebar-small': !isSidebarOpen$$(), 'sidebar-big': isSidebarOpen$$()}">
-    <build></build>
-    <module-bank></module-bank>
+  <div class="tabs" [ngClass]="{'sidebar-small': !isSidebarOpen$$(), 'sidebar-big': isSidebarOpen$$()}">
+    <mat-tab-group [(selectedIndex)]="selectedIndex">
+      <mat-tab label="Saved Builds">
+          ⚠️ Work in progress ⚠️
+      </mat-tab>
+
+      <mat-tab label="{{current_character$$().name[language$$()]}}">
+        <div class="spacing">
+          <build [isDescendantBuild]="true"></build>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="{{current_weapons$$()[0].name[language$$()]}}">
+        <div class="spacing">
+          <build [isDescendantBuild]="false"></build>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="{{current_weapons$$()[1].name[language$$()]}}">
+        <div class="spacing">
+          <build [isDescendantBuild]="false"></build>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="{{current_weapons$$()[2].name[language$$()]}}">
+        <div class="spacing">
+          <build [isDescendantBuild]="false"></build>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <module-bank *ngIf="selectedIndex !== 0" [@slideUpAnimation]></module-bank>
   </div>
-
-
-
 </div>

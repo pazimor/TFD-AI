@@ -3,6 +3,7 @@ $card-width: 100px;
 
 .grid {
   display: grid;
+  overflow: hidden;
   grid-auto-flow: column;
   grid-template-rows: repeat(2, 1fr);
   gap: 10px;
@@ -16,13 +17,13 @@ $card-width: 100px;
 }
 
 .hidepreview {
-  max-height: 150px;
+  max-height: $card-height;
 }
 
 .custom-placeholder {
   position: absolute;
   width: 110px;
-  height: 150px;
+  height: $card-height;
   pointer-events: none;
   opacity: 0;
   top: 0;

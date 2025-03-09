@@ -6,6 +6,14 @@ import { Character } from '../character/character.model';
 import { Weapon } from '../weapon/weapon.model'
 import { environment } from '../../env/environnement'
 
+export enum Selector {
+  DEFAULT = "nothing",
+  CHARACTERE = "CHARACTERE",
+  WEAPON1 = "WEAPON1",
+  WEAPON2 = "WEAPON2",
+  WEAPON3 = "WEAPON3",
+}
+
 export type store = {
   language: string;
   searchTerms: string;
@@ -13,7 +21,9 @@ export type store = {
   modules_availables: Module[];
   selectedDescendant: number;
   descendants: Character[];
+  selectedWeapons: number[];
   weapons: Weapon[];
+  selector: Selector;
 }
 
 const initialState: store = {
@@ -23,7 +33,9 @@ const initialState: store = {
   modules_availables: [],
   selectedDescendant: 101000001,
   descendants: [],
-  weapons: []
+  selectedWeapons: [211011001, 211011001, 211011001],
+  weapons: [],
+  selector: Selector.DEFAULT,
 };
 
 export const appStore = signalStore(
@@ -56,11 +68,19 @@ export const appStore = signalStore(
     set_search: (search: string) => {
       patchState(store, {searchTerms: search})
     },
+    set_sidebar: (sidebar: boolean) => {
+      patchState(store, {isSidebarOpen: sidebar})
+    },
     set_selectedDescendant: (selectedDescendant: number) => {
       patchState(store, {selectedDescendant: selectedDescendant})
     },
-    set_sidebar: (sidebar: boolean) => {
-      patchState(store, {isSidebarOpen: sidebar})
+    set_weapon: (id: number, index: number) => {
+        const newWeapons = [...store.selectedWeapons()];
+        newWeapons[index] = id;
+        patchState(store, {selectedWeapons: newWeapons})
+    },
+    set_selector: (selector: Selector) => {
+      patchState(store, {selector: selector})
     }
   }))
   );
