@@ -7,7 +7,7 @@
     cdkDropList
     id="availableList"
     [cdkDropListData]="viewModules()"
-    [cdkDropListConnectedTo]="['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']"
+    [cdkDropListConnectedTo]="connectedDropLists"
     class="object-list"
     (cdkDropListDropped)="drop($event)">
     <div

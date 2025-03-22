@@ -9,9 +9,10 @@ import { FormsModule } from '@angular/forms';
 import { BuildComponent } from './build/build.component';
 import { LanguageListComponent } from './langlist/language-list.component';
 import { ModuleBankComponent } from './module-bank/module-bank.component';
-import {sidebarComponent} from './sidebar/sidebar.component';
-import { appStore } from './store/data.store';
-import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { sidebarComponent } from './sidebar/sidebar.component';
+import { dataStore } from './store/data.store';
+import { visualStore } from './store/display.store';
+import {MatTab, MatTabChangeEvent, MatTabGroup} from '@angular/material/tabs';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 
@@ -38,24 +39,57 @@ export class AppComponent {
   @ViewChild(LanguageListComponent) languageListComponent!: LanguageListComponent;
   @ViewChild(ModuleBankComponent) moduleBankComponent!: ModuleBankComponent;
 
-  readonly store = inject(appStore);
+  readonly data_store = inject(dataStore);
+  readonly visual_store = inject(visualStore);
+
   title = 'TFD-front';
 
-  language$$ = this.store.language
+  language$$ = this.visual_store.language
 
   selectedIndex = 0;
 
+  select_type(event: MatTabChangeEvent) {
+    const index = event.index;
+    if (index === 1) {
+      this.visual_store.set_displayOnly("Légataire");
+    } else if (index === 2) {
+      const weapon = this.data_store.weapons_available()
+        .find(weapon => weapon.id === this.data_store.selected_weapon_1().weapon_id)
+      this.visual_store.set_displayOnly(weapon?.type ?? "");
+    } else if (index === 3) {
+      const weapon = this.data_store.weapons_available()
+        .find(weapon => weapon.id === this.data_store.selected_weapon_2().weapon_id)
+      this.visual_store.set_displayOnly(weapon?.type ?? "");
+    } else if (index === 4) {
+      const weapon = this.data_store.weapons_available()
+        .find(weapon => weapon.id === this.data_store.selected_weapon_3().weapon_id)
+      this.visual_store.set_displayOnly(weapon?.type ?? "");
+    }
+  }
+
   current_character$$ = computed(() => {
-    const selectedId = this.store.selectedDescendant();
-    const characters = this.store.descendants();
+    const selectedId = this.data_store.selected_descendant().descendant_id;
+    const characters = this.data_store.descendants_available();
     return characters.find(character => character.id === selectedId) || characters[0];
   });
 
-  current_weapons$$ = computed(() => {
-    const selectedWeaponIds = this.store.selectedWeapons();
-    const weapons = this.store.weapons();
-    return selectedWeaponIds.map(id => weapons.find(weapon => weapon.id === id) || weapons[0]);
+  current_weapon_1$$ = computed(() => {
+    const selectedWeaponId = this.data_store.selected_weapon_1();
+    const weapons = this.data_store.weapons_available();
+    return weapons.find(weapon => weapon.id === selectedWeaponId.weapon_id) || weapons[0];
   });
 
-  isSidebarOpen$$: Signal<boolean> = this.store.isSidebarOpen
+  current_weapon_2$$ = computed(() => {
+    const selectedWeaponId = this.data_store.selected_weapon_2();
+    const weapons = this.data_store.weapons_available();
+    return weapons.find(weapon => weapon.id === selectedWeaponId.weapon_id) || weapons[0];
+  });
+
+  current_weapon_3$$ = computed(() => {
+    const selectedWeaponId = this.data_store.selected_weapon_3();
+    const weapons = this.data_store.weapons_available();
+    return weapons.find(weapon => weapon.id === selectedWeaponId.weapon_id) || weapons[0];
+  });
+
+  isSidebarOpen$$: Signal<boolean> = this.visual_store.isSidebarOpen
 }

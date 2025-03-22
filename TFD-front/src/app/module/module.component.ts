@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, computed, ElementRef, inject, input, InputSignal, ViewChild} from '@angular/core';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { Component, computed, ElementRef, inject, input, InputSignal, ViewChild } from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Module } from './module.model';
 import { CommonModule } from '@angular/common';
-import { appStore } from '../store/data.store';
+import { visualStore } from '../store/display.store';
 
 @Component({
   imports: [CommonModule, DragDropModule],
@@ -15,12 +15,12 @@ export class ModuleComponent {
   readonly currentModule: InputSignal<Module> = input.required<Module>()
   readonly isSelected: InputSignal<Boolean> = input.required<Boolean>()
 
-  readonly store = inject(appStore);
+  readonly visual_store = inject(visualStore);
 
   @ViewChild('statsDiv') statsDiv!: ElementRef;
 
   showTooltip = false;
-  language$$ = this.store.language;
+  language$$ = this.visual_store.language;
   contrainte = computed(() => this.currentModule().type?.split(',')[1]?.trim() ?? "")
 
   onTooltipEnter(): void {

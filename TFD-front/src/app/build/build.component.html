@@ -2,7 +2,7 @@
   <div *ngFor="let obj of selectedModule$$(); let i = index">
     <div class="hidepreview"
       cdkDropList
-      [id]="i.toString()"
+      id="{{component_name}}{{i.toString()}}"
       [cdkDropListData]="selectedModule$$()"
       [cdkDropListConnectedTo]="connectedDropLists"
       cdkDropListAutoScrollDisabled="true"

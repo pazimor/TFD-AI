@@ -1,21 +1,13 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  computed,
-  inject,
-  input,
-  InputSignal,
-  OnInit, Signal,
-  signal,
-  ViewChild
+import { Component, inject,
+  input, InputSignal, signal, OnInit
 } from '@angular/core';
-import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
-import { Module, defaultModule } from '../module/module.model';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { defaultModule, Module } from '../module/module.model';
 import { CommonModule } from '@angular/common';
 import { ModuleService } from '../module/module.service';
-import {appStore} from '../store/data.store';
-import {ModuleComponent} from '../module/module.component';
-import {Character} from '../character/character.model';
+import { dataStore } from '../store/data.store';
+import { ModuleComponent } from '../module/module.component';
+import {Selector, visualStore} from '../store/display.store';
 
 @Component({
   imports: [CommonModule, DragDropModule, ModuleComponent],
@@ -24,33 +16,43 @@ import {Character} from '../character/character.model';
   styleUrls: ['./build.component.scss', '../app.component.scss']
 })
 export class BuildComponent implements OnInit {
-  readonly store = inject(appStore);
+  readonly data_store = inject(dataStore);
+  readonly visual_store = inject(visualStore);
 
-  readonly isDescendantBuild: InputSignal<boolean> = input.required<boolean>();
+  readonly selectedBuildNumber: InputSignal<number> = input.required<number>();
 
-  defaultModules: Module[] = []
-  searchTerms$$ = this.store.searchTerms;
-  slots = signal<number>(10);
-  selectedModule$$ = signal<Module[]>([defaultModule]);
-  language$$ = this.store.language;
+  component_name = ""
+  selectedModule$$= signal<Module[]>([]);
+  searchTerms$$ = this.visual_store.searchTerms;
+  language$$ = this.visual_store.language;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private objectService: ModuleService) {
+  slots = 0
 
-    this.selectedModule$$ = signal<Module[]>(this.defaultModules);
-  }
+  constructor(private objectService: ModuleService) {}
 
-  ngOnInit(): void {
-    this.slots.set(this.isDescendantBuild() ? 12 : 10);
-
-    for (let i = 0; i < this.slots(); i++) {
-      this.defaultModules.push(defaultModule);
+  ngOnInit() {
+    if (this.selectedBuildNumber() == 0) {
+      const item = this.data_store.selected_descendant()
+      this.selectedModule$$.set(item.modules);
+      this.component_name = Selector.CHARACTERE + "_";
+    } else if (this.selectedBuildNumber() == 1) {
+      const item = this.data_store.selected_weapon_1()
+      this.selectedModule$$.set(item.modules)
+      this.component_name = Selector.WEAPON1 + "_";
+    } else if (this.selectedBuildNumber() == 2) {
+      const item = this.data_store.selected_weapon_2()
+      this.selectedModule$$.set(item.modules)
+      this.component_name = Selector.WEAPON2 + "_";
+    } else if (this.selectedBuildNumber() == 3) {
+      const item = this.data_store.selected_weapon_3()
+      this.selectedModule$$.set(item.modules)
+      this.component_name = Selector.WEAPON3 + "_";
     }
+    this.slots = this.selectedBuildNumber() === 0 ? 12 : 10;
   }
 
   public get connectedDropLists(): string[] {
-    return this.selectedModule$$().map((_, index) => index.toString());
+    return this.selectedModule$$().map((_, index) => this.component_name + index.toString());
   }
 
   onDragStart(event: DragEvent) {
@@ -61,9 +63,11 @@ export class BuildComponent implements OnInit {
 
   drop(event: CdkDragDrop<Module[]>): void {
     let filteredModules = this.objectService.filteredObjects(
-      this.store.modules_availables(),
-      this.store.language(),
-      this.searchTerms$$())
+      this.data_store.modules_available(),
+      this.visual_store.language(),
+      this.searchTerms$$(),
+      this.visual_store.displayOnly()
+    );
 
     const droppedModule = filteredModules[event.previousIndex];
 
@@ -71,38 +75,39 @@ export class BuildComponent implements OnInit {
       return;
     }
 
-    let toMove = +event.container.id
-    let cameFromSelected = !isNaN(Number(event.previousContainer.id));
-    const constraint = this.objectService.getContraint(cameFromSelected
-      ? this.selectedModule$$()[+event.previousContainer.id]
-      : droppedModule)
+    let toMove = +event.container.id.replace(this.component_name, "");
+    let moveFrom = +event.previousContainer.id.replace(this.component_name, "");
+    let cameFromSelected = !isNaN(moveFrom);
+    const constraint = this.objectService.getContraint(
+      cameFromSelected ? this.selectedModule$$()[moveFrom] : droppedModule
+    );
 
-
-    if (this.slots() === 12) {
+    if (this.slots === 12) {
       if (constraint === "Sub") {
-        toMove = 1
+        toMove = 1;
       } else if (constraint === "Skill") {
-        toMove = 0
+        toMove = 0;
       } else if (toMove <= 1 && !cameFromSelected) {
-        toMove += 2
-        if (Number(event.previousContainer.id) === toMove) {
+        toMove += 2;
+        if (moveFrom === toMove) {
           return;
         }
       }
     }
 
-    this.selectedModule$$.update((modules) => {
-      const updatedModules = [...modules];
-      if (cameFromSelected) {
-        updatedModules[toMove] = modules[Number(event.previousContainer.id)]
-      } else {
-        updatedModules[toMove] = droppedModule;
-      }
-      return updatedModules;
-    });
+    const updatedModules = [ ...this.selectedModule$$() ];
+
+    if (cameFromSelected) {
+      updatedModules[toMove] = this.selectedModule$$()[moveFrom];
+    } else {
+      updatedModules[toMove] = droppedModule;
+    }
+
+    this.selectedModule$$.set(updatedModules);
+    this.data_store.set_build(this.selectedBuildNumber(), updatedModules);
 
     if (cameFromSelected && constraint !== "Sub" && constraint !== "Skill") {
-      this.reset(+ event.previousContainer.id)
+      this.reset(moveFrom);
     }
   }
 
@@ -127,10 +132,9 @@ export class BuildComponent implements OnInit {
   }
 
   reset(index: number) {
-    this.selectedModule$$.update((modules) => {
-      const updatedModules = [...modules];
-      updatedModules[index] = defaultModule;
-      return updatedModules;
-    });
+    const updatedModules = [ ...this.selectedModule$$() ]; // nouvelle référence
+    updatedModules[index] = defaultModule;
+    this.selectedModule$$.set(updatedModules);
+    this.data_store.set_build(this.selectedBuildNumber(), updatedModules);
   }
 }

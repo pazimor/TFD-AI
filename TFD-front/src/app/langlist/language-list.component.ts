@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, inject, Signal, signal } from '@angular/core';
-import { appStore } from '../store/data.store'
 import { CommonModule } from '@angular/common';
 import { Module } from '../module/module.model';
+import { visualStore } from '../store/display.store';
 
 @Component({
   imports: [CommonModule],
@@ -10,7 +10,7 @@ import { Module } from '../module/module.model';
   styleUrls: ['./language-list.component.scss']
 })
 export class LanguageListComponent {
-  readonly store = inject(appStore);
+  readonly store = inject(visualStore);
 
   // Liste des langues supportées
   languages = [

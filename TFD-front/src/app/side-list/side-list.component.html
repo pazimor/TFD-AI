@@ -4,8 +4,7 @@
       <character [smallview]="isOpen()" [character]="char"></character>
     </div>
   </div>
-  <div *ngIf="selection$$().startsWith('WEAPON') ">'
-
+  <div *ngIf="selection$$().startsWith('WEAPON') ">
     <div *ngFor="let weapon of weapon$$()" >
       <weapon [smallview]="isOpen()" [weapon]="weapon" [selector]="selection$$()"></weapon>
     </div>

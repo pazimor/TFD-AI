@@ -5,8 +5,16 @@ import { Module } from './module.model';
   providedIn: 'root'
 })
 export class ModuleService {
-  filteredObjects(ToFilter: Module[], lang: string, searchTerm: string): Module[] {
-    return ToFilter.filter(obj => obj.name[lang].toLowerCase().includes(searchTerm.toLowerCase()));
+
+  // warning categories has to be parsed !!!
+  // for one type of ammo the name is not the same
+  // on modules and on weapon so it has to change on database
+  filteredObjects(ToFilter: Module[], lang: string, searchTerm: string, categories: string): Module[] {
+    const parts = categories.split(', ')
+    if (parts[parts.length - 1]) {
+      categories = parts[parts.length - 1]
+    }
+    return ToFilter.filter(obj => obj.type.includes(categories)).filter(obj => obj.name[lang].toLowerCase().includes(searchTerm.toLowerCase()));
   }
 
   getContraint (mod: Module): string {

@@ -1,6 +1,6 @@
 import {
-  Component,
-  inject,
+  Component, computed,
+  inject, input, InputSignal,
   OnInit,
   Signal
 } from '@angular/core';
@@ -8,10 +8,12 @@ import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { Module} from '../module/module.model'
 import { FormsModule } from '@angular/forms';
-import { appStore } from '../store/data.store';
+import { dataStore } from '../store/data.store';
 import { BuildComponent } from '../build/build.component';
 import { ModuleService } from '../module/module.service';
 import { ModuleComponent } from '../module/module.component';
+import {Selector, visualStore} from '../store/display.store';
+import {skip} from 'rxjs';
 
 
 @Component({
@@ -23,10 +25,14 @@ import { ModuleComponent } from '../module/module.component';
 })
 export class ModuleBankComponent implements OnInit {
 
-  readonly store = inject(appStore);
+  readonly data_store = inject(dataStore);
+  readonly visual_store = inject(visualStore);
+
+
 
   searchTerm: string = "";
-  availableModules$$: Signal<Module[]> = this.store.modules_availables
+  availableModules$$: Signal<Module[]> = this.data_store.modules_available
+  displayonly$$: Signal<string> = this.visual_store.displayOnly;
 
 
   ngOnInit(): void {}
@@ -36,6 +42,24 @@ export class ModuleBankComponent implements OnInit {
     private buildComponent: BuildComponent
   ) {}
 
+  public get connectedDropLists(): string[] {
+    const values: string[] = [];
+    for (let prefix in Selector) {
+      if (prefix === "DEFAULT") {
+
+      } else if (prefix === Selector.CHARACTERE) {
+        for (let i = 0; i < 12; i++) {
+          values.push(`${prefix}_${i}`);
+        }
+      } else {
+        for (let i = 0; i < 10; i++) {
+          values.push(`${prefix}_${i}`);
+        }
+      }
+    }
+    return values;
+  }
+
   onSearchTermChange(newValue: any) {
     if (newValue.inputType === 'deleteContentBackward') {
       this.searchTerm = this.searchTerm.slice(0, -1);
@@ -43,15 +67,17 @@ export class ModuleBankComponent implements OnInit {
       this.searchTerm += newValue.data
     }
 
-    this.store.set_search(this.searchTerm)
+    this.visual_store.set_search(this.searchTerm)
   }
 
   viewModules() {
-    return this.moduleService.filteredObjects(
+    return computed(() => this.moduleService.filteredObjects(
       this.availableModules$$(),
-      this.store.language(),
-      this.store.searchTerms()
-    )
+      this.visual_store.language(),
+      this.visual_store.searchTerms(),
+      this.displayonly$$()
+    ))()
+
   }
 
   drop(event: CdkDragDrop<Module[]>) {
