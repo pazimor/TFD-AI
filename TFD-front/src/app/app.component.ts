@@ -54,15 +54,15 @@ export class AppComponent {
       this.visual_store.set_displayOnly("Légataire");
     } else if (index === 2) {
       const weapon = this.data_store.weapons_available()
-        .find(weapon => weapon.id === this.data_store.selected_weapon_1().weapon_id)
+        .find(weapon => weapon.id === this.data_store.selected_weapons()[0].weapon_id);
       this.visual_store.set_displayOnly(weapon?.type ?? "");
     } else if (index === 3) {
       const weapon = this.data_store.weapons_available()
-        .find(weapon => weapon.id === this.data_store.selected_weapon_2().weapon_id)
+        .find(weapon => weapon.id === this.data_store.selected_weapons()[1].weapon_id);
       this.visual_store.set_displayOnly(weapon?.type ?? "");
     } else if (index === 4) {
       const weapon = this.data_store.weapons_available()
-        .find(weapon => weapon.id === this.data_store.selected_weapon_3().weapon_id)
+        .find(weapon => weapon.id === this.data_store.selected_weapons()[2].weapon_id);
       this.visual_store.set_displayOnly(weapon?.type ?? "");
     }
   }
@@ -73,22 +73,12 @@ export class AppComponent {
     return characters.find(character => character.id === selectedId) || characters[0];
   });
 
-  current_weapon_1$$ = computed(() => {
-    const selectedWeaponId = this.data_store.selected_weapon_1();
-    const weapons = this.data_store.weapons_available();
-    return weapons.find(weapon => weapon.id === selectedWeaponId.weapon_id) || weapons[0];
-  });
-
-  current_weapon_2$$ = computed(() => {
-    const selectedWeaponId = this.data_store.selected_weapon_2();
-    const weapons = this.data_store.weapons_available();
-    return weapons.find(weapon => weapon.id === selectedWeaponId.weapon_id) || weapons[0];
-  });
-
-  current_weapon_3$$ = computed(() => {
-    const selectedWeaponId = this.data_store.selected_weapon_3();
-    const weapons = this.data_store.weapons_available();
-    return weapons.find(weapon => weapon.id === selectedWeaponId.weapon_id) || weapons[0];
+  current_weapons$$ = computed(() => {
+    const weaponsStore = this.data_store.weapons_available();
+    const selectedBuilds = this.data_store.selected_weapons();
+    return selectedBuilds.map((weaponBuild) =>
+      weaponsStore.find(weapon => weapon.id === weaponBuild.weapon_id) || weaponsStore[0]
+    );
   });
 
   isSidebarOpen$$: Signal<boolean> = this.visual_store.isSidebarOpen

@@ -29,22 +29,12 @@ export class sidebarComponent {
   });
 
   //duplicate fonction
-  current_weapon_1$$ = computed(() => {
-    const selectedWeaponId = this.data_store.selected_weapon_1().weapon_id;
-    const weapons = this.data_store.weapons_available();
-    return weapons.find(weapon => weapon.id === selectedWeaponId) || weapons[0];
-  });
-
-  current_weapon_2$$ = computed(() => {
-    const selectedWeaponId = this.data_store.selected_weapon_2();
-    const weapons = this.data_store.weapons_available();
-    return weapons.find(weapon => weapon.id === selectedWeaponId.weapon_id) || weapons[0];
-  });
-
-  current_weapon_3$$ = computed(() => {
-    const selectedWeaponId = this.data_store.selected_weapon_3();
-    const weapons = this.data_store.weapons_available();
-    return weapons.find(weapon => weapon.id === selectedWeaponId.weapon_id) || weapons[0];
+  current_weapons$$ = computed(() => {
+    const weaponsStore = this.data_store.weapons_available();
+    const selectedBuilds = this.data_store.selected_weapons();
+    return selectedBuilds.map((weaponBuild) =>
+      weaponsStore.find(weapon => weapon.id === weaponBuild.weapon_id) || weaponsStore[0]
+    );
   });
 
   isOpen = this.visual_store.isSidebarOpen;

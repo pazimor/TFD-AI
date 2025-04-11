@@ -1,0 +1,8 @@
+### get items
+GET http://localhost:4201/bdd/items
+
+### get modifiers
+GET http://localhost:4201/bdd/modifiers
+
+### get tree skill
+GET http://localhost:4201/bdd/import_tree

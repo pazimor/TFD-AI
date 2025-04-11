@@ -12,8 +12,8 @@
     <side-list></side-list>
   </div>
 
-  <weapon [smallview]="isOpen()" [weapon]="current_weapon_1$$()" [selector]="Selector.WEAPON1"></weapon>
-  <weapon [smallview]="isOpen()" [weapon]="current_weapon_2$$()" [selector]="Selector.WEAPON2"></weapon>
-  <weapon [smallview]="isOpen()" [weapon]="current_weapon_3$$()" [selector]="Selector.WEAPON3"></weapon>
+  <weapon [smallview]="isOpen()" [weapon]="current_weapons$$()[0]" [selector]="Selector.WEAPON1"></weapon>
+  <weapon [smallview]="isOpen()" [weapon]="current_weapons$$()[1]" [selector]="Selector.WEAPON2"></weapon>
+  <weapon [smallview]="isOpen()" [weapon]="current_weapons$$()[2]" [selector]="Selector.WEAPON3"></weapon>
 </nav>
 

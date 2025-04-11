@@ -1,6 +1,6 @@
 <div class="displayCharacter small">
-  <a [ngClass]="{'name': smallview(), 'notname': !smallview()}">{{character().name[language$$()]}}</a>
+  <a [ngClass]="{'name': smallview(), 'notname': !smallview()}">{{character()?.name ? character().name[language$$()] : ''}}</a>
   <button class="nobutton" (click)="clickedOn()">
-    <img class="profile" [src]="character().display_data.img" />
+    <img class="profile" [src]="character()?.display_data ? character().display_data.img : '' " />
   </button>
 </div>

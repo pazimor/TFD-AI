@@ -1,5 +1,3 @@
-
-
 <div class="container">
   <language-list></language-list>
   <sidebar></sidebar>
@@ -10,25 +8,25 @@
           ⚠️ Work in progress ⚠️
       </mat-tab>
 
-      <mat-tab label="{{current_character$$().name[language$$()]}}">
+      <mat-tab label="{{ current_character$$()?.name ? current_character$$().name[language$$()] : '' }}">
         <div class="spacing">
           <build [selectedBuildNumber]="0"></build>
         </div>
       </mat-tab>
 
-      <mat-tab label="{{current_weapon_1$$().name[language$$()]}}">
+      <mat-tab label="{{ current_weapons$$()[0]?.name ? current_weapons$$()[0].name[language$$()] : '' }}">
         <div class="spacing">
           <build [selectedBuildNumber]="1"></build>
         </div>
       </mat-tab>
 
-      <mat-tab label="{{current_weapon_2$$().name[language$$()]}}">
+      <mat-tab label="{{ current_weapons$$()[1]?.name ? current_weapons$$()[1].name[language$$()] : '' }}">
         <div class="spacing">
           <build [selectedBuildNumber]="2"></build>
         </div>
       </mat-tab>
 
-      <mat-tab label="{{current_weapon_3$$().name[language$$()]}}">
+      <mat-tab label="{{ current_weapons$$()[2]?.name ? current_weapons$$()[2].name[language$$()] : '' }}">
         <div class="spacing">
           <build [selectedBuildNumber]="3"></build>
         </div>

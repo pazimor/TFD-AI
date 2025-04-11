@@ -40,7 +40,6 @@
 - FT: save a build - ❌
 - FT: share a build (ID in URL) - ❌
 - FR: Load a Build (from URL ID) - ❌
-- DB: table for login / password (encrypted fields) - ❌
 - PI: login / session systeme - ❌
 - CP: login / gest modes - ❌
 - CP: modal for statistics and upgraded statistics for a weapon / descendant - ❌

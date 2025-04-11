@@ -1,7 +1,12 @@
+import threading
 from flask import Flask, jsonify
 from flask_cors import CORS
 import json
-import sql.crud as crud
+from sql.CRUD import items, modifiers
+from fillroutes.items import fill_items
+from fillroutes.archeron import fill_archeron
+from fillroutes.modifiers import fill_modifiers
+
 app = Flask(__name__)
 
 CORS(app)
@@ -10,7 +15,7 @@ CORS(app)
 
 @app.route('/api/modules/ui', methods=['GET'])
 def get_module_for_ui():
-    data = crud.get_modifiers_by_type("Module")
+    data = modifiers.get_modifiers_by_type("Module")
     # Définition des clés correspondant aux colonnes de la table SQL
     keys = ["id", "type", "statistiques", "optional_statistiques", "stack_id", "stack_description", "display_data", "name"]
 
@@ -33,14 +38,12 @@ def get_module_for_ui():
                 row_dict["display_data"] = json.loads(row_dict["display_data"])
             except json.JSONDecodeError:
                 pass  # Laisser tel quel si ce n'est pas un JSON valide
-
         result.append(row_dict)
-
     return jsonify(result)
 
 @app.route('/api/descendants/ui', methods=['GET'])
 def get_descendants_for_ui():
-    data = crud.get_items_by_type("descendant")
+    data = items.get_items_by_type("descendant")
     keys = ["id", "name", "type", "goals", "capabilities", "statistiques", "display_data"]
 
     result = []
@@ -69,7 +72,7 @@ def get_descendants_for_ui():
 
 @app.route('/api/weapons/ui', methods=['GET'])
 def get_weapons_for_ui():
-    data = crud.get_items_by_type("weapon")
+    data = items.get_items_by_type("weapon")
     keys = ["id", "name", "type", "goals", "capabilities", "statistiques", "display_data"]
 
     result = []
@@ -96,6 +99,37 @@ def get_weapons_for_ui():
 
     return jsonify(result)
 
+@app.route('/bdd/import_tree', methods=['GET'])
+def import_archeron():
+    try:
+        thread = threading.Thread(target=fill_archeron)
+        thread.start()
+
+        return jsonify({"success": True, "message": "skill tree imported"}), 200
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
+@app.route('/bdd/items', methods=['GET'])
+def import_items():
+    try:
+        thread = threading.Thread(target=fill_items)
+        thread.start()
+
+        return jsonify({"success": True, "message": "Import task started"}), 202
+
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
+@app.route('/bdd/modifiers', methods=['GET'])
+def import_modifiers():
+    try:
+        thread = threading.Thread(target=fill_modifiers)
+        thread.start()
+
+        return jsonify({"success": True, "message": "Import task started"}), 202
+
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4201)

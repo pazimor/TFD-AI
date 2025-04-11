@@ -31,24 +31,25 @@ export class BuildComponent implements OnInit {
   constructor(private objectService: ModuleService) {}
 
   ngOnInit() {
-    if (this.selectedBuildNumber() == 0) {
-      const item = this.data_store.selected_descendant()
+    const buildNumber = this.selectedBuildNumber();
+
+    const mapping: { [key: number]: {
+        item: () => { modules: Module[] },
+        componentName: string
+      } } = {
+      0: { item: () => this.data_store.selected_descendant(), componentName: Selector.CHARACTERE },
+      1: { item: () => this.data_store.selected_weapons()[0], componentName: Selector.WEAPON1 },
+      2: { item: () => this.data_store.selected_weapons()[1], componentName: Selector.WEAPON2 },
+      3: { item: () => this.data_store.selected_weapons()[2], componentName: Selector.WEAPON3 }
+    };
+
+    const selected = mapping[buildNumber];
+    if (selected) {
+      const item = selected.item();
       this.selectedModule$$.set(item.modules);
-      this.component_name = Selector.CHARACTERE + "_";
-    } else if (this.selectedBuildNumber() == 1) {
-      const item = this.data_store.selected_weapon_1()
-      this.selectedModule$$.set(item.modules)
-      this.component_name = Selector.WEAPON1 + "_";
-    } else if (this.selectedBuildNumber() == 2) {
-      const item = this.data_store.selected_weapon_2()
-      this.selectedModule$$.set(item.modules)
-      this.component_name = Selector.WEAPON2 + "_";
-    } else if (this.selectedBuildNumber() == 3) {
-      const item = this.data_store.selected_weapon_3()
-      this.selectedModule$$.set(item.modules)
-      this.component_name = Selector.WEAPON3 + "_";
+      this.component_name = selected.componentName + "_";
     }
-    this.slots = this.selectedBuildNumber() === 0 ? 12 : 10;
+    this.slots = buildNumber === 0 ? 12 : 10;
   }
 
   public get connectedDropLists(): string[] {
