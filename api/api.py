@@ -1,8 +1,11 @@
 import threading
+import requests
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 import json
 from sql.CRUD import items, modifiers
+from fillroutes.full  import full
 from fillroutes.items import fill_items
 from fillroutes.archeron import fill_archeron
 from fillroutes.modifiers import fill_modifiers
@@ -106,6 +109,18 @@ def import_archeron():
         thread.start()
 
         return jsonify({"success": True, "message": "skill tree imported"}), 200
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
+@app.route('/bdd/import_data', methods=['GET'])
+def import_data():
+    try:
+        weapon = True
+
+        thread = threading.Thread(target=full, args=(weapon,))
+        thread.start()
+
+        return jsonify({"success": True, "message": "importing data"}), 200
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 

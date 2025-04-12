@@ -6,7 +6,7 @@ from sql.CRUD.board_nodes import upsert_board_nodes
 from sql.CRUD.nodes import upsert_nodes, get_nodes_by_id
 from sql.CRUD.boards import upsert_boards
 from sql.CRUD.node_effects import upsert_node_effects
-from sql.CRUD.translation_strings import parse_for_languages, test
+from sql.CRUD.translation_strings import parse_for_languages
 from request_service import fetch_url, fetch_multy_lang, languages, languages_bdd, get_fixed_lang
 
 BASE_URL = "https://open.api.nexon.com/static/tfd/meta"
@@ -17,8 +17,6 @@ NODE_URL = "arche-tuning-node.json"
 STATISTICS_URL = "stat.json"
 
 def fill_archeron():
-
-    test()
 
     groups = fetch_url(f"{BASE_URL}/{GROUPS_URL}")
     boards = fetch_url(f"{BASE_URL}/{BOARD_URL}")

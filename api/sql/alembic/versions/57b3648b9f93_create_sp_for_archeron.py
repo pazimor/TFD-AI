@@ -160,7 +160,7 @@ def upgrade() -> None:
     END;
     """)
 
-    op.execute("DROP PROCEDURE IF EXISTS GetBoardsByID;")
+    op.execute("DROP PROCEDURE IF EXISTS UpsertTranslation;")
     op.execute("""
     CREATE PROCEDURE UpsertTranslation(
         IN p_language_id INTEGER,

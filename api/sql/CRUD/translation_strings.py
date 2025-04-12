@@ -6,11 +6,6 @@ session = SessionLocal()
 # ================================
 # CRUD for translation_strings
 # ================================
-def test():
-    result = session.execute(text("""SELECT COUNT(*) FROM translation_strings;"""))
-    if result.returns_rows:
-        rows = result.fetchall()
-        print(rows)
 
 def add_translation(**data):
     try:
@@ -43,7 +38,6 @@ def add_translation(**data):
         return None
     finally:
         pass
-
 
 def update_translation(language_id, **data):
     try:
@@ -143,13 +137,10 @@ def find_translation(language_column, search_text):
 # ================================
 # functions for translation_strings
 # ================================
-
 def parse_for_languages(lang, translation, language_id=0):
-    """
-    Si language_id est fourni (non nul), met à jour le record existant correspondant.
-    Sinon, insère un nouveau record avec la traduction pour la langue donnée et retourne le nouvel id.
-    """
-    # Dictionnaire de base avec toutes les langues initialisées à une chaîne vide
+    if translation == None:
+        return 1
+
     translation_data = {
         'fr': '',
         'ko': '',
@@ -166,29 +157,17 @@ def parse_for_languages(lang, translation, language_id=0):
     }
 
     if language_id == 0:
-        # Aucun record existant : insérer un nouveau record
-        if lang in translation_data:
-            translation_data[lang] = translation
-        else:
-            translation_data['fr'] = translation
+        is_existing = find_translation(lang, translation)
+        if is_existing:
+            language_id = is_existing
+
+    if language_id == 0:
+        translation_data[lang] = translation
         new_id = add_translation(**translation_data)
-        print("Insert: ", new_id, translation_data)
         return new_id
     else:
-        # Id fourni, tenter de récupérer le record existant
         current = get_item(language_id)
-        if current and len(current) > 0:
-            current_dict = dict(current[0]._mapping)
-            current_dict[lang] = translation
-            update_translation(current_dict['id'], **current_dict)
-            print("Update: ", current_dict)
-            return current_dict['id']
-        else:
-            # L'id fourni n'existe pas, insérer un nouveau record
-            if lang in translation_data:
-                translation_data[lang] = translation
-            else:
-                translation_data['fr'] = translation
-            new_id = upsert_translation(0, **translation_data)
-            print("Insert: ", new_id, translation_data)
-            return new_id
+        current_dict = dict(current[0]._mapping)
+        current_dict[lang] = translation
+        update_translation(language_id, **current_dict)
+        return language_id

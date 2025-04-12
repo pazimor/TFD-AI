@@ -6,3 +6,6 @@ GET http://localhost:4201/bdd/modifiers
 
 ### get tree skill
 GET http://localhost:4201/bdd/import_tree
+
+### get full data
+GET http://localhost:4201/bdd/import_data
