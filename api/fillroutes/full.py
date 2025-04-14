@@ -1,8 +1,7 @@
-from fillroutes import weapons
-from fillroutes import statistics
+from fillroutes import weapons, statistics, cores
 from sql.CRUD.translation_strings import add_translation, get_item
 
-def full(weapon = True, statistic = True):
+def full(weapon = True, statistic = True, core = True):
 
     ## init default
     if get_item(1) == []:
@@ -30,4 +29,7 @@ def full(weapon = True, statistic = True):
 
     if weapon is True:
         weapons.fetch_weapons(stats_dict)
+
+    if core is True:
+        cores.fetch_cores()
     print("finish")

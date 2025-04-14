@@ -22,11 +22,11 @@ def fetch_weapons(stats_dict):
             indexed_weapons[fixed_lang] = {weapon["weapon_id"]: weapon for weapon in all_weapons[fixed_lang]}
 
         for weapon in all_weapons["fr"]:
-            id_name = 0
-            id_type = 0
-            id_round_type = 0
-            id_perk = 0
-            id_perk_description = 0
+            id_name = None
+            id_type = None
+            id_round_type = None
+            id_perk = None
+            id_perk_description = None
 
             for lang in languages_bdd:
                 fixed_lang = get_fixed_lang(lang)

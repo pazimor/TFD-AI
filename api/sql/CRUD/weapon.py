@@ -8,7 +8,6 @@ from sqlalchemy import text
 session = SessionLocal()
 
 def get_weapon(weapon_id):
-    session = SessionLocal()
     try:
         result = session.execute(
             text("CALL GetWeapon(:p_weapon_id)"),
