@@ -115,8 +115,8 @@ def import_archeron():
 @app.route('/bdd/import_data', methods=['GET'])
 def import_data():
     try:
-        weapon = False
-        statistics = False
+        weapon = True
+        statistics = True
         core = True
 
         thread = threading.Thread(target=full, args=(weapon, statistics, core))

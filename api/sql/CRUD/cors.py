@@ -10,8 +10,8 @@ session = SessionLocal()
 def get_core_slot(core_slot_db_id):
     try:
         result = session.execute(
-            text("CALL GetCoreSlot(:p_id)"),
-            {"p_id": core_slot_db_id}
+            text("CALL GetCoreSlot(:p_core_slot_id)"),
+            {"p_core_slot_id": core_slot_db_id}
         )
         row = result.fetchone()
         session.commit()
@@ -281,14 +281,14 @@ def get_core_available_item_option(core_option_id: int, option_grade: int, stat_
         return None
 
 
-def add_core_available_item_option(core_option_id: int, item_option: int, option_type: int, option_grade: int,
+def add_core_available_item_option(core_type_id: int, core_option_id: int, option_type: int, option_grade: int,
                                      stat_id: int, operator_type: int, min_stat_value: int, max_stat_value: int, rate: int):
     try:
         session.execute(
             text("""
                 CALL AddCoreAvailableItemOption(
+                    :p_core_type_id,
                     :p_core_option_id,
-                    :p_item_option,
                     :p_option_type,
                     :p_option_grade,
                     :p_stat_id,
@@ -300,8 +300,8 @@ def add_core_available_item_option(core_option_id: int, item_option: int, option
                 )
             """),
             {
+                "p_core_type_id": core_type_id,
                 "p_core_option_id": core_option_id,
-                "p_item_option": item_option,
                 "p_option_type": option_type,
                 "p_option_grade": option_grade,
                 "p_stat_id": stat_id,
@@ -319,15 +319,15 @@ def add_core_available_item_option(core_option_id: int, item_option: int, option
         session.rollback()
         return None
 
-def update_core_available_item_option(record_id: int, core_option_id: int, item_option: int, option_type: int, option_grade: int,
+def update_core_available_item_option(record_id: int, core_type_id: int, core_option_id: int, option_type: int, option_grade: int,
                                         stat_id: int, operator_type: int, min_stat_value: int, max_stat_value: int, rate: int):
     try:
         session.execute(
             text("""
                 CALL UpdateCoreAvailableItemOption(
                     :p_id,
+                    :p_core_type_id,
                     :p_core_option_id,
-                    :p_item_option,
                     :p_option_type,
                     :p_option_grade,
                     :p_stat_id,
@@ -339,8 +339,8 @@ def update_core_available_item_option(record_id: int, core_option_id: int, item_
             """),
             {
                 "p_id": record_id,
+                "p_core_type_id": core_type_id,
                 "p_core_option_id": core_option_id,
-                "p_item_option": item_option,
                 "p_option_type": option_type,
                 "p_option_grade": option_grade,
                 "p_stat_id": stat_id,

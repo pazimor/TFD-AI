@@ -31,5 +31,6 @@ def full(weapon = True, statistic = True, core = True):
         weapons.fetch_weapons(stats_dict)
 
     if core is True:
-        cores.fetch_cores()
+        cores.fetch_cores(stats_dict)
+        cores.fetch_slots()
     print("finish")

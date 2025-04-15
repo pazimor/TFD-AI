@@ -51,8 +51,8 @@ def upgrade() -> None:
     op.create_table(
         'core_available_item_option',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
+        sa.Column('core_type_id', sa.Integer, sa.ForeignKey('core_type.core_type_id'), nullable=False),
         sa.Column('core_option_id', sa.Integer, nullable=False),
-        sa.Column('item_option', sa.Integer, sa.ForeignKey('translation_strings.id'), nullable=False),
         sa.Column('option_type', sa.String(255), nullable=False),
         sa.Column('option_grade', sa.Integer, nullable=False),
         sa.Column('stat_id', sa.Integer, nullable=False),
@@ -65,19 +65,19 @@ def upgrade() -> None:
     op.create_table(
         'core_slot',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
-        sa.Column('core_slot_id', sa.Integer, nullable=False),
+        sa.Column('core_slot_id', sa.Integer, unique=True, nullable=False),
         sa.Column('available_weapon', sa.Integer, sa.ForeignKey('weapon.weapon_id'), nullable=False),
-        sa.Column('available_core_type', sa.Integer, sa.ForeignKey('core_type.id'), nullable=False)
+        sa.Column('available_core_type', sa.Integer, sa.ForeignKey('core_type.core_type_id'), nullable=False)
     )
 
     op.execute("DROP PROCEDURE IF EXISTS GetCoreSlot;")
     op.execute(
         """
         CREATE PROCEDURE GetCoreSlot(
-            IN p_id INT
+            IN p_core_slot_id INT
         )
         BEGIN
-            SELECT * FROM core_slot WHERE id = p_id;
+            SELECT * FROM core_slot WHERE core_slot_id = p_core_slot_id;
         END
         """
     )
@@ -289,20 +289,20 @@ def upgrade() -> None:
     op.execute(
         """
         CREATE PROCEDURE AddCoreAvailableItemOption(
+            IN p_core_type_id INT,
             IN p_core_option_id INT,
-            IN p_item_option INT,
-            IN p_option_type INT,
+            IN p_option_type VARCHAR(255),
             IN p_option_grade INT,
             IN p_stat_id INT,
-            IN p_operator_type INT,
+            IN p_operator_type VARCHAR(255),
             IN p_min_stat_value FLOAT,
             IN p_max_stat_value FLOAT,
             IN p_rate INT,
             OUT new_id INT
         )
         BEGIN
-            INSERT INTO core_available_item_option(core_option_id, item_option, option_type, option_grade, stat_id, operator_type, min_stat_value, max_stat_value, rate)
-            VALUES (p_core_option_id, p_item_option, p_option_type, p_option_grade, p_stat_id, p_operator_type, p_min_stat_value, p_max_stat_value, p_rate);
+            INSERT INTO core_available_item_option(core_type_id, core_option_id, option_type, option_grade, stat_id, operator_type, min_stat_value, max_stat_value, rate)
+            VALUES (p_core_type_id, p_core_option_id, p_option_type, p_option_grade, p_stat_id, p_operator_type, p_min_stat_value, p_max_stat_value, p_rate);
             SET new_id = LAST_INSERT_ID();
         END
         """
@@ -313,20 +313,20 @@ def upgrade() -> None:
         """
         CREATE PROCEDURE UpdateCoreAvailableItemOption(
             IN p_id INT,
+            IN p_core_type_id INT,
             IN p_core_option_id INT,
-            IN p_item_option INT,
-            IN p_option_type INT,
+            IN p_option_type VARCHAR(255),
             IN p_option_grade INT,
             IN p_stat_id INT,
-            IN p_operator_type INT,
+            IN p_operator_type VARCHAR(255),
             IN p_min_stat_value FLOAT,
             IN p_max_stat_value FLOAT,
             IN p_rate INT
         )
         BEGIN
             UPDATE core_available_item_option
-            SET core_option_id = p_core_option_id,
-                item_option = p_item_option,
+            SET core_type_id = p_core_type_id,
+                core_option_id = p_core_option_id,
                 option_type = p_option_type,
                 option_grade = p_option_grade,
                 stat_id = p_stat_id,
