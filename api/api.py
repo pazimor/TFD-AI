@@ -115,11 +115,12 @@ def import_archeron():
 @app.route('/bdd/import_data', methods=['GET'])
 def import_data():
     try:
-        weapon = True
+        weapon = False
         statistics = True
-        core = True
+        core = False
+        descendant = True
 
-        thread = threading.Thread(target=full, args=(weapon, statistics, core))
+        thread = threading.Thread(target=full, args=(weapon, statistics, core, descendant))
         thread.start()
 
         return jsonify({"success": True, "message": "importing data"}), 200

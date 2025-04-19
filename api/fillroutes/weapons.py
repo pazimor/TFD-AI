@@ -48,13 +48,14 @@ def fetch_weapons(stats_dict):
             item = crud_weapon.get_weapon(weapon["weapon_id"])
             core_slot = weapon.get("available_core_slot")
             available_core_slot = ",".join(weapon["available_core_slot"]) if core_slot else "0"
+            atk_type = stats_dict[weapon["firearm_atk"][99]["firearm"][0]["firearm_atk_type"]]
             if item is None:
                 crud_weapon.add_weapon(id_name, weapon["weapon_id"],
                     weapon["image_url"], id_type,
                     weapon["weapon_tier_id"], id_round_type,
                     available_core_slot, id_perk,
                     id_perk_description, weapon["weapon_perk_ability_image_url"],
-                    weapon["firearm_atk"][99]["firearm"][0]["firearm_atk_type"],
+                    atk_type,
                     weapon["firearm_atk"][99]["firearm"][0]["firearm_atk_value"])
             else:
                 crud_weapon.update_weapon(item, id_name, weapon["weapon_id"],
@@ -62,7 +63,7 @@ def fetch_weapons(stats_dict):
                     weapon["weapon_tier_id"], id_round_type,
                     available_core_slot, id_perk,
                     id_perk_description, weapon["weapon_perk_ability_image_url"],
-                    weapon["firearm_atk"][99]["firearm"][0]["firearm_atk_type"],
+                    atk_type,
                     weapon["firearm_atk"][99]["firearm"][0]["firearm_atk_value"])
 
             base_stats = weapon.get("base_stat", [])
