@@ -6,9 +6,6 @@ from flask_cors import CORS
 import json
 from sql.CRUD import items, modifiers
 from fillroutes.full  import full
-from fillroutes.items import fill_items
-from fillroutes.archeron import fill_archeron
-from fillroutes.modifiers import fill_modifiers
 
 app = Flask(__name__)
 
@@ -102,50 +99,19 @@ def get_weapons_for_ui():
 
     return jsonify(result)
 
-@app.route('/bdd/import_tree', methods=['GET'])
-def import_archeron():
-    try:
-        thread = threading.Thread(target=fill_archeron)
-        thread.start()
-
-        return jsonify({"success": True, "message": "skill tree imported"}), 200
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
-
 @app.route('/bdd/import_data', methods=['GET'])
 def import_data():
     try:
         weapon = False
-        statistics = True
+        statistic = False
         core = False
-        descendant = True
+        descendant = False
+        module = True
 
-        thread = threading.Thread(target=full, args=(weapon, statistics, core, descendant))
+        thread = threading.Thread(target=full, args=(weapon, statistic, core, descendant, module))
         thread.start()
 
-        return jsonify({"success": True, "message": "importing data"}), 200
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
-
-@app.route('/bdd/items', methods=['GET'])
-def import_items():
-    try:
-        thread = threading.Thread(target=fill_items)
-        thread.start()
-
-        return jsonify({"success": True, "message": "Import task started"}), 202
-
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
-
-@app.route('/bdd/modifiers', methods=['GET'])
-def import_modifiers():
-    try:
-        thread = threading.Thread(target=fill_modifiers)
-        thread.start()
-
-        return jsonify({"success": True, "message": "Import task started"}), 202
-
+        return jsonify({"success": True, "message": "importing data"}), 202
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 

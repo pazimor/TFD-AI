@@ -1,8 +1,8 @@
-from fillroutes import weapons, statistics, cores, archeron, descendants
+from fillroutes import weapons, statistics, cores, archeron, descendants, modules
 from sql.CRUD.translation_strings import add_translation, get_item
 
 
-def full(weapon = True, statistic = True, core = True, descendant = True):
+def full(weapon = True, statistic = True, core = True, descendant = True, module = True):
 
     ## init default
     if get_item(1) == []:
@@ -40,4 +40,7 @@ def full(weapon = True, statistic = True, core = True, descendant = True):
 
     if descendant is True:
         descendants.fetch_descendants(stats_dict)
+
+    if module is True:
+        modules.fetch_modules()
     print("finish")
