@@ -1,15 +1,47 @@
-FROM python:3.11-slim
-LABEL authors="pazimor"
+# syntax=docker/dockerfile:1
+
+############################
+# ----- Builder stage ---- #
+############################
+FROM python:3.11-slim AS builder
+
+# Faster, safer Python defaults
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
 
 WORKDIR /app
-ENV PYTHONPATH=/app
 
+# Install Python dependencies first (leverages Docker layer caching)
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+###########################
+# ----- Runtime stage --- #
+###########################
+FROM python:3.11-slim
+LABEL maintainer="pazimor"
+
+# Same runtime env‑vars
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
+# Create a dedicated, non‑root user
+RUN adduser --disabled-password --gecos '' appuser
+
+# Copy installed packages from builder layer
+COPY --from=builder /usr/local /usr/local
+
+# Copy application source
+WORKDIR /app
 COPY api.py .
 COPY sql/ ./sql
 
-COPY ./requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Switch to the non‑root user for runtime
+USER appuser
 
 EXPOSE 4201
 
-CMD ["python", "api.py"]
+# Start the Flask application with Gunicorn (ensure `gunicorn` is in requirements.txt)
+CMD ["gunicorn", "--bind", "0.0.0.0:4201", "api:app"]

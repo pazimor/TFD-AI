@@ -10,6 +10,8 @@ services:
       - ./api/api.py:/app/api.py
       - ./api/sql:/app/sql
     restart: always
+    networks:
+      - internal
 
   front:
     build:
@@ -17,10 +19,16 @@ services:
       dockerfile: Dockerfile.dev
     container_name: front_dev
     environment:
-      - API_URL=http://localhost:82
+      - API_URL=http://api:4201
     ports:
       - "4200:4200"
     volumes:
       - ./TFD-front:/app
       - /app/node_modules
     command: ng serve --host 0.0.0.0 --port 4200
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge

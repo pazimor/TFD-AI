@@ -103,12 +103,14 @@ def get_weapons_for_ui():
 def import_data():
     try:
         weapon = False
-        statistic = False
+        statistic = True
         core = False
         descendant = False
-        module = True
+        module = False
+        reactor = False
+        external = True
 
-        thread = threading.Thread(target=full, args=(weapon, statistic, core, descendant, module))
+        thread = threading.Thread(target=full, args=(weapon, statistic, core, descendant, module, reactor, external))
         thread.start()
 
         return jsonify({"success": True, "message": "importing data"}), 202
