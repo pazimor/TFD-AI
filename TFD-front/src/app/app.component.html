@@ -3,36 +3,30 @@
   <sidebar></sidebar>
 
   <div class="tabs" [ngClass]="{'sidebar-small': !isSidebarOpen$$(), 'sidebar-big': isSidebarOpen$$()}">
-    <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="select_type($event)">
+    <mat-tab-group [(selectedIndex)]="selectedIndex">
       <mat-tab label="Saved Builds">
           ⚠️ Work in progress ⚠️
       </mat-tab>
 
-      <mat-tab label="{{ current_character$$()?.name ? current_character$$().name[language$$()] : '' }}">
+      <mat-tab label="Descendant">
         <div class="spacing">
-          <build [selectedBuildNumber]="0"></build>
         </div>
       </mat-tab>
 
-      <mat-tab label="{{ current_weapons$$()[0]?.name ? current_weapons$$()[0].name[language$$()] : '' }}">
+      <mat-tab label="Weapon 1">
         <div class="spacing">
-          <build [selectedBuildNumber]="1"></build>
         </div>
       </mat-tab>
 
-      <mat-tab label="{{ current_weapons$$()[1]?.name ? current_weapons$$()[1].name[language$$()] : '' }}">
+      <mat-tab label="Weapon 2">
         <div class="spacing">
-          <build [selectedBuildNumber]="2"></build>
         </div>
       </mat-tab>
 
-      <mat-tab label="{{ current_weapons$$()[2]?.name ? current_weapons$$()[2].name[language$$()] : '' }}">
+      <mat-tab label="Weapon 3">
         <div class="spacing">
-          <build [selectedBuildNumber]="3"></build>
         </div>
       </mat-tab>
     </mat-tab-group>
-
-    <module-bank *ngIf="selectedIndex !== 0" [@slideUpAnimation]></module-bank>
   </div>
 </div>

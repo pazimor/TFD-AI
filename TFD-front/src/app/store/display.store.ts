@@ -33,11 +33,6 @@ export const visualStore = signalStore(
   {
     providedIn: "root"
   },
-  withHooks({
-    // onInit(store, http = inject(HttpClient)) {
-      // here i can fetch
-    // }
-  }),
   withState<visuals>(initialVisualsState),
   withMethods((visualStore) => ({
     get_lang: () => visualStore.language(),

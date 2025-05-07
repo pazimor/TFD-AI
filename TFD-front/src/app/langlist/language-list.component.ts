@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, inject, Signal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Module } from '../module/module.model';
 import { visualStore } from '../store/display.store';
 
 @Component({
@@ -27,10 +26,6 @@ export class LanguageListComponent {
     { code: 'ru', label: 'Русский' },
     { code: 'es', label: 'Español' }
   ];
-
-  getstring(obj: Module): string {
-    return obj.name[this.store.language()]
-  }
 
   onLanguageChange(selectedCode: string): void {
     this.store.set_lang(selectedCode)
