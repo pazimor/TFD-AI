@@ -1,30 +1,23 @@
 <div class="container">
-  <language-list></language-list>
   <sidebar></sidebar>
 
   <div class="tabs" [ngClass]="{'sidebar-small': !isSidebarOpen$$(), 'sidebar-big': isSidebarOpen$$()}">
     <mat-tab-group [(selectedIndex)]="selectedIndex">
-      <mat-tab label="Saved Builds">
+      <mat-tab label="Search">
+        <div class="spacing">
           ⚠️ Work in progress ⚠️
-      </mat-tab>
-
-      <mat-tab label="Descendant">
-        <div class="spacing">
         </div>
       </mat-tab>
 
-      <mat-tab label="Weapon 1">
+      <mat-tab label="Saved Builds">
         <div class="spacing">
+          ⚠️ Work in progress ⚠️
         </div>
       </mat-tab>
 
-      <mat-tab label="Weapon 2">
+      <mat-tab label="Build Maker">
         <div class="spacing">
-        </div>
-      </mat-tab>
-
-      <mat-tab label="Weapon 3">
-        <div class="spacing">
+          ⚠️ Work in progress ⚠️
         </div>
       </mat-tab>
     </mat-tab-group>

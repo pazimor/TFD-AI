@@ -1,17 +1,25 @@
-import { AfterViewInit, Component, inject, Signal, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { visualStore } from '../store/display.store';
+import { loginStore } from '../store/login.store';
 
 @Component({
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   selector: 'language-list',
   templateUrl: './language-list.component.html',
   styleUrls: ['./language-list.component.scss']
 })
-export class LanguageListComponent {
-  readonly store = inject(visualStore);
+export class LanguageListComponent implements OnInit {
+  readonly login_store = inject(loginStore);
 
-  // Liste des langues supportées
+  selectedLanguage: string = "";
+
+  ngOnInit(): void {
+    this.selectedLanguage = this.login_store.settings().settings;
+  }
+
+  // supported languages
   languages = [
     { code: 'ko', label: '한국어' },
     { code: 'en', label: 'English' },
@@ -27,7 +35,7 @@ export class LanguageListComponent {
     { code: 'es', label: 'Español' }
   ];
 
-  onLanguageChange(selectedCode: string): void {
-    this.store.set_lang(selectedCode)
+  onLanguageChange(selectedCode: any): void {
+    //TODO: send information to python API => DB
   }
 }

@@ -12,3 +12,6 @@
 # System files
 .DS_Store
 Thumbs.db
+
+# Credantials
+client_secret.json

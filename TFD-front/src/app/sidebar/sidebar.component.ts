@@ -1,13 +1,13 @@
 import {Component, computed, inject, input, InputSignal, signal, Signal, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { dataStore } from '../store/data.store';
-import { sideListComponent } from '../side-list/side-list.component';
 import { visualStore, Selector } from '../store/display.store';
+import { LoginDialogComponent } from '../auth/login-dialog/login-dialog.component';
 
 
 
 @Component({
-  imports: [CommonModule, sideListComponent],
+  imports: [CommonModule, LoginDialogComponent],
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']

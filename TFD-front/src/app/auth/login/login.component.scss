@@ -1,0 +1,19 @@
+.login-popup {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  background: #1e1e1e;
+  color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  width: 300px;
+  text-align: center;
+
+  h3 {
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+}
+

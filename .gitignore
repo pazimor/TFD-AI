@@ -17,3 +17,6 @@ api/sql/alembic/env.py
 # System files
 .DS_Store
 Thumbs.db
+
+# AI files
+digest.txt

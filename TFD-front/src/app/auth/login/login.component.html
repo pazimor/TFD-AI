@@ -1,0 +1,12 @@
+<div class="login-popup">
+  @if (!this.login_store.loggedIn()) {
+    <h3>Connexion</h3>
+    <asl-google-signin-button
+      [theme]="'outline'"
+      [size]="'large'">
+    </asl-google-signin-button>
+  } @else {
+    <language-list></language-list>
+    <button (click)="signOut()">Déconnexion</button>
+  }
+</div>

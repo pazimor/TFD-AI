@@ -1,11 +1,13 @@
-### get items
-GET http://localhost:4201/bdd/items
-
-### get modifiers
-GET http://localhost:4201/bdd/modifiers
-
-### get tree skill
-GET http://localhost:4201/bdd/import_tree
-
 ### get full data
 GET http://localhost:4201/bdd/import_data
+
+### post user settings
+POST http://localhost:4201/api/usersettings
+Content-Type: application/json
+
+{
+  "id": "108632741139307718703",
+  "name": "Eddy HUMMEL",
+  "email": "eddy.hummel@gmail.com",
+  "photoUrl": "https://lh3.googleusercontent.com/a/ACg8ocKycekBEsfWS4n8lYnf1i0qQSoTBHNxfAB2eEVKL6vXoTh39wiS=s96-c"
+}

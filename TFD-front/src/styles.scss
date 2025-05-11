@@ -1,5 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
+@font-face {
+  font-family: 'MesloLGS NF';
+  src: url('/assets/fonts/MesloLGS-NF-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .back {
   background: #333333;
 }
@@ -16,3 +23,13 @@
 ::-webkit-scrollbar-track {
   background: #333333;
 }
+
+html, body {
+  font-family: 'MesloLGS NF', sans-serif;
+  overflow-x: hidden;
+}
+
+.material-icons-outlined {
+  color: white;
+}
+

@@ -15,7 +15,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
 
 @Component({
-  imports: [CommonModule, FormsModule, LanguageListComponent, LanguageListComponent, sidebarComponent, MatTab, MatTabGroup],
+  imports: [CommonModule, FormsModule, sidebarComponent, MatTab, MatTabGroup],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -33,14 +33,10 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class AppComponent {
-  @ViewChild(LanguageListComponent) languageListComponent!: LanguageListComponent;
-
   readonly data_store = inject(dataStore);
   readonly visual_store = inject(visualStore);
 
   title = 'TFD-front';
-
-  language$$ = this.visual_store.language
 
   selectedIndex = 0;
 

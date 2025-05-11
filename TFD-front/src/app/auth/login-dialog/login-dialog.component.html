@@ -1,0 +1,12 @@
+<div class="login">
+  @if (this.login_store.loggedIn()) {
+    <div class="login" [class.collapsed]="!isOpen()" (click)="openLoginDialog()">
+      <img class="avatar" [src]="this.login_store.user()?.photoUrl" />
+      <p *ngIf="isOpen()" class="name">{{ this.login_store.user()?.name }}</p>
+    </div>
+  } @else {
+    <a class="material-icons-outlined avatar" (click)="openLoginDialog()">
+      person
+    </a>
+  }
+</div>

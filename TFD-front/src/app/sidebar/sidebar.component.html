@@ -1,11 +1,11 @@
 <!-- Barre latérale -->
 <nav #sidebar class="sidebar" [ngClass]="{'open': isOpen()}">
-  <button id="hamburger" class="hamburger" (click)="toggleSidebar()">
-    <span></span>
-    <span></span>
-    <span></span>
+  <button (click)="toggleSidebar()" class="hamburger">
+    <span class="material-icons-outlined">{{ isOpen() ? 'close' : 'menu' }}</span>
   </button>
 
-
+  <div class="bottom-left">
+    <login-dialog />
+  </div>
 </nav>
 

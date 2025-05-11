@@ -2,6 +2,7 @@ import {Component, inject, input, InputSignal, signal, Signal, ViewChild} from '
 import { CommonModule } from '@angular/common';
 import { dataStore, } from '../store/data.store';
 import { visualStore, Selector} from '../store/display.store';
+import { LoginComponent } from '../auth/login/login.component';
 
 @Component({
   imports: [CommonModule],
