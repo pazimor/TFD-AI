@@ -37,6 +37,6 @@ export class LanguageListComponent implements OnInit {
 
   onLanguageChange(selectedCode: string): void {
     this.selectedLanguage = selectedCode;
-    this.login_store.updateUserLang(selectedCode);
+    this.login_store.load_UpdateSettings(selectedCode);
   }
 }

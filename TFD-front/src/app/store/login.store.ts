@@ -12,7 +12,8 @@ export type settingsResponse = {
 export type loginStore = {
   user: SocialUser | undefined,
   settings: settingsResponse,
-  _resourceEnabled: boolean,
+  _userSettingsResourceEnabled: boolean,
+  _updateSettingsResourceEnabled: boolean,
   loggedIn: boolean
 }
 
@@ -24,7 +25,8 @@ const initsettings: settingsResponse = {
 const initialState: loginStore = {
   user: undefined,
   settings: initsettings,
-  _resourceEnabled: false,
+  _userSettingsResourceEnabled: false,
+  _updateSettingsResourceEnabled: false,
   loggedIn: false
 };
 
@@ -42,68 +44,59 @@ export const initialUserData: userData = {
   photoUrl: ""
 }
 
-const request = (injector: Injector, url: string, method: string, body: any) => {
-  return httpResource<settingsResponse>(
-    () => ({
-      url,
-      method,
-      body,
-      withCredentials: true,
-    }),
-    { injector },
-  );
-}
-
 export const loginStore = signalStore(
   {
     providedIn: "root"
   },
   withState<loginStore>(initialState),
-  withProps((store) => {
-    const injector = inject(Injector);
-
-    return {
-      userSettingsResource: (user: userData) =>
-        request(
-          injector,
-          'http://127.0.0.1:4201/api/user_settings',
-          'POST',
-          user,
-        ),
-
-      updateSettingsResource: (lang: string) =>
-        request(
-          injector,
-          'http://127.0.0.1:4201/api/set_settings',
-          'POST',
-          { id: store.user()?.id, lang },
-        ),
-    };
-  }),
+  withProps((store) => ({
+      userSettings_Resource: httpResource<settingsResponse | undefined>(() =>
+        store._userSettingsResourceEnabled()
+          ? {
+            url: 'http://127.0.0.1:4201/api/user_settings',
+            method: 'POST',
+            body: {
+              id: store.user()?.id ?? '',
+              email: store.user()?.email ?? '',
+              name: store.user()?.name ?? '',
+              photoUrl: store.user()?.photoUrl ?? '',
+            },
+            withCredentials: true,
+            transferCache: true,
+          }
+          : undefined),
+      updateSettings_Resource: httpResource<settingsResponse | undefined> (() =>
+        store._updateSettingsResourceEnabled()
+          ? {
+            url: 'http://127.0.0.1:4201/api/set_settings',
+            method: 'POST',
+            body: { id: store.user()?.id,   lang: store.settings.settings },
+            withCredentials: true,
+            transferCache: true,
+          }
+          : undefined),
+  })),
   withMethods((store) => ({
     setLoginState: (log: SocialUser | undefined) => {
       patchState(store, { user: log, loggedIn: !!log });
     },
-    setSettingsState: (set: settingsResponse | undefined) => {
-      patchState(store, {settings: set});
+    load_UserSettings: () => {
+      patchState(store, { _userSettingsResourceEnabled: true });
+      store.userSettings_Resource.reload();
+      if (store.userSettings_Resource.hasValue()) {
+        patchState(store, {settings: store.userSettings_Resource.value()});
+      }
     },
-    fetchUserSettings: () => {
-      const data: userData = {
-        id: store.user()?.id ?? '',
-        email: store.user()?.email ?? '',
-        name: store.user()?.name ?? '',
-        photoUrl: store.user()?.photoUrl ?? '',
-      };
-      return store.userSettingsResource(data);
-    },
-    updateUserLang: (lang: string) => {
-      store.updateSettingsResource(lang)
+    load_UpdateSettings: (lang: string) => {
       patchState(store, {
         settings: {
-          ...store.settings(),
+          ...store.settings(), //TODO: rename (not obvious) / create new object
           settings: lang
         }
       });
-    }
+      store.updateSettings_Resource.reload()
+    },
+    refresh_UserSettings: () => store.userSettings_Resource.reload(),
+    refresh_UpdateSettings: () => store.updateSettings_Resource.reload(),
   }))
 );
