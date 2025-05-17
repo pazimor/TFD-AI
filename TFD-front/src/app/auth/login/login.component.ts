@@ -37,13 +37,13 @@ export class LoginComponent implements OnInit {
       if (!this.login_store.loggedIn()) return;
 
       if (!this.settingsRes) {
-        this.settingsRes = this.login_store.user_settings();
+        this.settingsRes = this.login_store.fetchUserSettings();
       }
 
       switch (this.settingsRes.status()) {
         case ResourceStatus.Resolved:
           this.settings = this.settingsRes.value();
-          this.login_store.set_settings(this.settingsRes.value());
+          this.login_store.setSettingsState(this.settingsRes.value());
           break;
       }
     });
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
 
     this.authService.authState.subscribe((user) => {
-      this.login_store.set_log(user)
+      this.login_store.setLoginState(user)
       if(this.dialogStartedStatus !== !!user) {
         this.dialogRef.close();
       }

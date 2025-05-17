@@ -36,3 +36,19 @@ def fetch_settings(user_id):
         print(f"❌ Erreur : {e}")
         session.rollback()
         return None
+
+def set_user_settings(user_id, default_language):
+    try:
+        session.execute(
+            text("CALL SetUserSettings(:p_user_id, :p_default_language)"),
+            {
+                "p_user_id": user_id,
+                "p_default_language": default_language
+            }
+        )
+        session.commit()
+        return True
+    except Exception as e:
+        print(f"❌ Erreur : {e}")
+        session.rollback()
+        return False

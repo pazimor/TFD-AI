@@ -15,7 +15,7 @@ CORS(app)
 CORS(app, resource={r"/api/*": {"origins": "http://localhost:4200"}}, supports_credentials=True)
 CORS(app, supports_credentials=True, methods=["GET", "POST"], allow_headers=["Content-Type"])
 
-@app.route('/api/usersettings', methods=['POST'])
+@app.route('/api/user_settings', methods=['POST'])
 def get_user_settings():
     try:
 
@@ -27,6 +27,18 @@ def get_user_settings():
         # Fetch user settings
         settings = user.fetch_settings(request.json['id'])
         return jsonify({"success": True, "settings": settings or {}}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/set_settings', methods=['POST'])
+def set_user_settings():
+    try:
+
+        print(request.json, flush=True)
+
+        # Fetch user settings
+        settings = user.set_user_settings(request.json['id'], request.json['lang'])
+        return jsonify({"success": True}), 200
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 

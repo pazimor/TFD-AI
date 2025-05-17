@@ -67,9 +67,25 @@ def upgrade() -> None:
         '''
     )
 
-
+    # Drop and (re)create SetUserSettings procedure
+    op.execute("DROP PROCEDURE IF EXISTS SetUserSettings;")
+    op.execute(
+        '''
+        CREATE PROCEDURE SetUserSettings(
+            IN p_user_id VARCHAR(255),
+            IN p_default_language VARCHAR(10)
+        )
+        BEGIN
+            INSERT INTO user_settings (user_id, default_language)
+            VALUES (p_user_id, p_default_language)
+            ON DUPLICATE KEY UPDATE
+                default_language = VALUES(default_language);
+        END
+        '''
+    )
 def downgrade() -> None:
     op.execute("DROP PROCEDURE IF EXISTS SyncUser;")
     op.execute("DROP PROCEDURE IF EXISTS GetUserSettings;")
+    op.execute("DROP PROCEDURE IF EXISTS SetUserSettings;")
     op.drop_table('user_settings')
     op.drop_table('users')

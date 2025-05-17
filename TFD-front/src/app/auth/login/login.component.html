@@ -1,6 +1,7 @@
 <div class="login-popup">
   @if (!this.login_store.loggedIn()) {
     <h3>Connexion</h3>
+    <language-list></language-list>
     <asl-google-signin-button
       [theme]="'outline'"
       [size]="'large'">

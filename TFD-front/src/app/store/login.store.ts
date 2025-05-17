@@ -17,8 +17,8 @@ export type loginStore = {
 }
 
 const initsettings: settingsResponse = {
-  settings: "",
-  success: false
+  settings: "ko",
+  success: false //TODO: delete
 }
 
 const initialState: loginStore = {
@@ -42,44 +42,68 @@ export const initialUserData: userData = {
   photoUrl: ""
 }
 
+const request = (injector: Injector, url: string, method: string, body: any) => {
+  return httpResource<settingsResponse>(
+    () => ({
+      url,
+      method,
+      body,
+      withCredentials: true,
+    }),
+    { injector },
+  );
+}
+
 export const loginStore = signalStore(
   {
     providedIn: "root"
   },
+  withState<loginStore>(initialState),
   withProps((store) => {
     const injector = inject(Injector);
+
     return {
-      userlog: (user: userData) =>
-        httpResource<settingsResponse>(
-          () => ({
-            url: 'http://127.0.0.1:4201/api/usersettings',
-            method: 'POST',
-            body: user,
-            withCredentials: true
-          }),
-          {
-            injector
-          }
-        )
+      userSettingsResource: (user: userData) =>
+        request(
+          injector,
+          'http://127.0.0.1:4201/api/user_settings',
+          'POST',
+          user,
+        ),
+
+      updateSettingsResource: (lang: string) =>
+        request(
+          injector,
+          'http://127.0.0.1:4201/api/set_settings',
+          'POST',
+          { id: store.user()?.id, lang },
+        ),
     };
   }),
-  withState<loginStore>(initialState),
   withMethods((store) => ({
-    set_log: (log: SocialUser | undefined) => {
+    setLoginState: (log: SocialUser | undefined) => {
       patchState(store, { user: log, loggedIn: !!log });
     },
-    set_settings: (set: settingsResponse | undefined) => {
+    setSettingsState: (set: settingsResponse | undefined) => {
       patchState(store, {settings: set});
     },
-    user_settings: () => {
+    fetchUserSettings: () => {
       const data: userData = {
         id: store.user()?.id ?? '',
         email: store.user()?.email ?? '',
         name: store.user()?.name ?? '',
-        photoUrl: store.user()?.photoUrl ?? ''
+        photoUrl: store.user()?.photoUrl ?? '',
       };
-      return store.userlog(data)
+      return store.userSettingsResource(data);
     },
-    user_langue: () => {}
+    updateUserLang: (lang: string) => {
+      store.updateSettingsResource(lang)
+      patchState(store, {
+        settings: {
+          ...store.settings(),
+          settings: lang
+        }
+      });
+    }
   }))
 );

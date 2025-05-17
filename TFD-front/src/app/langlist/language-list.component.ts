@@ -35,7 +35,8 @@ export class LanguageListComponent implements OnInit {
     { code: 'es', label: 'Español' }
   ];
 
-  onLanguageChange(selectedCode: any): void {
-    //TODO: send information to python API => DB
+  onLanguageChange(selectedCode: string): void {
+    this.selectedLanguage = selectedCode;
+    this.login_store.updateUserLang(selectedCode);
   }
 }
