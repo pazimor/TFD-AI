@@ -70,7 +70,7 @@ export const loginStore = signalStore(
           ? {
             url: 'http://127.0.0.1:4201/api/set_settings',
             method: 'POST',
-            body: { id: store.user()?.id,   lang: store.settings.settings },
+            body: { id: store.user()?.id,   lang: store.settings()?.settings },
             withCredentials: true,
             transferCache: true,
           }
@@ -81,10 +81,20 @@ export const loginStore = signalStore(
       patchState(store, { user: log, loggedIn: !!log });
     },
     load_UserSettings: () => {
+      if ( store.user()?.id === ''
+        || store.user()?.email === ''
+        || store.user()?.name === ''
+        || store.user()?.photoUrl === '') {
+        return;
+      }
       patchState(store, { _userSettingsResourceEnabled: true });
       store.userSettings_Resource.reload();
       if (store.userSettings_Resource.hasValue()) {
-        patchState(store, {settings: store.userSettings_Resource.value()});
+        patchState(store, {
+          settings: {
+            ...store.userSettings_Resource.value()
+          }
+        });
       }
     },
     load_UpdateSettings: (lang: string) => {
@@ -92,7 +102,8 @@ export const loginStore = signalStore(
         settings: {
           ...store.settings(), //TODO: rename (not obvious) / create new object
           settings: lang
-        }
+        },
+        _updateSettingsResourceEnabled: true
       });
       store.updateSettings_Resource.reload()
     },
