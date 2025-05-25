@@ -1,15 +1,9 @@
-import {Component, inject, OnInit} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  SocialAuthService,
-  SocialUser,
-  GoogleLoginProvider,
-  GoogleSigninButtonDirective
-} from '@abacritt/angularx-social-login';
 import { visualStore } from '../../store/display.store';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
-import {loginStore} from '../../store/login.store';
+import { loginStore } from '../../store/login.store';
 
 @Component({
   standalone: true,

@@ -8,6 +8,8 @@ RUN ng build --configuration production
 
 FROM nginx:alpine
 
+COPY default.conf.template /etc/nginx/conf.d/default.conf
+
 COPY --from=builder /app/dist/tfd-front/browser /usr/share/nginx/html
 COPY entrypoint.sh /entrypoint.sh
 

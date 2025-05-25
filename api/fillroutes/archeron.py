@@ -38,7 +38,7 @@ def fill_archeron():
                 id_in_DB = parse_for_languages("fr", indexed_stats["fr"][effect["stat_id"]]["stat_name"])
                 upsert_node_effects(None, node["node_id"], id_in_DB, effect["stat_value"], effect["operator_type"])
                 i = i + 1
-        if node_id is -1:  ## if node is specified
+        if node_id == -1:
             print("test: ", node["node_name"])
             id_in_DB = parse_for_languages("fr", node["node_name"])
             upsert_nodes(node["node_id"], id_in_DB, node["node_image_url"], node["node_type"], node["tier_id"], node["required_tuning_point"])

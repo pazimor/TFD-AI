@@ -1,0 +1,61 @@
+.module {
+  position: absolute;
+  top: 7px;
+  left: 12px;
+  width: 37px;
+}
+
+.background {
+  position: relative;
+  background: #333333;
+  color: #ffffff;
+}
+
+.module-back {
+  max-width: 60px;
+}
+
+.gradient-square {
+  display: inline-block;
+  position: absolute;
+  height: 33px;
+  width: 32px;
+  left: 14px;
+  top: 9px;
+
+  &.Tier1 {
+    background: linear-gradient(
+      135deg,
+      rgba(23, 113, 153, 0.5) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(23, 113, 153, 0.5) 100%
+    );
+  }
+
+  &.Tier2 {
+    background: linear-gradient(
+      135deg,
+      rgba(125, 23, 153, 0.5) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(125, 23, 153, 0.5) 100%
+    );
+  }
+
+  &.Tier3 {
+    background: linear-gradient(
+      135deg,
+      rgba(153, 136, 23, 0.5) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(153, 136, 23, 0.5) 100%
+    );
+  }
+
+  &.Tier4 {
+    background: linear-gradient(
+      135deg,
+      rgba(153, 53, 23, 0.5) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(153, 53, 23, 0.5) 100%
+    );
+  }
+}

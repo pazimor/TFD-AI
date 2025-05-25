@@ -1,9 +1,0 @@
-services:
-  front:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: front
-    restart: unless-stopped
-    ports:
-      - "82:80"

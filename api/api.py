@@ -1,13 +1,10 @@
 import threading
-from os import supports_bytes_environ
-
-import requests
 import json
 
 from flask import Flask, jsonify, request
 from fillroutes.full  import full
 from flask_cors import CORS
-from sql.CRUD import user
+from sql.CRUD import user, ui
 
 app = Flask(__name__)
 
@@ -18,13 +15,7 @@ CORS(app, supports_credentials=True, methods=["GET", "POST"], allow_headers=["Co
 @app.route('/api/user_settings', methods=['POST'])
 def get_user_settings():
     try:
-
-        print(request.json, flush=True)
-
-        # Sync user in DB
         user.sync_user(request.json)
-
-        # Fetch user settings
         settings = user.fetch_settings(request.json['id'])
         return jsonify({"success": True, "settings": settings or {}}), 200
     except Exception as e:
@@ -33,26 +24,92 @@ def get_user_settings():
 @app.route('/api/set_settings', methods=['POST'])
 def set_user_settings():
     try:
-
-        print(request.json, flush=True)
-
-        # Fetch user settings
         settings = user.set_user_settings(request.json['id'], request.json['lang'])
         return jsonify({"success": True}), 200
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route('/api/modules', methods=['GET'])
+def get_modules():
+    data = ui.get_all_modules()
+    for module in data:
+        stats_raw = module.get("stats")
+        if isinstance(stats_raw, str):
+                module["stats"] = json.loads(stats_raw)
+
+    return app.response_class(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json"
+    )
+
+@app.route('/api/translations', methods=['GET'])
+def get_translations():
+    data = ui.get_all_translations()
+    return app.response_class(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json"
+    )
+
+@app.route('/api/descendants', methods=['GET'])
+def api_get_descendants_full():
+    data = ui.get_all_descendants()
+    return app.response_class(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json"
+    )
+
+
+@app.route('/api/weapons', methods=['GET'])
+def api_get_weapons_full():
+    data = crud_wep.get_all_weapons_full()
+    return app.response_class(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json"
+    )
+
+@app.route('/api/cores/<int:weapon_id>', methods=['GET'])
+def api_weapon_core_slots(weapon_id):
+    data = crud_wep.get_weapon_core_slots(weapon_id)
+    return app.response_class(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json"
+    )
+
+@app.route('/api/external-components', methods=['GET'])
+def api_get_external_components_full():
+    data = crud_ext.get_all_external_components_full()
+    return app.response_class(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json"
+    )
+
+@app.route('/api/reactors', methods=['GET'])
+def api_get_reactors_full():
+    data = crud_reac.get_all_reactors_full()
+    return app.response_class(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json"
+    )
+
+@app.route('/api/boards', methods=['GET'])
+def api_get_boards_full():
+    data = crud_board.get_all_boards_full()
+    return app.response_class(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json"
+    )
 
 @app.route('/bdd/import_data', methods=['GET'])
 def import_data():
     try:
         weapon = False
-        statistic = True
+        statistic = False
         core = False
         descendant = False
         module = False
         reactor = False
-        external = True
+        external = False
+        archerons = True
 
         thread = threading.Thread(target=full, args=(weapon, statistic, core, descendant, module, reactor, external))
         thread.start()

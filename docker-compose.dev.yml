@@ -4,11 +4,11 @@ services:
       context: ./api
       dockerfile: Dockerfile
     container_name: api_flask
-    ports:
-      - "4201:4201"
     volumes:
       - ./api/api.py:/app/api.py
       - ./api/sql:/app/sql
+    ports:
+      - "4201:4201"
     restart: always
     networks:
       - internal
@@ -16,16 +16,13 @@ services:
   front:
     build:
       context: ./TFD-front
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     container_name: front_dev
-    environment:
-      - API_URL=http://api:4201
     ports:
-      - "4200:4200"
+      - "4202:80"
     volumes:
       - ./TFD-front:/app
       - /app/node_modules
-    command: ng serve --host 0.0.0.0 --port 4200
     networks:
       - internal
 

@@ -3,7 +3,7 @@
 ############################
 # ----- Builder stage ---- #
 ############################
-FROM python:3.11-slim AS builder
+FROM python:3.13-slim AS builder
 
 # Faster, safer Python defaults
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 ###########################
 # ----- Runtime stage --- #
 ###########################
-FROM python:3.11-slim
+FROM python:3.13-slim
 LABEL maintainer="pazimor"
 
 # Same runtime env‑vars
@@ -35,7 +35,9 @@ COPY --from=builder /usr/local /usr/local
 
 # Copy application source
 WORKDIR /app
+COPY request_service.py .
 COPY api.py .
+COPY fillroutes/ ./fillroutes
 COPY sql/ ./sql
 
 # Switch to the non‑root user for runtime

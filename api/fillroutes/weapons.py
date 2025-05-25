@@ -1,5 +1,3 @@
-import re
-
 from request_service import fetch_multy_lang, languages_bdd, get_fixed_lang
 from sql.CRUD.translation_strings import parse_for_languages
 from sql.CRUD import weapon as crud_weapon

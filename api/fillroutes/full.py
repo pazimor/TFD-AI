@@ -1,8 +1,15 @@
 from fillroutes import weapons, statistics, cores, archeron, descendants, modules, reactors, external_components
 from sql.CRUD.translation_strings import add_translation, get_item
 
-
-def full(weapon = True, statistic = True, core = True, descendant = True, module = True, reactor = True, external = True):
+def full(
+    weapon = True,
+    statistic = True,
+    core = True,
+    descendant = True,
+    module = True,
+    reactor = True,
+    external = True,
+    archerons = True):
 
     ## init default
     if get_item(1) == []:
@@ -35,8 +42,8 @@ def full(weapon = True, statistic = True, core = True, descendant = True, module
         cores.fetch_cores(stats_dict)
         cores.fetch_slots()
 
-    if archeron is True:
-        archeron.fetch_archeron()
+    if archerons is True:
+        archeron.fill_archeron()
 
     if descendant is True:
         descendants.fetch_descendants(stats_dict)
@@ -49,4 +56,5 @@ def full(weapon = True, statistic = True, core = True, descendant = True, module
 
     if external is True:
         external_components.fetch_external_components(stats_dict)
+
     print("finish")

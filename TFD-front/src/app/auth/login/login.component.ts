@@ -25,12 +25,8 @@ export class LoginComponent implements OnInit {
 
   error: HttpErrorResponse | undefined;
 
-  isOpen = this.visual_store.isSidebarOpen;
   dialogStartedStatus= this.login_store.loggedIn();
-  userdata: userData = initialUserData;
   settings: any = {};
-
-  private settingsRes: HttpResourceRef<settingsResponse | undefined> | undefined;
 
   constructor(
     private authService: SocialAuthService,

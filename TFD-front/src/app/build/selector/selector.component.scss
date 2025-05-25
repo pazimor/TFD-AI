@@ -1,0 +1,27 @@
+.contain {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  width: 100%;
+  min-height: 0;
+  background: #333333 !important;
+}
+
+.input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px;
+  border-radius: 7px;
+  width: calc(100% - 10px);
+}
+
+.modules-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+  background: inherit;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}

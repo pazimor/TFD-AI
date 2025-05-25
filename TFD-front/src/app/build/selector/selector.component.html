@@ -1,0 +1,8 @@
+<div class="contain">
+  <input class="input" type="text" placeholder="Search ..." />
+  <div class="modules-container">
+    <div *ngFor="let m of data_store.modulesResource.value()">
+      <module [module]="m"></module>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,0 @@
-services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: api_flask
-    ports:
-      - "4201:4201"
-    restart: always

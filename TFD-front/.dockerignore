@@ -1,0 +1,13 @@
+# Dépendances locales
+**/node_modules
+
+# Fichiers de build Angular / React / Vue…
+dist
+.build
+
+# Logs et caches
+npm-debug.log*
+yarn-error.log*
+
+# VCS
+.git
