@@ -1,12 +1,29 @@
-<div class="row">
+<div class="descendant">
   <img class="avatar" src="https://open.api.nexon.com/static/tfd/img/6cecbb40acd1b4479a44caaf22817751"/> <!--selection du descendant-->
   <!-- ajouter l'arbre de competances -->
-  <div class="column">
-    <div class="row">
-      <module-build *ngFor="let m of [1,2,3,4,5,6]"/>
+  <div class="external">
+
+    <div class="column">
+      <div class="row">
+        <module-build *ngFor="let m of modules().slice(0, 6); let i = index"
+                      [module]="m"
+                      (moduleSelected)="handleModuleSelected(i, $event)">
+        </module-build>
+      </div>
+      <div class="row">
+        <module-build *ngFor="let m of modules().slice(6, 12); let i = index"
+                      [module]="m"
+                      (moduleSelected)="handleModuleSelected(i + 6, $event)">
+        </module-build>
+      </div>
     </div>
     <div class="row">
-      <module-build *ngFor="let m of [1,2,3,4,5,6]"/>
+      <img class="component" src="https://open.api.nexon.com/static/tfd/img/05e6cc44b4811304825c0e57f0b02297"/>
+
+      <img class="component" src="https://open.api.nexon.com/static/tfd/img/03b9597db4f268682b465b22f37ee609"/>
+      <img class="component" src="https://open.api.nexon.com/static/tfd/img/dec22d4d1b01654a40ef6e59b2080821"/>
+      <img class="component" src="https://open.api.nexon.com/static/tfd/img/8245bef5725f85bfcf325b0c86a9e206"/>
+      <img class="component" src="https://open.api.nexon.com/static/tfd/img/d6b633251eacf77cbdc42639221d0619"/>
     </div>
   </div>
 </div>

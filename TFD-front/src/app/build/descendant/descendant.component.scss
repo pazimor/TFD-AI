@@ -1,4 +1,34 @@
 .avatar {
   width: 232px;
   height: 232px;
+  align-items: center;
+  border: 1px solid #86989B;
+  border-radius: 20%;
 }
+
+.descendant {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.external {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 860px) {
+  .descendant {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1355px) {
+  .external {
+    display: flex;
+    flex-direction: column;
+  }
+}
+

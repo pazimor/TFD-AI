@@ -11,6 +11,7 @@
 .column {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .top-bar {
@@ -46,6 +47,17 @@
 }
 
 .weapons-row {
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   gap: 24px;
+}
+
+@media (max-width: 1400px) {
+  .weapons-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
 }

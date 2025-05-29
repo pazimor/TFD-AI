@@ -1,4 +1,73 @@
 .module {
-  width: 80px;
+  position: relative;
   padding: 2px;
+  width: 80px;
+}
+
+.background {
+  position: relative;
+  background: #333333;
+  color: #ffffff;
+}
+
+.module-image {
+  position: absolute;
+  display: block;
+  z-index: 1;
+  top: 10px;
+  left: 17px;
+  width: 50px;
+}
+
+.module-name {
+  position: absolute;
+  z-index: 2;
+  left: 2px;
+  top: 40px;
+  font-size: 7px;
+}
+
+.gradient-square {
+  display: inline-block;
+  position: absolute;
+  height: 44px;
+  width: 44px;
+  top: 14px;
+  left: 20px;
+
+  &.Tier1 {
+    background: linear-gradient(
+        135deg,
+        rgba(23, 113, 153, 0.5) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(23, 113, 153, 0.5) 100%
+    );
+  }
+
+  &.Tier2 {
+    background: linear-gradient(
+        135deg,
+        rgba(125, 23, 153, 0.5) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(125, 23, 153, 0.5) 100%
+    );
+  }
+
+  &.Tier3 {
+    background: linear-gradient(
+        135deg,
+        rgba(153, 136, 23, 0.5) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(153, 136, 23, 0.5) 100%
+    );
+  }
+
+  &.Tier4 {
+    background: linear-gradient(
+        135deg,
+        rgba(153, 53, 23, 0.5) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(153, 53, 23, 0.5) 100%
+    );
+  }
 }

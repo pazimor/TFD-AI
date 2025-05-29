@@ -1,7 +1,6 @@
 <div class="container">
   <sidebar></sidebar>
-
-  <div class="tabs" [ngClass]="{'sidebar-small': !isSidebarOpen$$(), 'sidebar-big': isSidebarOpen$$()}">
+  <div class="tabs sidebar-small">
     <mat-tab-group [(selectedIndex)]="selectedIndex">
       <mat-tab label="Search">
         <div class="spacing">
@@ -22,4 +21,5 @@
       </mat-tab>
     </mat-tab-group>
   </div>
+
 </div>

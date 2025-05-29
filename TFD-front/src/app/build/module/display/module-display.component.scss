@@ -1,27 +1,42 @@
+:host {
+  --module-scale: 1.5;
+}
+
 .module {
   position: absolute;
-  top: 7px;
-  left: 12px;
-  width: 37px;
+  top: calc(7px * var(--module-scale));
+  left: calc(12px * var(--module-scale));
+  width: calc(37px * var(--module-scale));
 }
 
 .background {
   position: relative;
   background: #333333;
   color: #ffffff;
+  width: calc(60px * var(--module-scale));
+}
+
+.module-name {
+  position: absolute;
+  z-index: 2;
+  top: calc(42px * var(--module-scale));
+  left:0;
+  width: 100%;
+  text-align: center;
+  font-size: calc(7px * var(--module-scale));
 }
 
 .module-back {
-  max-width: 60px;
+  width: calc(60px * var(--module-scale));
 }
 
 .gradient-square {
   display: inline-block;
   position: absolute;
-  height: 33px;
-  width: 32px;
-  left: 14px;
-  top: 9px;
+  height: calc(33px * var(--module-scale));
+  width: calc(32px * var(--module-scale));
+  left: calc(14px * var(--module-scale));
+  top: calc(9px * var(--module-scale));
 
   &.Tier1 {
     background: linear-gradient(

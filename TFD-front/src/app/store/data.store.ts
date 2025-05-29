@@ -23,9 +23,26 @@ export interface ModuleResponse {
   module_class?: string;
   available_weapon_type?: string;
   available_descendant_id?: string;
-  available_module_slot_type?: string;
-  available_module_slot_type_id?: number;
-  stats: ModuleStat[];
+  available_module_slot_type_id?: string;
+  stats?: ModuleStat[];
+}
+
+export const defaultModule: ModuleResponse = {
+  id: 0,
+  module_name_id: 0,
+  module_name: "",
+  module_id: 0,
+  image_url: undefined,
+  module_type: undefined,
+  module_tier_id: undefined,
+  module_socket_type: undefined,
+  module_socket_type_id: undefined,
+  module_class_id: undefined,
+  module_class: undefined,
+  available_weapon_type: undefined,
+  available_descendant_id: undefined,
+  available_module_slot_type_id: undefined,
+  stats: undefined,
 }
 
 // translation string
@@ -43,6 +60,22 @@ export interface TranslationString {
   pt: string;
   ru: string;
   es: string;
+}
+
+export const defaultTranslate: TranslationString = {
+  id: 0,
+  fr: "",
+  ko: "",
+  en: "",
+  de: "",
+  jp: "",
+  zh_cn: "",
+  zh_tw: "",
+  it: "",
+  pl: "",
+  pt: "",
+  ru: "",
+  es: "",
 }
 
 // descendant

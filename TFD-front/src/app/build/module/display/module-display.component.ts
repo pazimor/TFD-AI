@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { dataStore, ModuleResponse } from '../../../store/data.store';
+import {dataStore, defaultTranslate, ModuleResponse, TranslationString} from '../../../store/data.store';
 
 @Component({
   standalone: true,
@@ -16,9 +16,11 @@ export class ModuleComponent {
 
   @Input() module!: ModuleResponse;
 
-  find_name(id: number): string {
+  get_translate(id: number): TranslationString {
     if (this.data_store.translationResource.hasValue()) {
-      return this.data_store.translationResource.value()[id].fr;
-    } else { return "" }
+      return this.data_store.translationResource.value()[id-1]
+    } else {
+      return defaultTranslate
+    }
   }
 }

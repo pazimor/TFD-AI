@@ -1,8 +1,16 @@
 <div class="contain">
-  <input class="input" type="text" placeholder="Search ..." />
+  <input class="input" type="text" placeholder="Search ..." [(ngModel)]="searchText" />
+  <label>
+    <input type="checkbox" [(ngModel)]="requireDescendant" /> Descendant requis
+  </label>
+
   <div class="modules-container">
-    <div *ngFor="let m of data_store.modulesResource.value()">
-      <module [module]="m"></module>
-    </div>
+    @if (data_store.modulesResource.isLoading()) {
+      <mat-spinner></mat-spinner>
+    } @else {
+      @for (m of filteredModules(); track m.id) {
+        <module [module]="m" (click)="select(m)"></module>
+      }
+    }
   </div>
 </div>

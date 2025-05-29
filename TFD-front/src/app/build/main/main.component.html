@@ -15,18 +15,12 @@
     <button class="control save" (click)="saveBuild()">Save</button>
   </section>
 
-  <div class="row" *ngIf="descendants()"> <!--div descendant-->
+  <div class="column" *ngIf="descendants()"> <!--div descendant-->
     <descendant-build></descendant-build>
-    <img class="component" src="https://open.api.nexon.com/static/tfd/img/05e6cc44b4811304825c0e57f0b02297"/> <!--selection du reactor-->
-
-    <img class="component" src="https://open.api.nexon.com/static/tfd/img/03b9597db4f268682b465b22f37ee609"/> <!--selection du composent externe-->
-    <img class="component" src="https://open.api.nexon.com/static/tfd/img/dec22d4d1b01654a40ef6e59b2080821"/> <!--selection du composent externe-->
-    <img class="component" src="https://open.api.nexon.com/static/tfd/img/8245bef5725f85bfcf325b0c86a9e206"/> <!--selection du composent externe-->
-    <img class="component" src="https://open.api.nexon.com/static/tfd/img/d6b633251eacf77cbdc42639221d0619"/> <!--selection du composent externe-->
   </div>
 
-  <div class="row weapons-row"> <!-- list weapons -->
-    <ng-container  *ngFor="let _ of weaponRange()">
+  <div class="column weapons-row"> <!-- list weapons -->
+    <ng-container  *ngFor="let _ of weaponRange()"> <!-- change to @for -->
       <weapon-build></weapon-build>
     </ng-container>
   </div>
