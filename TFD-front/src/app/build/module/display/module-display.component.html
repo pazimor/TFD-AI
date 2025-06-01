@@ -3,6 +3,6 @@
   @if (this.module !== undefined) {
     <a class="gradient-square" [ngClass]="module.module_tier_id ?? ''"></a>
     <img class="module" [src]="module.image_url ?? '' " />
-    <a class="module-name">{{ get_translate(this.module.module_name_id)?.fr ?? '' }}</a>
+    <a class="module-name">{{ name }}</a>
   }
 </div>

@@ -2,8 +2,11 @@ import {Component, ChangeDetectorRef, inject, Input, EventEmitter, Output} from 
 import { CommonModule } from '@angular/common';
 import { selectorComponent } from '../selector/selector.component';
 import { MatDialog } from '@angular/material/dialog';
-import { dataStore, defaultTranslate, ModuleResponse, TranslationString } from '../../store/data.store';
+import { dataStore, defaultTranslate, TranslationString } from '../../store/data.store';
 import { ModuleComponent } from './display/module-display.component';
+import { selectorData } from '../../types/selector.types';
+import { defaultModule, ModuleResponse } from '../../types/module.types';
+import { defaultDescendants } from '../../types/descendant.types';
 
 @Component({
   standalone: true,
@@ -15,6 +18,7 @@ import { ModuleComponent } from './display/module-display.component';
 export class ModuleBuildComponent {
   readonly data_store = inject(dataStore);
   private _module!: ModuleResponse;
+  @Input() data!: selectorData;
   @Output() moduleSelected = new EventEmitter<ModuleResponse>();
 
   constructor(
@@ -32,15 +36,16 @@ export class ModuleBuildComponent {
   }
 
   openDialog(): void {
+
     const dialogRef = this.dialog.open(selectorComponent, {
       autoFocus: true,
-      data: { //TODO: faire un type
-        filterClass: 593
-        // ajouter l'id du descendant
-      }
+      data: this.data
     });
 
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res: ModuleResponse) => {
+      if (res === undefined) {
+        res = defaultModule;
+      }
       this._module = res;
       this.moduleSelected.emit(res);
       this.cdr.detectChanges();

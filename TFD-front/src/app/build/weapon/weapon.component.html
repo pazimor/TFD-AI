@@ -1,10 +1,10 @@
 <div class="weapon" @fadeSlide>
-  <img style="width: 400px" src="https://open.api.nexon.com/static/tfd/img/bd3db3617859fab6dc91f200d74ca5a4"/> <!-- sélection de l'arme -->
+  <weapon [weapon]="weapon()" (click)="openDialog()"></weapon>
   <div class="row">
-    <module-build *ngFor="let m of [1,2,3,4,5]"/>
+    <module-build *ngFor="let m of [1,2,3,4,5]" [data]="this.module_data"/>
   </div>
   <div class="row">
-    <module-build *ngFor="let m of [1,2,3,4,5]"/>
+    <module-build *ngFor="let m of [1,2,3,4,5]" [data]="this.module_data"/>
   </div>
   <!-- ajouter les Cores-->
 </div>

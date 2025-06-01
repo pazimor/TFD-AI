@@ -1,18 +1,22 @@
 <div class="descendant">
-  <img class="avatar" src="https://open.api.nexon.com/static/tfd/img/6cecbb40acd1b4479a44caaf22817751"/> <!--selection du descendant-->
-  <!-- ajouter l'arbre de competances -->
-  <div class="external">
+  <div class="spacing">
+    <descendant [descendant]="descendant()" (click)="openDialog()"></descendant>
+  </div>
+  <!-- add skill tree -->
 
+  <div class="external">
     <div class="column">
       <div class="row">
         <module-build *ngFor="let m of modules().slice(0, 6); let i = index"
                       [module]="m"
+                      [data]="this.module_data"
                       (moduleSelected)="handleModuleSelected(i, $event)">
         </module-build>
       </div>
       <div class="row">
         <module-build *ngFor="let m of modules().slice(6, 12); let i = index"
                       [module]="m"
+                      [data]="this.module_data"
                       (moduleSelected)="handleModuleSelected(i + 6, $event)">
         </module-build>
       </div>

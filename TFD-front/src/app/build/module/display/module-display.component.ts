@@ -1,6 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {dataStore, defaultTranslate, ModuleResponse, TranslationString} from '../../../store/data.store';
+import { dataStore, defaultTranslate, TranslationString } from '../../../store/data.store';
+import { ModuleResponse } from '../../../types/module.types';
 
 @Component({
   standalone: true,
@@ -22,5 +23,9 @@ export class ModuleComponent {
     } else {
       return defaultTranslate
     }
+  }
+
+  get name(): string {
+    return this.get_translate(this.module.module_name_id)?.fr ?? '';
   }
 }

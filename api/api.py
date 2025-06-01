@@ -61,7 +61,7 @@ def api_get_descendants_full():
 
 @app.route('/api/weapons', methods=['GET'])
 def api_get_weapons_full():
-    data = crud_wep.get_all_weapons_full()
+    data = ui.get_all_weapons_full()
     return app.response_class(
         json.dumps(data, ensure_ascii=False),
         mimetype="application/json"
@@ -69,7 +69,7 @@ def api_get_weapons_full():
 
 @app.route('/api/cores/<int:weapon_id>', methods=['GET'])
 def api_weapon_core_slots(weapon_id):
-    data = crud_wep.get_weapon_core_slots(weapon_id)
+    data = ui.get_weapon_core_slots(weapon_id)
     return app.response_class(
         json.dumps(data, ensure_ascii=False),
         mimetype="application/json"
@@ -77,7 +77,7 @@ def api_weapon_core_slots(weapon_id):
 
 @app.route('/api/external-components', methods=['GET'])
 def api_get_external_components_full():
-    data = crud_ext.get_all_external_components_full()
+    data = ui.get_all_external_components_full()
     return app.response_class(
         json.dumps(data, ensure_ascii=False),
         mimetype="application/json"

@@ -1,15 +1,22 @@
 <div class="contain">
   <input class="input" type="text" placeholder="Search ..." [(ngModel)]="searchText" />
-  <label>
-    <input type="checkbox" [(ngModel)]="requireDescendant" /> Descendant requis
-  </label>
 
   <div class="modules-container">
-    @if (data_store.modulesResource.isLoading()) {
-      <mat-spinner></mat-spinner>
-    } @else {
-      @for (m of filteredModules(); track m.id) {
-        <module [module]="m" (click)="select(m)"></module>
+    @if(type === "modules") {
+      @if (data_store.modulesResource.isLoading()) {
+        <mat-spinner></mat-spinner>
+      } @else {
+        @for (m of filteredModules(); track m.id) {
+          <module [module]="m" (click)="selectModules(m)"></module>
+        }
+      }
+    } @else if (type === "descendants") {
+      @for (m of filteredDescendants(); track m.id) {
+        <descendant [descendant]="m" (click)="selectDescendant(m)"></descendant>
+      }
+    } @else if (type === "weapons") {
+      @for (m of filteredWeapons(); track m.id) {
+        <weapon [weapon]="m" (click)="selectWeapon(m)"></weapon>
       }
     }
   </div>
