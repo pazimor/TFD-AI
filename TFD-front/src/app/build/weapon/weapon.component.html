@@ -1,10 +1,18 @@
 <div class="weapon" @fadeSlide>
   <weapon [weapon]="weapon()" (click)="openDialog()"></weapon>
   <div class="row">
-    <module-build *ngFor="let m of [1,2,3,4,5]" [data]="this.module_data"/>
+    <module-build *ngFor="let m of modules().slice(0,5); let i = index"
+                 [module]="m"
+                 [data]="this.module_data"
+                 (moduleSelected)="handleModuleSelected(i, $event)">
+    </module-build>
   </div>
   <div class="row">
-    <module-build *ngFor="let m of [1,2,3,4,5]" [data]="this.module_data"/>
+    <module-build *ngFor="let m of modules().slice(5,10); let i = index"
+                 [module]="m"
+                 [data]="this.module_data"
+                 (moduleSelected)="handleModuleSelected(i + 5, $event)">
+    </module-build>
   </div>
   <!-- ajouter les Cores-->
 </div>
