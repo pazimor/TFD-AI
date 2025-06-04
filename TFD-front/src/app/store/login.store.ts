@@ -53,7 +53,7 @@ export const loginStore = signalStore(
       userSettings_Resource: httpResource<settingsResponse | undefined>(() =>
         store._userSettingsResourceEnabled()
           ? {
-            url: 'http://127.0.0.1:4201/api/user_settings',
+            url: `${environment.apiBaseUrl}/user_settings`,
             method: 'POST',
             body: {
               id: store.user()?.id ?? '',
@@ -68,7 +68,7 @@ export const loginStore = signalStore(
       updateSettings_Resource: httpResource<settingsResponse | undefined> (() =>
         store._updateSettingsResourceEnabled()
           ? {
-            url: 'http://127.0.0.1:4201/api/set_settings',
+            url: `${environment.apiBaseUrl}/set_settings`,
             method: 'POST',
             body: { id: store.user()?.id,   lang: store.settings()?.settings },
             withCredentials: true,
