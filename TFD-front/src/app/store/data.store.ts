@@ -4,6 +4,7 @@ import { httpResource } from "@angular/common/http";
 import { ModuleResponse } from '../types/module.types';
 import { DescendantsResponse } from '../types/descendant.types';
 import { WeaponResponse } from '../types/weapon.types';
+import { environment } from '../../env/environment';
 
 // translation string
 export interface TranslationString {
@@ -165,7 +166,7 @@ const initialState: store = {
 };
 
 
-const API_URL = "http://localhost:4201";
+const API_URL = environment.apiBaseUrl;
 
 export const dataStore = signalStore(
   {
