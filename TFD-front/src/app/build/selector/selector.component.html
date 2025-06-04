@@ -18,6 +18,14 @@
       @for (m of filteredWeapons(); track m.id) {
         <weapon [weapon]="m" (click)="selectWeapon(m)"></weapon>
       }
+    } @else if (type === "reactors") {
+      @for (m of filteredReactors(); track m.id) {
+        <reactor [reactor]="m" (click)="selectReactor(m)"></reactor>
+      }
+    } @else if (type === "externals") {
+      @for (m of filteredExternals(); track m.id) {
+        <external [external]="m" (click)="selectExternal(m)"></external>
+      }
     }
   </div>
 </div>

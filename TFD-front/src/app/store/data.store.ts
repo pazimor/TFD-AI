@@ -242,8 +242,18 @@ export const dataStore = signalStore(
         store.translationResource?.reload()
       }
     },
+    load_externals: () => {
+      patchState(store, { unlock: { ...store.unlock(), externals: true } });
+      store.externalResource?.reload();
+    },
+    load_reactors: () => {
+      patchState(store, { unlock: { ...store.unlock(), reactors: true } });
+      store.reactorResource?.reload();
+    },
     refresh_modules: () => store.modulesResource?.reload(),
     refresh_translation: () => store.translationResource?.reload(),
     refresh_descendants: () => store.descendantResource?.reload(),
+    refresh_externals: () => store.externalResource?.reload(),
+    refresh_reactors: () => store.reactorResource?.reload(),
   }))
 );

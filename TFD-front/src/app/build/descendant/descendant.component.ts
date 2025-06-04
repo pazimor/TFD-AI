@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModuleBuildComponent } from '../module/module.component';
+import { ReactorBuildComponent } from '../reactor/reactor.component';
+import { ExternalBuildComponent } from '../external/external.component';
 import { dataStore } from '../../store/data.store';
 import { selectorData } from '../../types/selector.types';
 import { DescendantDisplayComponent } from './display/descendant-display.component';
@@ -13,7 +15,13 @@ import { buildStore } from '../../store/build.store';
 @Component({
   standalone: true,
   selector: 'descendant-build',
-  imports: [CommonModule, ModuleBuildComponent, DescendantDisplayComponent],
+  imports: [
+    CommonModule,
+    ModuleBuildComponent,
+    DescendantDisplayComponent,
+    ReactorBuildComponent,
+    ExternalBuildComponent,
+  ],
   templateUrl: './descendant.component.html',
   styleUrls: ['./descendant.component.scss', '../main/main.component.scss' ,'../../../styles.scss']
 })
@@ -35,6 +43,8 @@ export class DescedantBuildComponent {
 
   descendant = this.build_store.descendant;
   modules = this.build_store.descendantModules;
+  reactor = this.build_store.reactor;
+  externals = this.build_store.externals;
 
   handleModuleSelected(index: number, module: ModuleResponse) {
     const currentModules = this.modules();
