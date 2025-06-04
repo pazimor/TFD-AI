@@ -85,7 +85,7 @@ def api_get_external_components_full():
 
 @app.route('/api/reactors', methods=['GET'])
 def api_get_reactors_full():
-    data = crud_reac.get_all_reactors_full()
+    data = ui.get_all_reactors_full()
     return app.response_class(
         json.dumps(data, ensure_ascii=False),
         mimetype="application/json"
@@ -93,7 +93,7 @@ def api_get_reactors_full():
 
 @app.route('/api/boards', methods=['GET'])
 def api_get_boards_full():
-    data = crud_board.get_all_boards_full()
+    data = ui.get_all_boards_full()
     return app.response_class(
         json.dumps(data, ensure_ascii=False),
         mimetype="application/json"
