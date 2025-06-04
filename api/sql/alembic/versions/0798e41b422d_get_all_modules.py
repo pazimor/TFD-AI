@@ -301,48 +301,33 @@ def upgrade() -> None:
         BEGIN
             CREATE TEMPORARY TABLE tmp_stats AS
             SELECT
-                rbs.reactor_id,
+                rc.reactor_id,
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
-                       'level',      rbs.level,
-                       'stat_id',    rbs.stat_id,
-                       'stat_value', rbs.stat_value
+                        'level',      rc.level,
+                        'stat_id',    rc.coeff_stat_id,
+                        'stat_value', rc.coeff_stat_value
                     )
-                    ORDER BY rbs.level
+                    ORDER BY rc.level
                 ) AS stats_json
-            FROM reactor_base_stat rbs
-            GROUP BY rbs.reactor_id;
-
-            CREATE TEMPORARY TABLE tmp_sets AS
-            SELECT
-                rs.reactor_id,
-                JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                       'set_option_id',        rs.set_option,
-                       'set_count',            rs.set_count,
-                       'set_option_effect_id', rs.set_option_effect
-                    )
-                ) AS set_json
-            FROM reactor_set_option rs
-            GROUP BY rs.reactor_id;
+            FROM reactor_coeff rc
+            GROUP BY rc.reactor_id;
 
             SELECT
                 r.id,
                 r.reactor_id,
                 r.reactor_name_id,
-                r.equipment_type  AS equipment_type_id,
+                r.optimized_condition_type AS equipment_type_id,
                 r.image_url,
                 r.reactor_tier_id,
 
                 COALESCE(ts.stats_json, JSON_ARRAY()) AS base_stat,
-                COALESCE(st.set_json,   JSON_ARRAY()) AS set_option_detail
+                JSON_ARRAY() AS set_option_detail
             FROM reactor r
-              LEFT JOIN tmp_stats ts ON ts.reactor_id = r.reactor_id
-              LEFT JOIN tmp_sets  st ON st.reactor_id = r.reactor_id
+                LEFT JOIN tmp_stats ts ON ts.reactor_id = r.reactor_id
             ORDER BY r.reactor_id;
 
             DROP TEMPORARY TABLE tmp_stats;
-            DROP TEMPORARY TABLE tmp_sets;
         END
         """
     )
