@@ -20,8 +20,8 @@
   </div>
 
   <div class="column weapons-row"> <!-- list weapons -->
-    <ng-container  *ngFor="let _ of weaponRange()"> <!-- change to @for -->
-      <weapon-build></weapon-build>
+    <ng-container *ngFor="let _ of weaponRange(); let i = index">
+      <weapon-build [index]="i"></weapon-build>
     </ng-container>
   </div>
 </div>
