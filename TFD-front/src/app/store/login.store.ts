@@ -5,8 +5,6 @@ import { environment } from '../../env/environment';
 import { SocialUser } from '@abacritt/angularx-social-login';
 import { visualStore } from './display.store';
 
-const display = inject(visualStore);
-
 export type settingsResponse = {
   settings: string,
   success: boolean
@@ -53,31 +51,32 @@ export const loginStore = signalStore(
   },
   withState<loginStore>(initialState),
   withProps((store) => ({
-      userSettings_Resource: httpResource<settingsResponse | undefined>(() =>
-        store._userSettingsResourceEnabled()
-          ? {
-            url: `${environment.apiBaseUrl}/user_settings`,
-            method: 'POST',
-            body: {
-              id: store.user()?.id ?? '',
-              email: store.user()?.email ?? '',
-              name: store.user()?.name ?? '',
-              photoUrl: store.user()?.photoUrl ?? '',
-            },
-            withCredentials: true,
-            transferCache: true,
-          }
-          : undefined),
-      updateSettings_Resource: httpResource<settingsResponse | undefined> (() =>
-        store._updateSettingsResourceEnabled()
-          ? {
-            url: `${environment.apiBaseUrl}/set_settings`,
-            method: 'POST',
-            body: { id: store.user()?.id,   lang: store.settings()?.settings },
-            withCredentials: true,
-            transferCache: true,
-          }
-          : undefined),
+    display: inject(visualStore),
+    userSettings_Resource: httpResource<settingsResponse | undefined>(() =>
+      store._userSettingsResourceEnabled()
+        ? {
+          url: `${environment.apiBaseUrl}/user_settings`,
+          method: 'POST',
+          body: {
+            id: store.user()?.id ?? '',
+            email: store.user()?.email ?? '',
+            name: store.user()?.name ?? '',
+            photoUrl: store.user()?.photoUrl ?? '',
+          },
+          withCredentials: true,
+          transferCache: true,
+        }
+        : undefined),
+    updateSettings_Resource: httpResource<settingsResponse | undefined> (() =>
+      store._updateSettingsResourceEnabled()
+        ? {
+          url: `${environment.apiBaseUrl}/set_settings`,
+          method: 'POST',
+          body: { id: store.user()?.id,   lang: store.settings()?.settings },
+          withCredentials: true,
+          transferCache: true,
+        }
+        : undefined),
   })),
   withMethods((store) => ({
     setLoginState: (log: SocialUser | undefined) => {
@@ -98,7 +97,7 @@ export const loginStore = signalStore(
             ...store.userSettings_Resource.value()
           }
         });
-        display.set_lang(store.userSettings_Resource.value().settings);
+        store.display.set_lang(store.userSettings_Resource.value().settings);
       }
     },
     load_UpdateSettings: (lang: string) => {
@@ -109,7 +108,7 @@ export const loginStore = signalStore(
         },
         _updateSettingsResourceEnabled: true
       });
-      display.set_lang(lang);
+      store.display.set_lang(lang);
       store.updateSettings_Resource.reload()
     },
     refresh_UserSettings: () => store.userSettings_Resource.reload(),

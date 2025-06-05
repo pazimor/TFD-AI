@@ -29,8 +29,10 @@ export class ModuleComponent {
   }
 
   get name(): string {
-    const langKey = translationFieldMap[this.visual_store.get_lang()] ?? 'en';
+    const langKey = this.visual_store.get_lang() ?? 'en';
     const translation = this.get_translate(this.module.module_name_id);
-    return (translation as any)[langKey] ?? '';
+    // Guard against missing translation object or key
+    const value = (translation as any)?.[langKey];
+    return value ?? '';
   }
 }
