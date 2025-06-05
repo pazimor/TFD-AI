@@ -1,6 +1,6 @@
 <div class="login-popup">
   @if (!this.login_store.loggedIn()) {
-    <h3>Connexion</h3>
+    <h3>{{ label('login') }}</h3>
     <language-list></language-list>
     <asl-google-signin-button
       [theme]="'outline'"
@@ -8,6 +8,6 @@
     </asl-google-signin-button>
   } @else {
     <language-list></language-list>
-    <button (click)="signOut()">Déconnexion</button>
+    <button (click)="signOut()">{{ label('logout') }}</button>
   }
 </div>

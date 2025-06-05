@@ -3,6 +3,9 @@ import {signalStore, withState, withMethods, withProps, patchState} from '@ngrx/
 import { httpResource } from "@angular/common/http";
 import { environment } from '../../env/environment';
 import { SocialUser } from '@abacritt/angularx-social-login';
+import { visualStore } from './display.store';
+
+const display = inject(visualStore);
 
 export type settingsResponse = {
   settings: string,
@@ -95,6 +98,7 @@ export const loginStore = signalStore(
             ...store.userSettings_Resource.value()
           }
         });
+        display.set_lang(store.userSettings_Resource.value().settings);
       }
     },
     load_UpdateSettings: (lang: string) => {
@@ -105,6 +109,7 @@ export const loginStore = signalStore(
         },
         _updateSettingsResourceEnabled: true
       });
+      display.set_lang(lang);
       store.updateSettings_Resource.reload()
     },
     refresh_UserSettings: () => store.userSettings_Resource.reload(),
