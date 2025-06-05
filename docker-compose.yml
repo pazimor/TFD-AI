@@ -1,0 +1,26 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: api_flask
+    expose:
+      - "4201"
+    restart: always
+    networks:
+      - internal
+
+  front:
+    build:
+      context: ./TFD-front
+      dockerfile: Dockerfile
+    container_name: front_dev
+    ports:
+      - "4202:80"
+      - "4203:443"
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
