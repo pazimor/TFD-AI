@@ -204,13 +204,13 @@ export const dataStore = signalStore(
       withCredentials: true,
       transferCache: true,
     }) : undefined),
-    externalResource: httpResource<ExternalComponents | undefined>(() => store.unlock.externals() ? ({
+    externalResource: httpResource<ExternalComponents[] | undefined>(() => store.unlock.externals() ? ({
       url: `${API_URL}/api/external-components`,
       method: 'GET',
       withCredentials: true,
       transferCache: true,
     }) : undefined),
-    reactorResource: httpResource<Reactor | undefined>(() => store.unlock.reactors() ? ({
+    reactorResource: httpResource<Reactor[] | undefined>(() => store.unlock.reactors() ? ({
       url: `${API_URL}/api/reactors`,
       method: 'GET',
       withCredentials: true,

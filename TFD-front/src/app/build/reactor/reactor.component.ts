@@ -12,7 +12,7 @@ import { ReactorDisplayComponent } from './display/reactor-display.component';
   selector: 'reactor-build',
   imports: [CommonModule, ReactorDisplayComponent],
   templateUrl: './reactor.component.html',
-  styleUrls: ['./reactor.component.scss', '../main/main.component.scss', '../../styles.scss']
+  styleUrls: ['./reactor.component.scss', '../main/main.component.scss']
 })
 export class ReactorBuildComponent {
   readonly build_store = inject(buildStore);

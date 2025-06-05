@@ -12,7 +12,7 @@ import { ExternalDisplayComponent } from './display/external-display.component';
   selector: 'external-build',
   imports: [CommonModule, ExternalDisplayComponent],
   templateUrl: './external.component.html',
-  styleUrls: ['./external.component.scss', '../main/main.component.scss', '../../styles.scss']
+  styleUrls: ['./external.component.scss', '../main/main.component.scss']
 })
 export class ExternalBuildComponent {
   readonly build_store = inject(buildStore);
