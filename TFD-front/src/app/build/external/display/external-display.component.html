@@ -1,0 +1,8 @@
+<div class="background">
+  @if (external.external_component_id !== 0) {
+    <span class="halo" [ngClass]="external.external_component_tier_id ?? ''"></span>
+    <img class="external" [src]="imageUrl" />
+  } @else {
+    <img class="external" src="../../../../assets/images/logo_tfd_ai.ico" />
+  }
+</div>

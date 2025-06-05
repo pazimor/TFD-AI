@@ -2,6 +2,8 @@ import {Component, Inject, inject, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {dataStore, defaultTranslate, TranslationString} from '../../store/data.store';
 import { ModuleComponent } from '../module/display/module-display.component';
+import { ReactorDisplayComponent } from '../reactor/display/reactor-display.component';
+import { ExternalDisplayComponent } from '../external/display/external-display.component';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
@@ -11,11 +13,23 @@ import { DescendantDisplayComponent } from '../descendant/display/descendant-dis
 import { DescendantsResponse } from '../../types/descendant.types';
 import { WeaponDisplayComponent } from '../weapon/display/weapon-display.component';
 import { WeaponResponse } from '../../types/weapon.types';
+import { Reactor } from '../../types/reactor.types';
+import { ExternalComponent } from '../../types/external.types';
 
 @Component({
   standalone: true,
   selector: 'selector',
-  imports: [CommonModule, ModuleComponent, MatDialogModule, MatProgressSpinnerModule, FormsModule, DescendantDisplayComponent, WeaponDisplayComponent],
+  imports: [
+    CommonModule,
+    ModuleComponent,
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    FormsModule,
+    DescendantDisplayComponent,
+    WeaponDisplayComponent,
+    ReactorDisplayComponent,
+    ExternalDisplayComponent,
+  ],
   templateUrl: './selector.component.html',
   styleUrls: ['./selector.component.scss', '../../../styles.scss']
 })
@@ -63,6 +77,14 @@ export class selectorComponent {
     return this.data_store.weaponResource.value()
   }
 
+  filteredReactors() {
+    return this.data_store.reactorResource.value()
+  }
+
+  filteredExternals() {
+    return this.data_store.externalResource.value()
+  }
+
   get_translate(id: number): TranslationString {
     if (this.data_store.translationResource.hasValue()) {
       return this.data_store.translationResource.value()[id-1]
@@ -89,6 +111,12 @@ export class selectorComponent {
     if (!this.data_store.weaponResource.hasValue()) {
       this.data_store.load_weapons()
     }
+    if (!this.data_store.reactorResource.hasValue()) {
+      this.data_store.load_reactors()
+    }
+    if (!this.data_store.externalResource.hasValue()) {
+      this.data_store.load_externals()
+    }
   }
 
   selectModules(module: ModuleResponse): void {
@@ -101,5 +129,13 @@ export class selectorComponent {
 
   selectWeapon(weapon: WeaponResponse ): void {
     this.dialogRef.close(weapon);
+  }
+
+  selectReactor(reactor: Reactor): void {
+    this.dialogRef.close(reactor);
+  }
+
+  selectExternal(external: ExternalComponent): void {
+    this.dialogRef.close(external);
   }
 }

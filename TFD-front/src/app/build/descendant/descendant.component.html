@@ -22,12 +22,8 @@
       </div>
     </div>
     <div class="row">
-      <img class="component" src="https://open.api.nexon.com/static/tfd/img/05e6cc44b4811304825c0e57f0b02297"/>
-
-      <img class="component" src="https://open.api.nexon.com/static/tfd/img/03b9597db4f268682b465b22f37ee609"/>
-      <img class="component" src="https://open.api.nexon.com/static/tfd/img/dec22d4d1b01654a40ef6e59b2080821"/>
-      <img class="component" src="https://open.api.nexon.com/static/tfd/img/8245bef5725f85bfcf325b0c86a9e206"/>
-      <img class="component" src="https://open.api.nexon.com/static/tfd/img/d6b633251eacf77cbdc42639221d0619"/>
+      <reactor-build></reactor-build>
+      <external-build *ngFor="let e of externals(); let i = index" [index]="i"></external-build>
     </div>
   </div>
 </div>

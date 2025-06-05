@@ -1,0 +1,43 @@
+:host {
+  --scale: 1.5;
+}
+
+.background {
+  position: relative;
+  width: calc(60px * var(--scale));
+  height: calc(60px * var(--scale));
+}
+
+.external {
+  position: absolute;
+  top: calc(12px * var(--scale));
+  left: calc(12px * var(--scale));
+  width: calc(36px * var(--scale));
+  height: calc(36px * var(--scale));
+  object-fit: contain;
+}
+
+.halo {
+  position: absolute;
+  top: calc(7px * var(--scale));
+  left: calc(7px * var(--scale));
+  width: calc(46px * var(--scale));
+  height: calc(46px * var(--scale));
+  border-radius: 50%;
+}
+
+.halo.Tier1 {
+  background: radial-gradient(circle, rgba(23, 113, 153, 0.5) 0%, rgba(255, 255, 255, 0) 60%);
+}
+
+.halo.Tier2 {
+  background: radial-gradient(circle, rgba(125, 23, 153, 0.5) 0%, rgba(255, 255, 255, 0) 60%);
+}
+
+.halo.Tier3 {
+  background: radial-gradient(circle, rgba(153, 136, 23, 0.5) 0%, rgba(255, 255, 255, 0) 60%);
+}
+
+.halo.Tier4 {
+  background: radial-gradient(circle, rgba(153, 53, 23, 0.5) 0%, rgba(255, 255, 255, 0) 60%);
+}
