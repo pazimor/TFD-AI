@@ -4,7 +4,7 @@ import json
 from flask import Flask, jsonify, request
 from fillroutes.full  import full
 from flask_cors import CORS
-from sql.CRUD import user, ui
+from sql.CRUD import user, ui, builds
 
 app = Flask(__name__)
 
@@ -117,6 +117,60 @@ def import_data():
         return jsonify({"success": True, "message": "importing data"}), 202
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
+
+# ----------------------- Build endpoints -----------------------
+
+@app.route('/api/builds', methods=['POST'])
+def api_save_build():
+    try:
+        payload = request.json
+        if 'build_id' in payload:
+            updated = builds.update_build(
+                payload['build_id'],
+                payload['user_id'],
+                payload['name'],
+                payload['data'],
+            )
+            if not updated:
+                return jsonify({'success': False, 'error': 'not found'}), 404
+            return jsonify({'success': True, 'build_id': payload['build_id']}), 200
+        build = builds.add_build(payload['user_id'], payload['name'], payload['data'])
+        if build:
+            return jsonify({'success': True, 'build_id': build.build_id}), 201
+        return jsonify({'success': False}), 400
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/builds/<user_id>', methods=['GET'])
+def api_list_builds(user_id):
+    data = builds.get_user_builds(user_id)
+    result = [
+        {
+            'build_id': b.build_id,
+            'user_id': b.user_id,
+            'build_name': b.build_name,
+            'build_data': b.build_data,
+        }
+        for b in data
+    ]
+    return app.response_class(
+        json.dumps(result, ensure_ascii=False),
+        mimetype="application/json",
+    )
+
+
+@app.route('/api/build/<int:build_id>', methods=['GET'])
+def api_get_build(build_id):
+    b = builds.get_build(build_id)
+    if not b:
+        return jsonify({'success': False, 'error': 'not found'}), 404
+    return jsonify({
+        'build_id': b.build_id,
+        'user_id': b.user_id,
+        'build_name': b.build_name,
+        'build_data': b.build_data,
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4201)
