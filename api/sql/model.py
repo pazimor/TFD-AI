@@ -1,5 +1,15 @@
 # models.py
-from sqlalchemy import (Column, Integer, String, ForeignKey, Text, JSON, Table)
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    Text,
+    JSON,
+    Table,
+    DateTime,
+    func,
+)
 from sqlalchemy.orm import relationship
 from sql.database import Base
 
@@ -70,3 +80,34 @@ build_modifiers_table = Table(
     # Exemple d'un champ 'quantity' si on veut plusieurs exemplaires du même modifier
     Column("quantity", Integer, nullable=True, default=1),
 )
+
+
+# ----------------------------------------
+# Table "User" (minimal definition)
+# ----------------------------------------
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(String(255), primary_key=True)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False)
+    photo_url = Column(String(255), nullable=True)
+
+
+# ----------------------------------------
+# Table "user_builds"
+# ----------------------------------------
+class UserBuild(Base):
+    __tablename__ = "user_builds"
+
+    build_id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(String(255), ForeignKey("users.id"), nullable=False)
+    build_name = Column(String(255), nullable=False)
+    build_data = Column(JSON, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    user = relationship("User")
+
+    def __repr__(self):
+        return f"<UserBuild(build_id={self.build_id}, name='{self.build_name}')>"

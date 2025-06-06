@@ -1,18 +1,26 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../env/environment';
+import { buildStore } from '../../store/build.store';
+import { loginStore } from '../../store/login.store';
 import { WeaponBuildComponent } from '../weapon/weapon.component';
 import { DescedantBuildComponent } from '../descendant/descendant.component';
 
 @Component({
   standalone: true,
   selector: 'main-build',
-  imports: [CommonModule, WeaponBuildComponent, DescedantBuildComponent],
+  imports: [CommonModule, FormsModule, WeaponBuildComponent, DescedantBuildComponent],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss', '../../../styles.scss']
 })
-export class MainBuildComponent {
+export class MainBuildComponent implements OnInit {
+  readonly build_store = inject(buildStore);
+  readonly login_store = inject(loginStore);
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
+  buildName = '';
 
   weapons = signal<number>(0);
   descendants = signal<number>(0);
@@ -27,7 +35,24 @@ export class MainBuildComponent {
   removeDescendant() { this.descendants.update(v => Math.max(0, v - 1)); }
 
   saveBuild() {
-    // TODO: hook real persistence logic here
-    console.log('Save build clicked');
+    const userId = this.login_store.user()?.id;
+    if (!userId || !this.buildName) { return; }
+    const data = this.build_store.serialize();
+    this.http.post(`${environment.apiBaseUrl}/builds`, {
+      user_id: userId,
+      name: this.buildName,
+      data,
+    }, { withCredentials: true }).subscribe();
+  }
+
+  ngOnInit(): void {
+    const params = new URLSearchParams(window.location.search);
+    const idParam = params.get('build');
+    if (idParam) {
+      const buildId = Number(idParam);
+      if (!Number.isNaN(buildId)) {
+        this.build_store.loadFromApi(buildId);
+      }
+    }
   }
 }
