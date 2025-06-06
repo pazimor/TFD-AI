@@ -1,7 +1,9 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeaponBuildComponent } from '../weapon/weapon.component';
 import { DescedantBuildComponent } from '../descendant/descendant.component';
+import { visualStore } from '../../store/display.store';
+import { getUILabel } from '../../lang.utils';
 
 @Component({
   standalone: true,
@@ -11,6 +13,7 @@ import { DescedantBuildComponent } from '../descendant/descendant.component';
   styleUrls: ['./main.component.scss', '../../../styles.scss']
 })
 export class MainBuildComponent {
+  readonly visual_store = inject(visualStore);
 
   constructor() {}
 
@@ -29,5 +32,9 @@ export class MainBuildComponent {
   saveBuild() {
     // TODO: hook real persistence logic here
     console.log('Save build clicked');
+  }
+
+  label(key: Parameters<typeof getUILabel>[1]) {
+    return getUILabel(this.visual_store.get_lang(), key);
   }
 }

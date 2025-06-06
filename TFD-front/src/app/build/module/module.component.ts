@@ -2,7 +2,7 @@ import {Component, ChangeDetectorRef, inject, Input, EventEmitter, Output} from 
 import { CommonModule } from '@angular/common';
 import { selectorComponent } from '../selector/selector.component';
 import { MatDialog } from '@angular/material/dialog';
-import { dataStore, defaultTranslate, TranslationString } from '../../store/data.store';
+import { dataStore } from '../../store/data.store';
 import { ModuleComponent } from './display/module-display.component';
 import { selectorData } from '../../types/selector.types';
 import { defaultModule, ModuleResponse } from '../../types/module.types';

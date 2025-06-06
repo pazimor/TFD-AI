@@ -11,6 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import {initialUserData, loginStore, settingsResponse, userData} from '../../store/login.store';
 import { LanguageListComponent } from '../../langlist/language-list.component';
 import {HttpErrorResponse, HttpResourceRef} from '@angular/common/http';
+import { getUILabel } from '../../lang.utils';
 
 @Component({
   standalone: true,
@@ -54,5 +55,9 @@ export class LoginComponent implements OnInit {
 
   signOut(): void {
     this.authService.signOut();
+  }
+
+  label(key: Parameters<typeof getUILabel>[1]) {
+    return getUILabel(this.visual_store.get_lang(), key);
   }
 }

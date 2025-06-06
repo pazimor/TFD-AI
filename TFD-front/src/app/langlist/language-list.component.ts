@@ -12,11 +12,13 @@ import { loginStore } from '../store/login.store';
 })
 export class LanguageListComponent implements OnInit {
   readonly login_store = inject(loginStore);
+  readonly visual_store = inject(visualStore);
 
   selectedLanguage: string = "";
 
   ngOnInit(): void {
     this.selectedLanguage = this.login_store.settings().settings;
+    this.visual_store.set_lang(this.selectedLanguage);
   }
 
   // supported languages
@@ -37,6 +39,7 @@ export class LanguageListComponent implements OnInit {
 
   onLanguageChange(selectedCode: string): void {
     this.selectedLanguage = selectedCode;
+    this.visual_store.set_lang(selectedCode);
     this.login_store.load_UpdateSettings(selectedCode);
   }
 }

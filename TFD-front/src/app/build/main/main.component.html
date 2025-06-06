@@ -3,16 +3,16 @@
   <section class="top-bar">
     <div>
       <button class="control" (click)="removeWeapon()">-</button>
-      <span class="label">Weapon</span>
+      <span class="label">{{ label('weapon') }}</span>
       <button class="control" (click)="addWeapon()">+</button>
     </div>
 
     <div>
       <button class="control" (click)="removeDescendant()">-</button>
-      <span class="label">Descendant</span>
+      <span class="label">{{ label('descendant') }}</span>
       <button class="control" (click)="addDescendant()">+</button>
     </div>
-    <button class="control save" (click)="saveBuild()">Save</button>
+    <button class="control save" (click)="saveBuild()">{{ label('save') }}</button>
   </section>
 
   <div class="column" *ngIf="descendants()"> <!--div descendant-->
