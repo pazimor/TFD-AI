@@ -2,7 +2,7 @@ import {Component, Inject, inject, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {dataStore, defaultTranslate, TranslationString} from '../../store/data.store';
 import { visualStore } from '../../store/display.store';
-import { translationFieldMap } from '../../lang.utils';
+import { getTranslationField } from '../../lang.utils';
 import { ModuleComponent } from '../module/display/module-display.component';
 import { ReactorDisplayComponent } from '../reactor/display/reactor-display.component';
 import { ExternalDisplayComponent } from '../external/display/external-display.component';
@@ -65,7 +65,7 @@ export class selectorComponent {
 
   filteredModules() {
     return this.data_store.modulesResource.value()?.filter(module => {
-      const langKey = translationFieldMap[this.visual_store.get_lang()] ?? 'en';
+      const langKey = getTranslationField(this.visual_store.get_lang());
       const name = (this.get_translate(module.module_name_id) as any)[langKey] as string;
       const matchName = !this.searchText || name?.toLowerCase().includes(this.searchText.toLowerCase());
       const matchClass = !this.filterClass || (module.module_class_id === this.filterClass);

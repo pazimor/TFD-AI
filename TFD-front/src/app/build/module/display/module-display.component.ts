@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { dataStore, defaultTranslate, TranslationString } from '../../../store/data.store';
 import { ModuleResponse } from '../../../types/module.types';
 import { visualStore } from '../../../store/display.store';
-import { translationFieldMap } from '../../../lang.utils';
+import { getTranslationField } from '../../../lang.utils';
 
 @Component({
   standalone: true,
@@ -29,7 +29,7 @@ export class ModuleComponent {
   }
 
   get name(): string {
-    const langKey = this.visual_store.get_lang() ?? 'en';
+    const langKey = getTranslationField(this.visual_store.get_lang());
     const translation = this.get_translate(this.module.module_name_id);
     // Guard against missing translation object or key
     const value = (translation as any)?.[langKey];
