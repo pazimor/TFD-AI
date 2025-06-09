@@ -16,6 +16,9 @@ export interface BuildState {
   reactor: Reactor;
   externals: ExternalComponent[];
   _load_build: boolean;
+  _save_build: boolean;
+  saveUserId: string;
+  saveName: string;
   id: number;
 }
 
@@ -29,6 +32,9 @@ const initialBuildState: BuildState = {
   reactor: defaultReactor,
   externals: Array.from({ length: 4 }, () => ({ ...defaultExternalComponent })),
   _load_build: false,
+  _save_build: false,
+  saveUserId: '',
+  saveName: '',
   id: 0,
 };
 
@@ -46,6 +52,21 @@ export const buildStore = signalStore(
           withCredentials: true,
           transferCache: true,
         }
+        : undefined,
+    ),
+    saveResource: httpResource<SavedBuild | undefined>(() =>
+      store._save_build()
+        ? {
+            url: `${environment.apiBaseUrl}/builds`,
+            method: 'POST',
+            body: {
+              user_id: store.saveUserId(),
+              name: store.saveName(),
+              data: store.serialize(),
+            },
+            withCredentials: true,
+            transferCache: true,
+          }
         : undefined,
     ),
   })),
@@ -88,9 +109,16 @@ export const buildStore = signalStore(
       patchState(store, data);
     },
     loadFromApi: (id: number) => {
-      //TODO :
-      // complete this function: patch state (set ID and unlock var),
-      // reload resources
+      patchState(store, { id, _load_build: true });
+      store.resource.reload();
+      if (store.resource.hasValue()) {
+        const saved = store.resource.value() as SavedBuild;
+        patchState(store, { ...saved.build_data, id: saved.build_id });
+      }
+    },
+    saveToApi: (userId: string, name: string) => {
+      patchState(store, { saveUserId: userId, saveName: name, _save_build: true });
+      store.saveResource.reload();
     },
   }))
 );
