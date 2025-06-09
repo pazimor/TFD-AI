@@ -1,12 +1,11 @@
-import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
-import { inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { signalStore, withState, withMethods, patchState, withProps } from '@ngrx/signals';
+import { httpResource } from '@angular/common/http';
 import { ModuleResponse, defaultModule } from '../types/module.types';
 import { DescendantsResponse, defaultDescendants } from '../types/descendant.types';
 import { WeaponResponse, defaultWeapon } from '../types/weapon.types';
 import { Reactor, defaultReactor } from '../types/reactor.types';
 import { ExternalComponent, defaultExternalComponent } from '../types/external.types';
-import { environment } from '../env/environment';
+import { environment } from '../../env/environment';
 import { SavedBuild } from '../types/build.types';
 
 export interface BuildState {
@@ -16,6 +15,8 @@ export interface BuildState {
   weaponsModules: ModuleResponse[][];
   reactor: Reactor;
   externals: ExternalComponent[];
+  _load_build: boolean;
+  id: number;
 }
 
 const initialBuildState: BuildState = {
@@ -27,6 +28,8 @@ const initialBuildState: BuildState = {
   ),
   reactor: defaultReactor,
   externals: Array.from({ length: 4 }, () => ({ ...defaultExternalComponent })),
+  _load_build: false,
+  id: 0,
 };
 
 export const buildStore = signalStore(
@@ -34,9 +37,19 @@ export const buildStore = signalStore(
     providedIn: 'root'
   },
   withState<BuildState>(initialBuildState),
-  withMethods((store) => {
-    const http = inject(HttpClient);
-    return {
+  withProps((store) => ({
+    resource: httpResource<SavedBuild[] | undefined>(() =>
+      store._load_build()
+        ? {
+          url: `${environment.apiBaseUrl}/build/${store.id}`,
+          method: 'GET',
+          withCredentials: true,
+          transferCache: true,
+        }
+        : undefined,
+    ),
+  })),
+  withMethods((store) => ({
     setDescendant: (desc: DescendantsResponse) => {
       patchState(store, { descendant: desc });
     },
@@ -75,13 +88,9 @@ export const buildStore = signalStore(
       patchState(store, data);
     },
     loadFromApi: (id: number) => {
-      http
-        .get<SavedBuild>(`${environment.apiBaseUrl}/build/${id}`, {
-          withCredentials: true,
-        })
-        .subscribe((res) => {
-          patchState(store, res.build_data as BuildState);
-        });
+      //TODO :
+      // complete this function: patch state (set ID and unlock var),
+      // reload resources
     },
   }))
 );

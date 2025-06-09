@@ -1,6 +1,6 @@
 import { signalStore, withState, withProps, withMethods, patchState } from '@ngrx/signals';
 import { httpResource } from '@angular/common/http';
-import { environment } from '../env/environment';
+import { environment } from '../../env/environment';
 import { SavedBuild } from '../types/build.types';
 
 export interface BuildListState {
@@ -12,7 +12,7 @@ export interface BuildListState {
 const initialState: BuildListState = {
   user_id: '',
   builds: [],
-  _load: false,
+  _load: false, //TODO: refactor this to match data.store.ts unlock type
 };
 
 export const buildListStore = signalStore(

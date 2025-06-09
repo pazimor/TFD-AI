@@ -16,6 +16,7 @@
 - Auth: Google OAuth (via frontend, not handled by backend)
 
 ## File Structure
+```
 api/
 ├── api.py                 # main Flask app, all routes
 ├── fillroutes/            # Data importers for various domains
@@ -23,7 +24,8 @@ api/
 ├── parsing.py             # Helpers for parsing text/effects
 ├── request_service.py     # External API fetches
 ├── requirements.txt       # All dependencies
-├── Dockerfile             # Multistage build (builder/runtime)
+└── Dockerfile             # Multistage build (builder/runtime)
+```
 
 ## Coding Standards
 - One route per data type (`/api/modules`, `/api/weapons`, etc.)

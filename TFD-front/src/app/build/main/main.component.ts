@@ -2,7 +2,7 @@ import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../env/environment';
+import { environment } from '../../../env/environment';
 import { buildStore } from '../../store/build.store';
 import { loginStore } from '../../store/login.store';
 import { WeaponBuildComponent } from '../weapon/weapon.component';
@@ -38,6 +38,8 @@ export class MainBuildComponent implements OnInit {
     const userId = this.login_store.user()?.id;
     if (!userId || !this.buildName) { return; }
     const data = this.build_store.serialize();
+
+    //TODO: implement this requests inside the build_store and call it
     this.http.post(`${environment.apiBaseUrl}/builds`, {
       user_id: userId,
       name: this.buildName,

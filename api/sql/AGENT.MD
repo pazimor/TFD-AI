@@ -6,14 +6,15 @@
 - Alembic for schema migrations
 
 ## Structure
-
+```
 sql/
 ├── connectionString.py      # Connection string (do not expose secrets!)
 ├── database.py              # Engine/Session management
 ├── model.py                 # Declarative SQLAlchemy models
 ├── CRUD/                    # All entity CRUD operations
-├── alembic/                 # Migrations and version scripts
-│   └── versions/            # One .py per migration
+└── alembic/                 # Migrations and version scripts
+    └── versions/            # One .py per migration
+```
 
 ## DB Conventions
 - All tables/columns named in snake_case

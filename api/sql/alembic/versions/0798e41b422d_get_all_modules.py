@@ -16,6 +16,16 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
+    op.create_table(
+        'user_builds',
+        sa.Column('build_id', sa.Integer, primary_key=True, autoincrement=True),
+        sa.Column('user_id', sa.String(255), sa.ForeignKey('users.id'), nullable=False),
+        sa.Column('build_name', sa.String(255), nullable=False),
+        sa.Column('build_data', sa.JSON, nullable=False),
+        sa.Column('created_at', sa.DateTime, server_default=sa.func.now()),
+        sa.Column('updated_at', sa.DateTime, server_default=sa.func.now(), onupdate=sa.func.now()),
+    )
+
     op.execute("DROP PROCEDURE IF EXISTS GetAllModules;")
     op.execute(
         """
@@ -389,6 +399,8 @@ def upgrade() -> None:
     )
 
 def downgrade() -> None:
+    op.drop_table('user_builds')
+
     op.execute("DROP PROCEDURE IF EXISTS GetAllExternalComponents;")
     op.execute("DROP PROCEDURE IF EXISTS GetAllTranslations;")
     op.execute("DROP PROCEDURE IF EXISTS GetWeaponCoreSlots;")
