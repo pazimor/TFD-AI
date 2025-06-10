@@ -6,7 +6,7 @@ import { WeaponResponse, defaultWeapon } from '../types/weapon.types';
 import { Reactor, defaultReactor } from '../types/reactor.types';
 import { ExternalComponent, defaultExternalComponent } from '../types/external.types';
 import { environment } from '../../env/environment';
-import { SavedBuild } from '../types/build.types';
+import { SavedBuild, initSavedBuild } from '../types/build.types';
 
 export interface BuildState {
   descendant: DescendantsResponse;
@@ -17,9 +17,7 @@ export interface BuildState {
   externals: ExternalComponent[];
   _load_build: boolean;
   _save_build: boolean;
-  saveUserId: string;
-  saveName: string;
-  id: number;
+  currentBuild: SavedBuild;
 }
 
 const initialBuildState: BuildState = {
@@ -33,9 +31,7 @@ const initialBuildState: BuildState = {
   externals: Array.from({ length: 4 }, () => ({ ...defaultExternalComponent })),
   _load_build: false,
   _save_build: false,
-  saveUserId: '',
-  saveName: '',
-  id: 0,
+  currentBuild: initSavedBuild
 };
 
 export const buildStore = signalStore(
@@ -44,26 +40,22 @@ export const buildStore = signalStore(
   },
   withState<BuildState>(initialBuildState),
   withProps((store) => ({
-    resource: httpResource<SavedBuild[] | undefined>(() =>
+    getBuildRessource: httpResource<SavedBuild | undefined>(() =>
       store._load_build()
         ? {
-          url: `${environment.apiBaseUrl}/build/${store.id}`,
+          url: `${environment.apiBaseUrl}/build/${store.currentBuild.build_id}`,
           method: 'GET',
           withCredentials: true,
           transferCache: true,
         }
         : undefined,
     ),
-    saveResource: httpResource<SavedBuild | undefined>(() =>
+    SaveBuildResource: httpResource<SavedBuild | undefined>(() =>
       store._save_build()
         ? {
             url: `${environment.apiBaseUrl}/builds`,
             method: 'POST',
-            body: {
-              user_id: store.saveUserId(),
-              name: store.saveName(),
-              data: store.serialize(),
-            },
+            body: store.currentBuild(),
             withCredentials: true,
             transferCache: true,
           }
@@ -105,20 +97,17 @@ export const buildStore = signalStore(
       reactor: store.reactor(),
       externals: store.externals(),
     }),
-    load: (data: BuildState) => {
-      patchState(store, data);
-    },
     loadFromApi: (id: number) => {
-      patchState(store, { id, _load_build: true });
-      store.resource.reload();
-      if (store.resource.hasValue()) {
-        const saved = store.resource.value() as SavedBuild;
-        patchState(store, { ...saved.build_data, id: saved.build_id });
+      patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id }, _load_build: true });
+      store.getBuildRessource.reload();
+      if (store.getBuildRessource.hasValue()) {
+        const saved = store.getBuildRessource.value()!;
+        patchState(store, { currentBuild: saved });
       }
     },
     saveToApi: (userId: string, name: string) => {
-      patchState(store, { saveUserId: userId, saveName: name, _save_build: true });
-      store.saveResource.reload();
+      patchState(store, { currentBuild: { ...store.currentBuild(), user_id: userId, build_name: name}, _save_build: true });
+      store.SaveBuildResource.reload();
     },
   }))
 );
