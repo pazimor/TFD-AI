@@ -216,7 +216,7 @@ export const dataStore = signalStore(
       withCredentials: true,
       transferCache: true,
     }) : undefined),
-    Resource: httpResource<Boards | undefined>(() => store.unlock.boards() ? ({
+    BoardResource: httpResource<Boards | undefined>(() => store.unlock.boards() ? ({
       url: `${API_URL}/boards`,
       method: 'GET',
       withCredentials: true,

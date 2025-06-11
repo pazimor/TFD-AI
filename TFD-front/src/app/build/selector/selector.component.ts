@@ -125,22 +125,22 @@ export class selectorComponent {
   }
 
   selectModules(module: ModuleResponse): void {
-    this.dialogRef.close(module);
+    this.dialogRef.close(module.module_id);
   }
 
   selectDescendant(descendant: DescendantsResponse): void {
-    this.dialogRef.close(descendant);
+    this.dialogRef.close(descendant.descendant_id);
   }
 
-  selectWeapon(weapon: WeaponResponse ): void {
-    this.dialogRef.close(weapon);
+  selectWeapon(weapon: WeaponResponse): void {
+    this.dialogRef.close(weapon.weapon_id);
   }
 
   selectReactor(reactor: Reactor): void {
-    this.dialogRef.close(reactor);
+    this.dialogRef.close(reactor.reactor_id);
   }
 
   selectExternal(external: ExternalComponent): void {
-    this.dialogRef.close(external);
+    this.dialogRef.close(external.external_component_id);
   }
 }

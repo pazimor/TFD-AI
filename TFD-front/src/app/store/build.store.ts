@@ -1,9 +1,21 @@
-import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
+import { signalStore, withState, withMethods, patchState, withProps } from '@ngrx/signals';
+import { httpResource } from '@angular/common/http';
 import { ModuleResponse, defaultModule } from '../types/module.types';
 import { DescendantsResponse, defaultDescendants } from '../types/descendant.types';
 import { WeaponResponse, defaultWeapon } from '../types/weapon.types';
 import { Reactor, defaultReactor } from '../types/reactor.types';
 import { ExternalComponent, defaultExternalComponent } from '../types/external.types';
+import { environment } from '../../env/environment';
+import { SavedBuild, initSavedBuild, BuildFromDataBase } from '../types/build.types';
+
+export interface BuildToHydrate {
+  descendant: DescendantsResponse;
+  descendantModules: ModuleResponse[];
+  weapons: WeaponResponse[];
+  weaponsModules: ModuleResponse[][];
+  reactor: Reactor;
+  externals: ExternalComponent[];
+}
 
 export interface BuildState {
   descendant: DescendantsResponse;
@@ -12,6 +24,9 @@ export interface BuildState {
   weaponsModules: ModuleResponse[][];
   reactor: Reactor;
   externals: ExternalComponent[];
+  _load_build: boolean;
+  _save_build: boolean;
+  currentBuild: SavedBuild;
 }
 
 const initialBuildState: BuildState = {
@@ -23,6 +38,9 @@ const initialBuildState: BuildState = {
   ),
   reactor: defaultReactor,
   externals: Array.from({ length: 4 }, () => ({ ...defaultExternalComponent })),
+  _load_build: false,
+  _save_build: false,
+  currentBuild: initSavedBuild
 };
 
 export const buildStore = signalStore(
@@ -30,6 +48,49 @@ export const buildStore = signalStore(
     providedIn: 'root'
   },
   withState<BuildState>(initialBuildState),
+  withMethods((store) => ({
+    serialize: (): BuildFromDataBase => ({
+      descendant: store.descendant().descendant_id,
+      descendantModules: store.descendantModules().map(module => module.module_id),
+      weapons: store.weapons().map(weapons => weapons.weapon_id ),
+      weaponsModules: store.weaponsModules().map(weapons => weapons.map(module => module.module_id)),
+      reactor: store.reactor().reactor_id,
+      externals: store.externals().map(compo => compo.external_component_id),
+    }),
+    hydrate: (build: BuildToHydrate) => {
+      patchState(store, {
+        descendant: build.descendant,
+        descendantModules: build.descendantModules,
+        weapons: build.weapons,
+        weaponsModules: build.weaponsModules,
+        reactor: build.reactor,
+        externals: build.externals
+      })
+    },
+  })),
+  withProps((store) => ({
+    getBuildRessource: httpResource<SavedBuild | undefined>(() =>
+      store._load_build()
+        ? {
+          url: `${environment.apiBaseUrl}/build/${store.currentBuild().build_id}`,
+          method: 'GET',
+          withCredentials: true,
+          transferCache: true,
+        }
+        : undefined,
+    ),
+    SaveBuildResource: httpResource<SavedBuild | undefined>(() =>
+      store._save_build()
+        ? {
+            url: `${environment.apiBaseUrl}/builds`,
+            method: 'POST',
+            body: store.currentBuild(),
+            withCredentials: true,
+            transferCache: true,
+          }
+        : undefined,
+    ),
+  })),
   withMethods((store) => ({
     setDescendant: (desc: DescendantsResponse) => {
       patchState(store, { descendant: desc });
@@ -57,5 +118,23 @@ export const buildStore = signalStore(
       externals[index] = external;
       patchState(store, { externals });
     },
+    loadFromApi: (id: number) => {
+      patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id }, _load_build: true });
+      store.getBuildRessource.reload();
+      if (store.getBuildRessource.hasValue()) {
+        const saved = store.getBuildRessource.value()!;
+        console.log(saved)
+        patchState(store, { currentBuild: saved });
+      }
+    },
+    saveToApi: (userId: string, name: string) => {
+      patchState(store, { currentBuild: {
+        ...store.currentBuild(), user_id: userId, build_name: name, build_data: store.serialize()
+        }, _save_build: true });
+      store.SaveBuildResource.reload();
+    },
+    setBuildID: (id: number) => {
+      patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id } , _save_build: false });
+    }
   }))
 );

@@ -13,11 +13,13 @@ import { visualStore } from './store/display.store';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {MainBuildComponent} from './build/main/main.component';
+import { SavedBuildsListComponent } from './build/saved/saved-builds.component';
 import { getUILabel } from './lang.utils';
 
 
+
 @Component({
-  imports: [CommonModule, FormsModule, sidebarComponent, MatTab, MatTabGroup, MainBuildComponent],
+  imports: [CommonModule, FormsModule, sidebarComponent, MatTab, MatTabGroup, MainBuildComponent, SavedBuildsListComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

@@ -21,6 +21,8 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.alter_column('modifiers', 'modifier_name', existing_type=sa.String(255), type_=sa.JSON())
 
+
+
     op.execute("DROP PROCEDURE IF EXISTS AddModifier;")
     op.execute("DROP PROCEDURE IF EXISTS UpdateModifier;")
     op.execute("DROP PROCEDURE IF EXISTS GetModifiersByType;")

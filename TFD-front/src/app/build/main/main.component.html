@@ -12,7 +12,10 @@
       <span class="label">{{ label('descendant') }}</span>
       <button class="control" (click)="addDescendant()">+</button>
     </div>
-    <button class="control save" (click)="saveBuild()">{{ label('save') }}</button>
+    <div>
+      <input type="text" [(ngModel)]="buildName" placeholder="Build Name" class="build-name-input"/>
+      <button class="control save" (click)="saveBuild()">{{ label('save') }}</button>
+    </div>
   </section>
 
   <div class="column" *ngIf="descendants()"> <!--div descendant-->
