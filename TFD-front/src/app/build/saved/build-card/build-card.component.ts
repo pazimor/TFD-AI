@@ -17,7 +17,7 @@ export interface BuildSummary { // Exporting for potential use in parent
 })
 export class BuildCardComponent {
   @Input({ required: true }) build!: BuildSummary;
-  @Output() viewBuild = new EventEmitter<number>(); // Changed event name for clarity
+  @Output() viewBuild = new EventEmitter<number>();
 
   onCardClick(): void {
     this.viewBuild.emit(this.build.build_id);

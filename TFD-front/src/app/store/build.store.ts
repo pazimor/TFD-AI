@@ -6,7 +6,16 @@ import { WeaponResponse, defaultWeapon } from '../types/weapon.types';
 import { Reactor, defaultReactor } from '../types/reactor.types';
 import { ExternalComponent, defaultExternalComponent } from '../types/external.types';
 import { environment } from '../../env/environment';
-import { SavedBuild, initSavedBuild } from '../types/build.types';
+import { SavedBuild, initSavedBuild, BuildFromDataBase } from '../types/build.types';
+
+export interface BuildToHydrate {
+  descendant: DescendantsResponse;
+  descendantModules: ModuleResponse[];
+  weapons: WeaponResponse[];
+  weaponsModules: ModuleResponse[][];
+  reactor: Reactor;
+  externals: ExternalComponent[];
+}
 
 export interface BuildState {
   descendant: DescendantsResponse;
@@ -40,7 +49,7 @@ export const buildStore = signalStore(
   },
   withState<BuildState>(initialBuildState),
   withMethods((store) => ({
-    serialize: () => ({
+    serialize: (): BuildFromDataBase => ({
       descendant: store.descendant().descendant_id,
       descendantModules: store.descendantModules().map(module => module.module_id),
       weapons: store.weapons().map(weapons => weapons.weapon_id ),
@@ -48,6 +57,16 @@ export const buildStore = signalStore(
       reactor: store.reactor().reactor_id,
       externals: store.externals().map(compo => compo.external_component_id),
     }),
+    hydrate: (build: BuildToHydrate) => {
+      patchState(store, {
+        descendant: build.descendant,
+        descendantModules: build.descendantModules,
+        weapons: build.weapons,
+        weaponsModules: build.weaponsModules,
+        reactor: build.reactor,
+        externals: build.externals
+      })
+    },
   })),
   withProps((store) => ({
     getBuildRessource: httpResource<SavedBuild | undefined>(() =>
