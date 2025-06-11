@@ -32,7 +32,8 @@ TFD-front/
 - Signal stores pattern (see `store/*.ts`)
 - Use modern Angular patterns (signals over observables)
 - All user-facing strings should be translatable (i18n ready)
-- All API calls use Angular HttpClient, endpoints from environment config
+- HTTP requests must be defined as `httpResource` objects inside stores.
+- Do **not** inject `HttpClient` directly anywhere else.
 
 ## Development
 - Use `ng serve` for local dev (`http://localhost:4200`)
@@ -44,7 +45,17 @@ TFD-front/
 - Always use explicit typing
 - Follow Angular CLI scaffolding for new components
 - Use `environment.ts`/`environment.prod.ts` for switching API endpoints
-- **DO NOT USE** httpclient use httpResources directly inside stores
+- Declare all interfaces and custom types in a file within `src/app/types`
+  (create a new one if needed)
+
+## Patterns
+- Each store is created with `signalStore` using `withState`, `withProps` and
+  `withMethods`.
+- HTTP calls are defined as `httpResource` properties inside stores and
+  triggered via `.reload()`.
+- Default objects like `defaultModule` or `defaultWeapon` initialize state to
+  avoid undefined values.
+- API base URLs come from the environment files.
 
 ## PR/Commit Guidelines
 - All commit / PR messages / branch name in English

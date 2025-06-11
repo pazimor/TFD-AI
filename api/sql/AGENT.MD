@@ -34,6 +34,12 @@ sql/
 - Data fetched from remote JSON APIs is normalized before DB insert
 - All importers should handle upserts to avoid duplicates
 
+## Patterns
+- Each entity has a dedicated CRUD module under `sql/CRUD`.
+- Models are declared in `model.py` and reused across migrations and CRUD.
+- Alembic migrations live in `alembic/versions` with descriptive filenames.
+- CRUD modules execute stored procedures rather than inline SQL queries.
+
 ## PR/Commit Guidelines
 - PRs must document schema changes
 - All comments/messages in English

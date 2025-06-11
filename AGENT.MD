@@ -49,3 +49,9 @@ commits should be prototyped as follow: `short: {message related}`
 
 ## File/Folder Structure
 See the sub-AGENT.MD files for detailed breakdowns for each layer. and keep in mind the previous ones
+
+## Data Flow
+1. Frontend stores use `httpResource` to call API endpoints.
+2. Flask routes forward the request to CRUD modules under `api/sql`.
+3. CRUD modules execute stored procedures to read or write data.
+4. Results are returned as JSON back to the stores via the API.
