@@ -1,6 +1,8 @@
 import {Component, Inject, inject, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {dataStore, defaultTranslate, TranslationString} from '../../store/data.store';
+import { visualStore } from '../../store/display.store';
+import { getTranslationField } from '../../lang.utils';
 import { ModuleComponent } from '../module/display/module-display.component';
 import { ReactorDisplayComponent } from '../reactor/display/reactor-display.component';
 import { ExternalDisplayComponent } from '../external/display/external-display.component';
@@ -35,6 +37,7 @@ import { ExternalComponent } from '../../types/external.types';
 })
 export class selectorComponent {
   readonly data_store = inject(dataStore);
+  readonly visual_store = inject(visualStore);
 
   filterClass: number;
   type: string = "";
@@ -62,7 +65,9 @@ export class selectorComponent {
 
   filteredModules() {
     return this.data_store.modulesResource.value()?.filter(module => {
-      const matchName = !this.searchText || this.get_translate(module.module_name_id).fr?.toLowerCase().includes(this.searchText.toLowerCase());
+      const langKey = getTranslationField(this.visual_store.get_lang());
+      const name = (this.get_translate(module.module_name_id) as any)[langKey] as string;
+      const matchName = !this.searchText || name?.toLowerCase().includes(this.searchText.toLowerCase());
       const matchClass = !this.filterClass || (module.module_class_id === this.filterClass);
       const matchDesc = this.compareDescendantIDs(module);
       return matchName && matchClass && matchDesc;

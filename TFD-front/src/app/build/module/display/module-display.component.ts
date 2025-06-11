@@ -2,6 +2,8 @@ import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { dataStore, defaultTranslate, TranslationString } from '../../../store/data.store';
 import { ModuleResponse } from '../../../types/module.types';
+import { visualStore } from '../../../store/display.store';
+import { getTranslationField } from '../../../lang.utils';
 
 @Component({
   standalone: true,
@@ -14,6 +16,7 @@ export class ModuleComponent {
   constructor() {}
 
   readonly data_store = inject(dataStore);
+  readonly visual_store = inject(visualStore);
 
   @Input() module!: ModuleResponse;
 
@@ -26,6 +29,10 @@ export class ModuleComponent {
   }
 
   get name(): string {
-    return this.get_translate(this.module.module_name_id)?.fr ?? '';
+    const langKey = getTranslationField(this.visual_store.get_lang());
+    const translation = this.get_translate(this.module.module_name_id);
+    // Guard against missing translation object or key
+    const value = (translation as any)?.[langKey];
+    return value ?? '';
   }
 }

@@ -13,6 +13,7 @@ import { visualStore } from './store/display.store';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {MainBuildComponent} from './build/main/main.component';
+import { getUILabel } from './lang.utils';
 
 
 @Component({
@@ -42,4 +43,8 @@ export class AppComponent {
   selectedIndex = 0;
 
   isSidebarOpen$$: Signal<boolean> = this.visual_store.isSidebarOpen
+
+  label(key: Parameters<typeof getUILabel>[1]) {
+    return getUILabel(this.visual_store.get_lang(), key);
+  }
 }
