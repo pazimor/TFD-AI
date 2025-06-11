@@ -77,14 +77,18 @@ export class DescedantBuildComponent {
       data: this.descendant_data
     });
 
-    dialogRef.afterClosed().subscribe((res: DescendantsResponse) => {
-      if (res === undefined) {
-        res = defaultDescendants;
+    dialogRef.afterClosed().subscribe((id: number) => {
+      if (id === undefined) {
+        id = 0;
       }
+
+      const res = this.data_store.descendantResource.value()
+        ?.filter(des => des.descendant_id === id)[0]
+        ?? defaultDescendants
       this.build_store.setDescendant(res);
       this.module_data.descendant = res.descendant_id
 
-      //todo: double check compatibles modules
+      //TODO: double check compatibles modules
     });
   }
 

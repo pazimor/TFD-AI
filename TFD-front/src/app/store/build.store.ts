@@ -39,11 +39,21 @@ export const buildStore = signalStore(
     providedIn: 'root'
   },
   withState<BuildState>(initialBuildState),
+  withMethods((store) => ({
+    serialize: () => ({
+      descendant: store.descendant().descendant_id,
+      descendantModules: store.descendantModules().map(module => module.module_id),
+      weapons: store.weapons().map(weapons => weapons.weapon_id ),
+      weaponsModules: store.weaponsModules().map(weapons => weapons.map(module => module.module_id)),
+      reactor: store.reactor().reactor_id,
+      externals: store.externals().map(compo => compo.external_component_id),
+    }),
+  })),
   withProps((store) => ({
     getBuildRessource: httpResource<SavedBuild | undefined>(() =>
       store._load_build()
         ? {
-          url: `${environment.apiBaseUrl}/build/${store.currentBuild.build_id}`,
+          url: `${environment.apiBaseUrl}/build/${store.currentBuild().build_id}`,
           method: 'GET',
           withCredentials: true,
           transferCache: true,
@@ -89,25 +99,23 @@ export const buildStore = signalStore(
       externals[index] = external;
       patchState(store, { externals });
     },
-    serialize: () => ({
-      descendant: store.descendant(),
-      descendantModules: store.descendantModules(),
-      weapons: store.weapons(),
-      weaponsModules: store.weaponsModules(),
-      reactor: store.reactor(),
-      externals: store.externals(),
-    }),
     loadFromApi: (id: number) => {
       patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id }, _load_build: true });
       store.getBuildRessource.reload();
       if (store.getBuildRessource.hasValue()) {
         const saved = store.getBuildRessource.value()!;
+        console.log(saved)
         patchState(store, { currentBuild: saved });
       }
     },
     saveToApi: (userId: string, name: string) => {
-      patchState(store, { currentBuild: { ...store.currentBuild(), user_id: userId, build_name: name}, _save_build: true });
+      patchState(store, { currentBuild: {
+        ...store.currentBuild(), user_id: userId, build_name: name, build_data: store.serialize()
+        }, _save_build: true });
       store.SaveBuildResource.reload();
     },
+    setBuildID: (id: number) => {
+      patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id } , _save_build: false });
+    }
   }))
 );

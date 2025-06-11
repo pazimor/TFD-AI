@@ -34,9 +34,6 @@ export const buildListStore = signalStore(
     load: (userId: string) => {
       patchState(store, { user_id: userId, _load: true });
       store.resource.reload();
-      if (store.resource.hasValue()) {
-        patchState(store, { builds: store.resource.value() as SavedBuild[] });
-      }
     },
   }))
 );

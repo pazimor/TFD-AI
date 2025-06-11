@@ -58,7 +58,6 @@ def api_get_descendants_full():
         mimetype="application/json"
     )
 
-
 @app.route('/api/weapons', methods=['GET'])
 def api_get_weapons_full():
     data = ui.get_all_weapons_full()
@@ -124,17 +123,17 @@ def import_data():
 def api_save_build():
     try:
         payload = request.json
-        if 'build_id' in payload:
+        if payload.get('build_id', 0) > 0:
             updated = builds.update_build(
                 payload['build_id'],
                 payload['user_id'],
-                payload['name'],
-                payload['data'],
+                payload['build_name'],
+                payload['build_data'],
             )
             if not updated:
                 return jsonify({'success': False, 'error': 'not found'}), 404
             return jsonify({'success': True, 'build_id': payload['build_id']}), 200
-        build = builds.add_build(payload['user_id'], payload['name'], payload['data'])
+        build = builds.add_build(payload['user_id'], payload['build_name'], payload['build_data'])
         if build:
             return jsonify({'success': True, 'build_id': build.build_id}), 201
         return jsonify({'success': False}), 400
@@ -163,13 +162,20 @@ def api_list_builds(user_id):
 @app.route('/api/build/<int:build_id>', methods=['GET'])
 def api_get_build(build_id):
     b = builds.get_build(build_id)
+    # Convert stored JSON string into a Python object
+    build_data = b.build_data
+    if isinstance(build_data, str):
+        try:
+            build_data = json.loads(build_data)
+        except ValueError:
+            pass
     if not b:
         return jsonify({'success': False, 'error': 'not found'}), 404
     return jsonify({
         'build_id': b.build_id,
         'user_id': b.user_id,
         'build_name': b.build_name,
-        'build_data': b.build_data,
+        'build_data': build_data,
     })
 
 if __name__ == '__main__':

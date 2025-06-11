@@ -1,4 +1,5 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, effect } from '@angular/core';
+import { patchState } from '@ngrx/signals';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { buildStore } from '../../store/build.store';
@@ -22,7 +23,13 @@ export class MainBuildComponent implements OnInit {
   weapons = signal<number>(0);
   descendants = signal<number>(0);
 
-  // convenience computed signal that yields an array of length `weapons()`
+  readonly _saveEffect = effect(() => {
+    const resource = this.build_store.SaveBuildResource;
+    if (resource?.hasValue()) {
+      this.build_store.setBuildID(resource.value().build_id)
+    }
+  });
+
   weaponRange = computed(() => Array.from({ length: this.weapons() }));
 
   addWeapon() { this.weapons.update(v => Math.min(3, v + 1)); }
@@ -33,7 +40,19 @@ export class MainBuildComponent implements OnInit {
 
   saveBuild() {
     const userId = this.login_store.user()?.id;
-    if (!userId || !this.buildName) { return; }
+
+    if (!userId) {
+      console.error('User ID not found. Cannot save build.');
+      alert('User information not found. Cannot save build.'); // User-facing feedback
+      return;
+    }
+
+    if (!this.buildName) {
+      console.error('Build name is required.');
+      alert('Build name is required.'); // User-facing feedback
+      return;
+    }
+
     this.build_store.saveToApi(userId, this.buildName);
   }
 

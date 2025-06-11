@@ -1,11 +1,7 @@
 <div class="saved-builds-container">
-  <h2>My Saved Builds</h2>
-
-  <button (click)="fetchBuilds()" [disabled]="isLoading()">Refresh Builds</button>
 
   <div *ngIf="isLoading()" class="loading-indicator">
     <p>Loading builds...</p>
-    <!-- You can add a spinner or more elaborate loading animation here -->
   </div>
 
   <div *ngIf="errorLoading()" class="error-message">
@@ -13,12 +9,13 @@
   </div>
 
   <div *ngIf="!isLoading() && !errorLoading() && builds().length === 0" class="no-builds">
-    <p>You haven't saved any builds yet. Go to the Build Maker to create one!</p>
+    <p>🔒 no build Yet login and create your first one</p>
   </div>
 
+  <button (click)="refresh()"> refresh </button>
   <div *ngIf="!isLoading() && !errorLoading() && builds().length > 0" class="builds-grid">
     @for (build of builds(); track build.build_id) {
-      <app-build-card [build]="build" (viewBuild)="handleViewBuild($event)"></app-build-card>
+      <app-build-card [build]="build" (viewBuild)="LoadBuild($event)"></app-build-card>
     }
   </div>
 </div>
