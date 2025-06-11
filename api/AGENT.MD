@@ -34,6 +34,13 @@ api/
 - All migrations via Alembic (versions tracked in `sql/alembic/versions/`)
 - ORM models are strictly typed (see `sql/model.py`)
 
+## Patterns
+- Routes return JSON using `app.response_class` with `json.dumps(..., ensure_ascii=False)`.
+- Data access is performed via modules in `sql/CRUD`.
+- Each CRUD function calls a stored procedure defined in the database.
+- Writing raw SQL queries directly in these modules is forbidden.
+- Long running imports launch a `threading.Thread` from `fillroutes/full.py`.
+
 ## Development
 - Use `gunicorn` for prod, `flask run` for debug only
 - Dedicated user (`appuser`) for Docker container, never run as root
