@@ -6,6 +6,8 @@ import { buildStore } from '../../store/build.store';
 import { loginStore } from '../../store/login.store';
 import { WeaponBuildComponent } from '../weapon/weapon.component';
 import { DescedantBuildComponent } from '../descendant/descendant.component';
+import { visualStore } from '../../store/display.store';
+import { getUILabel } from '../../lang.utils';
 
 @Component({
   standalone: true,
@@ -14,9 +16,11 @@ import { DescedantBuildComponent } from '../descendant/descendant.component';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss', '../../../styles.scss']
 })
+
 export class MainBuildComponent implements OnInit {
   readonly build_store = inject(buildStore);
   readonly login_store = inject(loginStore);
+  readonly visual_store = inject(visualStore);
 
   buildName = '';
 
@@ -65,5 +69,9 @@ export class MainBuildComponent implements OnInit {
         this.build_store.loadFromApi(buildId);
       }
     }
+  }
+
+  label(key: Parameters<typeof getUILabel>[1]) {
+    return getUILabel(this.visual_store.get_lang(), key);
   }
 }

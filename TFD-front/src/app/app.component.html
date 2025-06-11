@@ -2,19 +2,19 @@
   <sidebar></sidebar>
   <div class="tabs sidebar-small">
     <mat-tab-group [(selectedIndex)]="selectedIndex">
-      <mat-tab label="Search">
+      <mat-tab [label]="label('search')">
         <div class="spacing">
           ⚠️ Work in progress ⚠️
         </div>
       </mat-tab>
 
-      <mat-tab label="Saved Builds">
+      <mat-tab [label]="label('savedBuilds')">
         <div class="spacing">
           <saved-builds-list></saved-builds-list>
         </div>
       </mat-tab>
 
-      <mat-tab label="Build Maker">
+      <mat-tab [label]="label('buildMaker')">
         <div class="spacing">
           <main-build></main-build>
         </div>
