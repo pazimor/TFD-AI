@@ -1,0 +1,6 @@
+<div class="build-card" (click)="onCardClick()" role="button" [attr.aria-label]="'View build ' + build.build_name">
+  <h3>{{ build.build_name }}</h3>
+  <p *ngIf="build.updated_at">Last updated: {{ build.updated_at | date:'mediumDate' }}</p>
+  <!-- <p *ngIf="build.user_google_id">Creator ID: {{ build.user_google_id }}</p>  TODO: feture to subscribe to others Creators-->
+  <!-- TODO: export link for other peoples -->
+</div>

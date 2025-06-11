@@ -6,8 +6,9 @@ import { WeaponDisplayComponent } from './display/weapon-display.component';
 import { selectorComponent } from '../selector/selector.component';
 import { MatDialog } from '@angular/material/dialog';
 import { defaultWeapon, WeaponResponse } from '../../types/weapon.types';
-import { ModuleResponse } from '../../types/module.types';
+import { defaultModule, ModuleResponse } from '../../types/module.types';
 import { buildStore } from '../../store/build.store';
+import { dataStore } from '../../store/data.store';
 
 @Component({
   standalone: true,
@@ -18,6 +19,7 @@ import { buildStore } from '../../store/build.store';
 })
 export class WeaponBuildComponent {
   @Input() index = 0;
+  readonly data_store = inject(dataStore);
   readonly build_store = inject(buildStore);
 
   weapon = computed(() => this.build_store.weapons()[this.index]);
@@ -47,10 +49,14 @@ export class WeaponBuildComponent {
       autoFocus: true,
       data: this.weapon_data
     });
-    dialogRef.afterClosed().subscribe((res: WeaponResponse) => {
-      if (res === undefined) {
-        res = defaultWeapon;
+    dialogRef.afterClosed().subscribe((id: number) => {
+      if (id === undefined) {
+        id = 0;
       }
+
+      const res = this.data_store.weaponResource.value()
+        ?.filter(wea => wea.weapon_id === id)[0]
+        ?? defaultWeapon
       this.build_store.setWeaponAt(this.index, res);
       //TODO: make a fonction cause some weapons are not working and somtime there is incompatibles mods showing up
       this.module_data.filterClass = res.weapon_rounds_type_id

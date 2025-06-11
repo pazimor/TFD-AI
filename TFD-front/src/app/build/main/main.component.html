@@ -13,7 +13,7 @@
       <button class="control" (click)="addDescendant()">+</button>
     </div>
     <div>
-      <input [(ngModel)]="buildName" placeholder="Name" />
+      <input type="text" [(ngModel)]="buildName" placeholder="Build Name" class="build-name-input"/>
       <button class="control save" (click)="saveBuild()">Save</button>
     </div>
   </section>

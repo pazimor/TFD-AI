@@ -42,10 +42,15 @@ export class ModuleBuildComponent {
       data: this.data
     });
 
-    dialogRef.afterClosed().subscribe((res: ModuleResponse) => {
-      if (res === undefined) {
-        res = defaultModule;
+    dialogRef.afterClosed().subscribe((id: number) => {
+      if (id === undefined) {
+        id = 0;
       }
+
+      const res = this.data_store.modulesResource.value()
+        ?.filter(des => des.module_id === id)[0]
+        ?? defaultModule
+
       this._module = res;
       this.moduleSelected.emit(res);
       this.cdr.detectChanges();
