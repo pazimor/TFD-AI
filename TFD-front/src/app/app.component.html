@@ -3,9 +3,7 @@
   <div class="tabs sidebar-small">
     <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
       <mat-tab [label]="label('search')">
-        <div class="spacing">
-          ⚠️ Work in progress ⚠️
-        </div>
+        <search-tab></search-tab>
       </mat-tab>
 
       <mat-tab [label]="label('savedBuilds')">

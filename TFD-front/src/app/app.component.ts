@@ -14,6 +14,7 @@ import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {MainBuildComponent} from './build/main/main.component';
 import { SavedBuildsListComponent } from './build/saved/saved-builds.component';
+import { SearchComponent } from './search/search.component';
 import { getUILabel } from './lang.utils';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
@@ -21,7 +22,16 @@ import { filter } from 'rxjs';
 
 
 @Component({
-  imports: [CommonModule, FormsModule, sidebarComponent, MatTab, MatTabGroup, MainBuildComponent, SavedBuildsListComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    sidebarComponent,
+    MatTab,
+    MatTabGroup,
+    MainBuildComponent,
+    SavedBuildsListComponent,
+    SearchComponent
+  ],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -59,7 +69,8 @@ export class AppComponent {
   }
 
   onTabChange(index: number) {
-    const route = index === 1 ? '/my-builds' : index === 2 ? '/build-maker' : '/';
+    const route =
+      index === 1 ? '/my-builds' : index === 2 ? '/build-maker' : '/search';
     this.router.navigateByUrl(route);
   }
 

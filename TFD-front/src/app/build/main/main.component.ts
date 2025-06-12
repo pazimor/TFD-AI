@@ -92,6 +92,7 @@ export class MainBuildComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.data_store.load_all();
     this.route.queryParamMap.subscribe(params => {
       const idParam = params.get('build');
       if (idParam) {
