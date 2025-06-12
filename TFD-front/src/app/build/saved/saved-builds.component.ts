@@ -1,5 +1,5 @@
 import { Component, inject, signal, WritableSignal, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { loginStore } from '../../store/login.store';
 import { BuildCardComponent, BuildSummary } from './build-card/build-card.component';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { getUILabel } from '../../lang.utils';
 
 @Component({
   selector: 'saved-builds-list',
-  imports: [CommonModule, BuildCardComponent], // BuildCardComponent added
+  imports: [BuildCardComponent], // BuildCardComponent added
   templateUrl: './saved-builds.component.html',
   styleUrls: ['./saved-builds.component.scss']
 })

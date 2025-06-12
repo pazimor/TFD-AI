@@ -1,5 +1,5 @@
 import {Component, Inject, inject, Input} from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {dataStore, defaultTranslate, TranslationString} from '../../store/data.store';
 import { visualStore } from '../../store/display.store';
 import { getTranslationField } from '../../lang.utils';
@@ -22,7 +22,6 @@ import { ExternalComponent } from '../../types/external.types';
   standalone: true,
   selector: 'selector',
   imports: [
-    CommonModule,
     ModuleComponent,
     MatDialogModule,
     MatProgressSpinnerModule,
@@ -30,8 +29,8 @@ import { ExternalComponent } from '../../types/external.types';
     DescendantDisplayComponent,
     WeaponDisplayComponent,
     ReactorDisplayComponent,
-    ExternalDisplayComponent,
-  ],
+    ExternalDisplayComponent
+],
   templateUrl: './selector.component.html',
   styleUrls: ['./selector.component.scss', '../../../styles.scss']
 })

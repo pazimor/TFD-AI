@@ -18,13 +18,15 @@
     </div>
   </section>
 
-  <div class="column" *ngIf="descendants()"> <!--div descendant-->
-    <descendant-build></descendant-build>
-  </div>
+  @if (descendants()) {
+    <div class="column"> <!--div descendant-->
+      <descendant-build></descendant-build>
+    </div>
+  }
 
   <div class="column weapons-row"> <!-- list weapons -->
-    <ng-container *ngFor="let _ of weaponRange(); let i = index">
+    @for (_ of weaponRange(); track _; let i = $index) {
       <weapon-build [index]="i"></weapon-build>
-    </ng-container>
+    }
   </div>
 </div>

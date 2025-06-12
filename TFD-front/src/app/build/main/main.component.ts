@@ -1,5 +1,5 @@
 import { Component, signal, computed, inject, OnInit, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { buildStore } from '../../store/build.store';
 import { loginStore } from '../../store/login.store';
@@ -18,7 +18,7 @@ import { defaultExternalComponent } from '../../types/external.types';
 @Component({
   standalone: true,
   selector: 'main-build',
-  imports: [CommonModule, FormsModule, WeaponBuildComponent, DescedantBuildComponent],
+  imports: [FormsModule, WeaponBuildComponent, DescedantBuildComponent],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss', '../../../styles.scss']
 })

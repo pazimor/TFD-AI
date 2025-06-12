@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { visualStore } from '../../store/display.store';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
@@ -8,7 +8,7 @@ import { loginStore } from '../../store/login.store';
 @Component({
   standalone: true,
   selector: 'login-dialog',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.scss', '../../../styles.scss']
 })

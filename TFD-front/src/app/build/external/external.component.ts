@@ -1,5 +1,5 @@
 import { Component, inject, Input, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatDialog } from '@angular/material/dialog';
 import { selectorComponent } from '../selector/selector.component';
 import { buildStore } from '../../store/build.store';
@@ -12,7 +12,7 @@ import { dataStore } from '../../store/data.store';
 @Component({
   standalone: true,
   selector: 'external-build',
-  imports: [CommonModule, ExternalDisplayComponent],
+  imports: [ExternalDisplayComponent],
   templateUrl: './external.component.html',
   styleUrls: ['./external.component.scss', '../main/main.component.scss']
 })
