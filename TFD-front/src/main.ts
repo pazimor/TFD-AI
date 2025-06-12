@@ -4,6 +4,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { enableProdMode, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { importProvidersFrom } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from './app/app.routes';
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 import { FormsModule } from '@angular/forms';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
@@ -15,6 +17,7 @@ enableProdMode();
 bootstrapApplication(AppComponent, {
   providers: [
     provideExperimentalZonelessChangeDetection(),
+    provideRouter(routes),
     provideHttpClient(),
     provideAnimations(),
     importProvidersFrom(SocialLoginModule),

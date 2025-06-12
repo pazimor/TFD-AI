@@ -7,6 +7,12 @@ export interface UILabels {
   weapon: string;
   descendant: string;
   save: string;
+  buildNamePlaceholder: string;
+  loadingBuilds: string;
+  errorLoadingBuilds: string;
+  noBuilds: string;
+  refresh: string;
+  wipMessage: string;
 }
 
 export const uiTranslations: Record<string, UILabels> = {
@@ -18,7 +24,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'Logout',
     weapon: 'Weapon',
     descendant: 'Descendant',
-    save: 'Save'
+    save: 'Save',
+    buildNamePlaceholder: 'Build Name',
+    loadingBuilds: 'Loading builds...',
+    errorLoadingBuilds: 'Error loading builds',
+    noBuilds: 'No builds found',
+    refresh: 'Refresh',
+    wipMessage: 'Work in progress'
   },
   fr: {
     search: 'Recherche',
@@ -28,7 +40,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'Déconnexion',
     weapon: 'Arme',
     descendant: 'Descendant',
-    save: 'Sauvegarder'
+    save: 'Sauvegarder',
+    buildNamePlaceholder: 'Nom du build',
+    loadingBuilds: 'Chargement des builds...',
+    errorLoadingBuilds: "Erreur lors du chargement des builds",
+    noBuilds: 'Aucun build disponible',
+    refresh: 'Rafraîchir',
+    wipMessage: 'Travail en cours'
   },
   ko: {
     search: '검색',
@@ -38,7 +56,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: '로그아웃',
     weapon: '무기',
     descendant: '디센던트',
-    save: '저장'
+    save: '저장',
+    buildNamePlaceholder: '빌드 이름',
+    loadingBuilds: '빌드 불러오는 중...',
+    errorLoadingBuilds: '빌드를 불러오는 데 오류 발생',
+    noBuilds: '저장된 빌드가 없습니다',
+    refresh: '새로고침',
+    wipMessage: '작업 진행 중'
   },
   de: {
     search: 'Suche',
@@ -48,7 +72,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'Abmelden',
     weapon: 'Waffe',
     descendant: 'Nachfahre',
-    save: 'Speichern'
+    save: 'Speichern',
+    buildNamePlaceholder: 'Build-Name',
+    loadingBuilds: 'Builds werden geladen...',
+    errorLoadingBuilds: 'Fehler beim Laden der Builds',
+    noBuilds: 'Keine Builds gefunden',
+    refresh: 'Aktualisieren',
+    wipMessage: 'In Arbeit'
   },
   ja: {
     search: '検索',
@@ -58,7 +88,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'ログアウト',
     weapon: '武器',
     descendant: 'ディセンダント',
-    save: '保存'
+    save: '保存',
+    buildNamePlaceholder: 'ビルド名',
+    loadingBuilds: 'ビルドを読み込み中...',
+    errorLoadingBuilds: 'ビルドの読み込みエラー',
+    noBuilds: 'ビルドが見つかりません',
+    refresh: '更新',
+    wipMessage: '作業中'
   },
   'zh-CN': {
     search: '搜索',
@@ -68,7 +104,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: '登出',
     weapon: '武器',
     descendant: '后裔',
-    save: '保存'
+    save: '保存',
+    buildNamePlaceholder: '构建名称',
+    loadingBuilds: '正在加载构建...',
+    errorLoadingBuilds: '加载构建时出错',
+    noBuilds: '没有找到构建',
+    refresh: '刷新',
+    wipMessage: '开发中'
   },
   'zh-TW': {
     search: '搜尋',
@@ -78,7 +120,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: '登出',
     weapon: '武器',
     descendant: '後裔',
-    save: '儲存'
+    save: '儲存',
+    buildNamePlaceholder: '構建名稱',
+    loadingBuilds: '載入構建中...',
+    errorLoadingBuilds: '載入構建時出錯',
+    noBuilds: '沒有找到構建',
+    refresh: '重新整理',
+    wipMessage: '開發中'
   },
   it: {
     search: 'Cerca',
@@ -88,7 +136,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'Disconnetti',
     weapon: 'Arma',
     descendant: 'Discendente',
-    save: 'Salva'
+    save: 'Salva',
+    buildNamePlaceholder: 'Nome build',
+    loadingBuilds: 'Caricamento build...',
+    errorLoadingBuilds: 'Errore nel caricamento delle build',
+    noBuilds: 'Nessuna build trovata',
+    refresh: 'Aggiorna',
+    wipMessage: 'Lavori in corso'
   },
   pl: {
     search: 'Szukaj',
@@ -98,7 +152,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'Wyloguj',
     weapon: 'Broń',
     descendant: 'Potomek',
-    save: 'Zapisz'
+    save: 'Zapisz',
+    buildNamePlaceholder: 'Nazwa builda',
+    loadingBuilds: 'Ładowanie buildów...',
+    errorLoadingBuilds: 'Błąd ładowania buildów',
+    noBuilds: 'Brak zapisanych buildów',
+    refresh: 'Odśwież',
+    wipMessage: 'Prace w toku'
   },
   pt: {
     search: 'Buscar',
@@ -108,7 +168,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'Sair',
     weapon: 'Arma',
     descendant: 'Descendente',
-    save: 'Salvar'
+    save: 'Salvar',
+    buildNamePlaceholder: 'Nome do build',
+    loadingBuilds: 'Carregando builds...',
+    errorLoadingBuilds: 'Erro ao carregar builds',
+    noBuilds: 'Nenhum build encontrado',
+    refresh: 'Atualizar',
+    wipMessage: 'Em desenvolvimento'
   },
   ru: {
     search: 'Поиск',
@@ -118,7 +184,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'Выйти',
     weapon: 'Оружие',
     descendant: 'Наследник',
-    save: 'Сохранить'
+    save: 'Сохранить',
+    buildNamePlaceholder: 'Название билда',
+    loadingBuilds: 'Загрузка билдов...',
+    errorLoadingBuilds: 'Ошибка загрузки билдов',
+    noBuilds: 'Билды не найдены',
+    refresh: 'Обновить',
+    wipMessage: 'В разработке'
   },
   es: {
     search: 'Buscar',
@@ -128,7 +200,13 @@ export const uiTranslations: Record<string, UILabels> = {
     logout: 'Cerrar sesión',
     weapon: 'Arma',
     descendant: 'Descendiente',
-    save: 'Guardar'
+    save: 'Guardar',
+    buildNamePlaceholder: 'Nombre de la build',
+    loadingBuilds: 'Cargando builds...',
+    errorLoadingBuilds: 'Error al cargar las builds',
+    noBuilds: 'No se encontraron builds',
+    refresh: 'Actualizar',
+    wipMessage: 'Trabajo en progreso'
   }
 };
 

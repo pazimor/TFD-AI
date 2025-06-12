@@ -103,25 +103,7 @@ export class selectorComponent {
     private dialogRef: MatDialogRef<selectorComponent>) {
     this.filterClass = data.filterClass ?? 0;
     this.type = data.selectitems;
-    // dont load twice if values are load
-    if (!this.data_store.modulesResource.hasValue()) {
-      this.data_store.load_modules()
-    }
-    if (!this.data_store.translationResource.hasValue()) {
-      this.data_store.load_translations()
-    }
-    if (!this.data_store.descendantResource.hasValue()) {
-      this.data_store.load_descendants()
-    }
-    if (!this.data_store.weaponResource.hasValue()) {
-      this.data_store.load_weapons()
-    }
-    if (!this.data_store.reactorResource.hasValue()) {
-      this.data_store.load_reactors()
-    }
-    if (!this.data_store.externalResource.hasValue()) {
-      this.data_store.load_externals()
-    }
+    // resources are preloaded in main component
   }
 
   selectModules(module: ModuleResponse): void {

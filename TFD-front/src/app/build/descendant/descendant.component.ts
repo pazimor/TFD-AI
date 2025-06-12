@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModuleBuildComponent } from '../module/module.component';
 import { ReactorBuildComponent } from '../reactor/reactor.component';
@@ -28,6 +28,9 @@ import { buildStore } from '../../store/build.store';
 export class DescedantBuildComponent {
   readonly data_store = inject(dataStore);
   readonly build_store = inject(buildStore);
+  readonly _syncEffect = effect(() => {
+    this.module_data.descendant = this.build_store.descendant().descendant_id;
+  });
 
   module_data: selectorData = {
     selectitems: "modules",

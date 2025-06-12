@@ -250,6 +250,27 @@ export const dataStore = signalStore(
       patchState(store, { unlock: { ...store.unlock(), reactors: true } });
       store.reactorResource?.reload();
     },
+    load_all: () => {
+      patchState(store, {
+        unlock: {
+          ...store.unlock(),
+          modules: true,
+          translations: true,
+          descendants: true,
+          weapons: true,
+          cores: store.unlock().cores,
+          externals: true,
+          reactors: true,
+          boards: store.unlock().boards
+        }
+      });
+      store.modulesResource?.reload();
+      store.translationResource?.reload();
+      store.descendantResource?.reload();
+      store.weaponResource?.reload();
+      store.externalResource?.reload();
+      store.reactorResource?.reload();
+    },
     refresh_modules: () => store.modulesResource?.reload(),
     refresh_translation: () => store.translationResource?.reload(),
     refresh_descendants: () => store.descendantResource?.reload(),
