@@ -4,6 +4,8 @@ import { loginStore } from '../../store/login.store';
 import { BuildCardComponent, BuildSummary } from './build-card/build-card.component';
 import { Router } from '@angular/router';
 import { buildListStore } from '../../store/build-list.store';
+import { visualStore } from '../../store/display.store';
+import { getUILabel } from '../../lang.utils';
 
 @Component({
   selector: 'saved-builds-list',
@@ -15,6 +17,7 @@ export class SavedBuildsListComponent {
   private buildListStore = inject(buildListStore)
   private loginStore = inject(loginStore);
   private router = inject(Router);
+  private visualStore = inject(visualStore);
 
   builds: WritableSignal<BuildSummary[]> = signal([]);
   isLoading = signal(false);
@@ -43,5 +46,9 @@ export class SavedBuildsListComponent {
 
   refresh(): void {
     this.buildListStore.resource.reload()
+  }
+
+  label(key: Parameters<typeof getUILabel>[1]) {
+    return getUILabel(this.visualStore.get_lang(), key);
   }
 }
