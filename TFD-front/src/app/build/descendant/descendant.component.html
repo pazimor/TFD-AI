@@ -7,23 +7,29 @@
   <div class="external">
     <div class="column">
       <div class="row">
-        <module-build *ngFor="let m of modules().slice(0, 6); let i = index"
-                      [module]="m"
-                      [data]="this.module_data"
-                      (moduleSelected)="handleModuleSelected(i, $event)">
-        </module-build>
+        @for (m of modules().slice(0, 6); track m; let i = $index) {
+          <module-build
+            [module]="m"
+            [data]="this.module_data"
+            (moduleSelected)="handleModuleSelected(i, $event)">
+          </module-build>
+        }
       </div>
       <div class="row">
-        <module-build *ngFor="let m of modules().slice(6, 12); let i = index"
-                      [module]="m"
-                      [data]="this.module_data"
-                      (moduleSelected)="handleModuleSelected(i + 6, $event)">
-        </module-build>
+        @for (m of modules().slice(6, 12); track m; let i = $index) {
+          <module-build
+            [module]="m"
+            [data]="this.module_data"
+            (moduleSelected)="handleModuleSelected(i + 6, $event)">
+          </module-build>
+        }
       </div>
     </div>
     <div class="row">
       <reactor-build></reactor-build>
-      <external-build *ngFor="let e of externals(); let i = index" [index]="i"></external-build>
+      @for (e of externals(); track e; let i = $index) {
+        <external-build [index]="i"></external-build>
+      }
     </div>
   </div>
 </div>

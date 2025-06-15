@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { visualStore } from '../store/display.store';
 import { getUILabel } from '../lang.utils';
 
 @Component({
   standalone: true,
   selector: 'search-tab',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss', '../../styles.scss']
 })

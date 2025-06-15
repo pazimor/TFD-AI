@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DescendantsResponse } from '../../../types/descendant.types';  // type déjà présent
 
 @Component({
   standalone: true,
   selector: 'descendant',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './descendant-display.component.html',
   styleUrls: ['./descendant-display.component.scss'],
 })

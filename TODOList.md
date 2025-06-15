@@ -1,21 +1,20 @@
-# TODO List
+# 🖋️ TODO List :
 
-# TODOs : 🖋️
-
+## Commit convention :
 ### categories
-
-| short  |          full          |
-|:------:|:----------------------:|
-|   SP   |    stored procedure    |
-|   DB   |        dataBase        |
-|   DK   |     dockerization      |
-|   RE   |        refactor        |
-|   SD   |       scheduling       |
-|   AI   | artificial Inteligence |
-|   PI   |       API reste        |
-|   FT   |        features        |
-|   NA   |          NAS           |
-|   CP   |  front-end Component   |
+| short |          full          |
+|:-----:|:----------------------:|
+|  SP   |    stored procedure    |
+|  DB   |        dataBase        |
+|  DK   |     dockerization      |
+|  RE   |        refactor        |
+|  SD   |       scheduling       |
+|  AI   | artificial Inteligence |
+|  PI   |       API reste        |
+|  FT   |        features        |
+|  NA   |          NAS           |
+|  CP   |  front-end Component   |
+|  FX   |          Fix           |
 
 ### emoji copy pasta:
 - ✅: Done
@@ -24,35 +23,26 @@
 
 ---
 
-## little Fixs (removed once done)
-- RE: fix errors listed by chat GPT - ⚠️
-- RE: move filldatabase into api folder - ❌
+## Road Map
 
+### (Features TODO)
 
-## BackLog
-#### (TODO ... but later)
-- SP: get separate modifiers: modules, external components, reactors - ❌
-- SP: get separate items: weapons, descendants - ❌
-- CP: selection popup for all modules - ❌ ( /w filter)
-- CP: selection popup for external component - ❌
-- CP: selection of Weapons sub Stats and Cores - ❌
-- CP: selection for Reactor - ❌
-- CP: define items of the Build - ❌
-- FT: multy-language - ❌ (BDD ready)
-- FT: save a build - ❌
-- FT: share a build (ID in URL) - ❌
-- FR: Load a Build (from URL ID) - ❌
-- PI: login / session systeme - ❌
-- CP: login / gest modes - ❌
-- CP: modal for statistics and upgraded statistics for a weapon / descendant - ❌
+FRONT :
+- CP: update design for app/build/saved/build-card - ❌
+  - (display selected descendant + 1 weapon)
+  - (delete button, share button)
+- CP: new build Button (resets the build and save button has to save for an othe build) - ❌
+- CP: update design for Weapons (display stats) and Cores - ❌
+- CP: update design for descendant (display stats and skills) and archerons tree - ❌
+- CP: update design for module (display stats) - ❌
+
+API:
+- CP: use hand made Google authentification
+- PI: make API sessions (with a stay logged-in mode) - ❌
+
+AI:
 - AI: train model (MDN) - ❌
 
 ## PROD and AdminSYS:
-- NA: hosting on my NAS - ✅
-- NA: generate let's encrypt SSL certs - ✅
-- NA: https (fight with Web Station) - ✅
-- DK: Use Docker to deploy project (PROD - DEV) - ✅
 - SD: execute database fetch every x Time (cron / schedule) - ❌
-- DK: use Node 22 instead of node 23 (even => not LTS) - ✅
-- DK: use a production WSGI serveur for API - ✅
 - DK: host DB with docker for DEV Mode - ❌

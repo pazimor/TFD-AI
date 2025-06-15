@@ -1,22 +1,30 @@
 <div class="saved-builds-container">
 
-  <div *ngIf="isLoading()" class="loading-indicator">
-    <p>{{ label('loadingBuilds') }}</p>
-  </div>
+  @if (isLoading()) {
+    <div class="loading-indicator">
+      <p>{{ label('loadingBuilds') }}</p>
+    </div>
+  }
 
-  <div *ngIf="errorLoading()" class="error-message">
-    <p>{{ label('errorLoadingBuilds') }}: {{ errorLoading() }}</p>
-  </div>
+  @if (errorLoading()) {
+    <div class="error-message">
+      <p>{{ label('errorLoadingBuilds') }}: {{ errorLoading() }}</p>
+    </div>
+  }
 
-  <div *ngIf="!isLoading() && !errorLoading() && builds().length === 0" class="no-builds">
-    <p>🔒 {{ label('noBuilds') }}</p>
-  </div>
+  @if (!isLoading() && !errorLoading() && builds().length === 0) {
+    <div class="no-builds">
+      <p>🔒 {{ label('noBuilds') }}</p>
+    </div>
+  }
 
   <button (click)="refresh()">{{ label('refresh') }}</button>
 
-  <div *ngIf="!isLoading() && !errorLoading() && builds().length > 0" class="builds-grid">
-    @for (build of builds(); track build.build_id) {
-      <app-build-card [build]="build" (click)="LoadBuild(build.build_id)"></app-build-card>
-    }
-  </div>
+  @if (!isLoading() && !errorLoading() && builds().length > 0) {
+    <div class="builds-grid">
+      @for (build of builds(); track build.build_id) {
+        <app-build-card [build]="build" (click)="LoadBuild(build.build_id)"></app-build-card>
+      }
+    </div>
+  }
 </div>

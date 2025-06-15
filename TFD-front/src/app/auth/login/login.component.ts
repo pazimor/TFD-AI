@@ -1,5 +1,5 @@
 import {Component, effect, inject, OnInit, ResourceStatus} from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   SocialAuthService,
   SocialUser,
@@ -16,7 +16,7 @@ import { getUILabel } from '../../lang.utils';
 @Component({
   standalone: true,
   selector: 'login',
-  imports: [CommonModule, GoogleSigninButtonDirective, LanguageListComponent],
+  imports: [GoogleSigninButtonDirective, LanguageListComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
