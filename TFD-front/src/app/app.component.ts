@@ -1,5 +1,5 @@
 import {
-  Component, computed,
+  Component, computed, effect,
   inject,
   Signal,
   ViewChild,
@@ -62,6 +62,7 @@ export class AppComponent {
 
   constructor() {
     this.login_store.initFromStorage();
+    this.login_store.userSettings_Resource
     this.updateIndexFromUrl(this.router.url);
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))

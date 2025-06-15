@@ -10,11 +10,12 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
-revision: str = 'd55ba4ba8bb4'
-down_revision: Union[str, None] = 'f4ca2cc40eeb'
+
+# revision identifiers, used by Alembic.
+revision: str = '88aa99d757d5'
+down_revision: Union[str, None] = 'bd774a63875b'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
-
 
 def upgrade() -> None:
     op.add_column('users', sa.Column('photo_data', sa.LargeBinary(), nullable=True))
@@ -29,17 +30,17 @@ def upgrade() -> None:
             IN p_photo LONGBLOB
         )
         BEGIN
-            INSERT INTO users (id, name, email, photo_data)
-            VALUES (
-                p_id,
-                p_name,
-                AES_ENCRYPT(p_email, 'your_secret_key'),
-                p_photo
-            )
+        INSERT INTO users (id, name, email, photo_data)
+        VALUES (
+                   p_id,
+                   p_name,
+                   AES_ENCRYPT(p_email, 'your_secret_key'),
+                   p_photo
+               )
             ON DUPLICATE KEY UPDATE
-                name = VALUES(name),
-                email = AES_ENCRYPT(p_email, 'your_secret_key'),
-                photo_data = VALUES(photo_data);
+                                 name = VALUES(name),
+                                 email = AES_ENCRYPT(p_email, 'your_secret_key'),
+                                 photo_data = VALUES(photo_data);
         END
         '''
     )
@@ -48,7 +49,7 @@ def upgrade() -> None:
         '''
         CREATE PROCEDURE GetUserPhoto(IN p_user_id VARCHAR(255))
         BEGIN
-            SELECT photo_data FROM users WHERE id = p_user_id;
+        SELECT photo_data FROM users WHERE id = p_user_id;
         END
         '''
     )
