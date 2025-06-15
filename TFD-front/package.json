@@ -5,12 +5,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "generate-client-secret": "node scripts/generate-client-secret.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
   "dependencies": {
-    "@abacritt/angularx-social-login": "^2.4.0",
     "@angular/animations": "^20.0.3",
     "@angular/cdk": "^20.0.3",
     "@angular/common": "^20.0.3",

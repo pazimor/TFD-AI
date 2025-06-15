@@ -1,5 +1,4 @@
-import {Component, effect, inject, OnInit, ResourceStatus} from '@angular/core';
-
+import { Component, effect, inject, OnInit, AfterViewInit, ResourceStatus } from '@angular/core';
 import {
   SocialAuthService,
   SocialUser,
@@ -8,10 +7,11 @@ import {
 } from '@abacritt/angularx-social-login';
 import { visualStore } from '../../store/display.store';
 import { MatDialogRef } from '@angular/material/dialog';
-import {initialUserData, loginStore, settingsResponse, userData} from '../../store/login.store';
+import { initialUserData, loginStore, settingsResponse, userData } from '../../store/login.store';
 import { LanguageListComponent } from '../../langlist/language-list.component';
-import {HttpErrorResponse, HttpResourceRef} from '@angular/common/http';
+import { HttpErrorResponse, HttpResourceRef } from '@angular/common/http';
 import { getUILabel } from '../../lang.utils';
+import { GoogleAuthService, GoogleUser } from '../google-auth.service';
 
 @Component({
   standalone: true,
@@ -20,7 +20,7 @@ import { getUILabel } from '../../lang.utils';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
   readonly visual_store = inject(visualStore);
   readonly login_store = inject(loginStore);
 
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   settings: any = {};
 
   constructor(
-    private authService: SocialAuthService,
+    private googleAuth: GoogleAuthService,
     private dialogRef: MatDialogRef<LoginComponent>) {
 
     this.login_store.load_UserSettings()
@@ -44,17 +44,20 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.authService.authState.subscribe((user) => {
-      this.login_store.setLoginState(user)
-      if(this.dialogStartedStatus !== !!user) {
+  ngOnInit() {}
+
+  ngAfterViewInit(): void {
+    this.googleAuth.init((user: GoogleUser) => {
+      this.login_store.setLoginState(user);
+      if (this.dialogStartedStatus !== !!user) {
         this.dialogRef.close();
       }
     });
   }
 
   signOut(): void {
-    this.authService.signOut();
+    this.googleAuth.signOut();
+    this.login_store.setLoginState(undefined as any);
   }
 
   label(key: Parameters<typeof getUILabel>[1]) {
