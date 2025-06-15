@@ -2,10 +2,7 @@
   @if (!this.login_store.loggedIn()) {
     <h3>{{ label('login') }}</h3>
     <language-list></language-list>
-    <asl-google-signin-button
-      [theme]="'outline'"
-      [size]="'large'">
-    </asl-google-signin-button>
+    <div id="google-signin"></div>
   } @else {
     <language-list></language-list>
     <button (click)="signOut()">{{ label('logout') }}</button>

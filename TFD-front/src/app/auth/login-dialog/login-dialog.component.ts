@@ -23,7 +23,9 @@ export class LoginDialogComponent {
 
 
   constructor(
-    private dialog: MatDialog) {}
+    private dialog: MatDialog) {
+    this.login_store.initFromStorage();
+  }
 
   openLoginDialog(): void {
     this.dialog.open(LoginComponent, {
