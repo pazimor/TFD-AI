@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.googleAuth.init((user: GoogleUser) => {
       this.login_store.setLoginState(user);
+      this.login_store.load_UserSettings();
       if (this.dialogStartedStatus !== !!user) {
         this.dialogRef.close();
       }

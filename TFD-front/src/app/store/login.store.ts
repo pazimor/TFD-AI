@@ -107,6 +107,14 @@ export const loginStore = signalStore(
           }
         });
         store.display.set_lang(store.userSettings_Resource.value().settings);
+        if (store.user()?.id) {
+          patchState(store, {
+            user: {
+              ...store.user()!,
+              photoUrl: `${environment.apiBaseUrl}/user_photo/${store.user()!.id}`
+            }
+          });
+        }
       }
     },
   })),
