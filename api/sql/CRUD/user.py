@@ -1,17 +1,26 @@
 from sql.database import SessionLocal
 from sqlalchemy import text
+import requests
 
 session = SessionLocal()
 
 def sync_user(user):
     try:
-        result = session.execute(
-            text("CALL SyncUser(:p_user_id, :p_user_name, :p_user_email, :p_user_photo_url)"),
+        photo_bytes = b''
+        if user.get("photoUrl"):
+            try:
+                resp = requests.get(user["photoUrl"], timeout=5)
+                if resp.ok:
+                    photo_bytes = resp.content
+            except Exception:
+                photo_bytes = b''
+        session.execute(
+            text("CALL SyncUser(:p_user_id, :p_user_name, :p_user_email, :p_photo)"),
             {
                 "p_user_id": user['id'],
                 "p_user_name": user["name"],
                 "p_user_email": user["email"],
-                "p_user_photo_url": user["photoUrl"]
+                "p_photo": photo_bytes,
             }
         )
         session.commit()
@@ -52,3 +61,17 @@ def set_user_settings(user_id, default_language):
         print(f"❌ Erreur : {e}")
         session.rollback()
         return False
+
+def get_photo(user_id):
+    try:
+        result = session.execute(
+            text("CALL GetUserPhoto(:p_user_id)"),
+            {"p_user_id": user_id}
+        )
+        row = result.fetchone()
+        session.commit()
+        return row[0] if row else None
+    except Exception as e:
+        print(f"❌ Erreur : {e}")
+        session.rollback()
+        return None

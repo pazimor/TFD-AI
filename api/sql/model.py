@@ -9,6 +9,7 @@ from sqlalchemy import (
     Table,
     DateTime,
     func,
+    LargeBinary,
 )
 from sqlalchemy.orm import relationship
 from sql.database import Base
@@ -91,7 +92,7 @@ class User(Base):
     id = Column(String(255), primary_key=True)
     name = Column(String(255), nullable=False)
     email = Column(String(255), nullable=False)
-    photo_url = Column(String(255), nullable=True)
+    photo_data = Column(LargeBinary, nullable=True)
 
 
 # ----------------------------------------

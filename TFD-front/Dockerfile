@@ -3,7 +3,7 @@ LABEL authors="pazimor"
 
 WORKDIR /app
 COPY . .
-RUN npm install -g npm@11.1.0 && npm install -g @angular/cli && npm install
+RUN npm install -g npm@11.1.0 && npm install -g @angular/cli && npm install --legacy-peer-deps
 RUN ng build --configuration production
 
 FROM nginx:alpine

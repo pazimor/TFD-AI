@@ -1,4 +1,6 @@
 <div class="login-popup">
+  <img class="avatar" [src]="this.login_store.user()?.photoUrl" />
+
   @if (!this.login_store.loggedIn()) {
     <h3>{{ label('login') }}</h3>
     <language-list></language-list>

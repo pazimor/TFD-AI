@@ -5,6 +5,8 @@ from flask import Flask, jsonify, request
 from fillroutes.full  import full
 from flask_cors import CORS
 from sql.CRUD import user, ui, builds
+from flask import send_file
+import io
 
 app = Flask(__name__)
 
@@ -26,6 +28,16 @@ def set_user_settings():
     try:
         settings = user.set_user_settings(request.json['id'], request.json['lang'])
         return jsonify({"success": True}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/user_photo/<user_id>', methods=['GET'])
+def get_user_photo(user_id):
+    try:
+        photo = user.get_photo(user_id)
+        if photo is None:
+            return jsonify({"success": False}), 404
+        return send_file(io.BytesIO(photo), mimetype='image/png')
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 

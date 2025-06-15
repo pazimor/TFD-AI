@@ -1,9 +1,10 @@
-import { inject, Injector} from '@angular/core';
+import { effect, inject, Injector } from '@angular/core';
 import {signalStore, withState, withMethods, withProps, patchState} from '@ngrx/signals';
 import { httpResource } from "@angular/common/http";
 import { environment } from '../../env/environment';
 import { GoogleUser } from '../auth/google-auth.service';
 import { visualStore } from './display.store';
+import { withEffects } from '@ngrx/signals/events';
 
 function loadStoredUser(): GoogleUser | undefined {
   const raw = localStorage.getItem('googleUser');
@@ -100,14 +101,25 @@ export const loginStore = signalStore(
       }
       patchState(store, { _userSettingsResourceEnabled: true });
       store.userSettings_Resource.reload();
-      if (store.userSettings_Resource.hasValue()) {
-        patchState(store, {
-          settings: {
-            ...store.userSettings_Resource.value()
+      effect(() => {
+        if (store.userSettings_Resource.hasValue()) {
+          store.display.set_lang(store.userSettings_Resource.value().settings);
+          patchState(store, {
+            settings: {
+              ...store.userSettings_Resource.value()
+            },
+            _userSettingsResourceEnabled: false
+          });
+          if (store.user()?.id) {
+            patchState(store, {
+              user: {
+                ...store.user()!,
+                photoUrl: `${environment.apiBaseUrl}/user_photo/${store.user()!.id}`
+              }
+            });
           }
-        });
-        store.display.set_lang(store.userSettings_Resource.value().settings);
-      }
+        }
+      });
     },
   })),
   withMethods((store) => ({

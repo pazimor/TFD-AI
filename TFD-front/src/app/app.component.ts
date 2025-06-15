@@ -1,5 +1,5 @@
 import {
-  Component, computed,
+  Component, computed, effect,
   inject,
   Signal,
   ViewChild,
@@ -18,6 +18,7 @@ import { SearchComponent } from './search/search.component';
 import { getUILabel } from './lang.utils';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
+import { loginStore } from './store/login.store';
 
 
 
@@ -50,6 +51,7 @@ import { filter } from 'rxjs';
 export class AppComponent {
   readonly data_store = inject(dataStore);
   readonly visual_store = inject(visualStore);
+  readonly login_store = inject(loginStore);
   private router = inject(Router);
 
   title = 'TFD-front';
@@ -59,6 +61,8 @@ export class AppComponent {
   isSidebarOpen$$: Signal<boolean> = this.visual_store.isSidebarOpen
 
   constructor() {
+    this.login_store.initFromStorage();
+    this.login_store.userSettings_Resource
     this.updateIndexFromUrl(this.router.url);
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
