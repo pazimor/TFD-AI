@@ -33,3 +33,13 @@ html, body {
   color: white;
 }
 
+:root {
+  --responsive-scale: 1;
+}
+
+@media (max-width: 600px) {
+  :root {
+    font-size: 11px;
+    --responsive-scale: 0.6;
+  }
+}

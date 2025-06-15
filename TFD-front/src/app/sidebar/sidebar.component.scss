@@ -54,3 +54,28 @@
   left: 0;
   margin: 1rem;
 }
+
+@media (max-width: 600px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 0;
+    padding: 0;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    padding: calc(10px * var(--responsive-scale));
+    .bottom-left {
+      transform: translateX(0%);
+    }
+  }
+  .bottom-left {
+    transform: translateX(-1000%);
+  }
+
+  .hamburger {
+    position: fixed;
+    top: calc(10px * var(--responsive-scale));
+    left: calc(10px * var(--responsive-scale));
+    z-index: 1000;
+  }
+}

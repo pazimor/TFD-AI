@@ -30,3 +30,22 @@
   left: 190px;
   width: calc(100% - 190px);
 }
+
+@media (max-width: 600px) {
+  .sidebar-small {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .sidebar-big {
+    position: absolute;
+    left: 0;
+    width: 100%;
+  }
+  .spacing {
+    margin-top: 20px;
+  }
+}

@@ -1,19 +1,20 @@
 <div>
   <!-- Top control bar -->
   <section class="top-bar">
-    <div>
+    <div class="section">
       <button class="control" (click)="removeWeapon()">-</button>
       <span class="label">{{ label('weapon') }}</span>
       <button class="control" (click)="addWeapon()">+</button>
     </div>
 
-    <div>
+    <div class="section">
       <button class="control" (click)="removeDescendant()">-</button>
       <span class="label">{{ label('descendant') }}</span>
       <button class="control" (click)="addDescendant()">+</button>
     </div>
-    <div>
-      <input type="text" [(ngModel)]="buildName" [placeholder]="label('buildNamePlaceholder')" class="build-name-input"/>
+
+    <div class="section">
+      <input type="text" [(ngModel)]="buildName" [placeholder]="label('buildNamePlaceholder')" class="input"/>
       <button class="control save" (click)="saveBuild()">{{ label('save') }}</button>
     </div>
   </section>

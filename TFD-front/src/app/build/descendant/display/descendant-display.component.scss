@@ -1,6 +1,6 @@
 .avatar {
-  width: 250px;
-  height: 250px;
+  width: calc(250px * var(--responsive-scale));
+  height: calc(250px * var(--responsive-scale));
   align-items: center;
   border: 1px solid #86989B;
   border-radius: 20%;

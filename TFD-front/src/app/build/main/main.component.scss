@@ -53,12 +53,38 @@
   justify-content: center;
   gap: 24px;
 }
-
+.section {
+  display: flex;
+}
 @media (max-width: 1400px) {
   .weapons-row {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 24px;
+  }
+}
+
+.input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px;
+  border-radius: 7px;
+  width: calc(100% - 10px);
+}
+
+@media (max-width: 600px) {
+  .label {
+    color: #ffffff;
+  }
+
+  .section {
+    justify-content: space-between;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    column-gap: 0;
+    padding: 0;
   }
 }
