@@ -1,17 +1,22 @@
-import {Component, effect, inject, OnInit, AfterViewInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, effect, inject, OnInit, AfterViewInit, ResourceStatus } from '@angular/core';
+import {
+  SocialAuthService,
+  SocialUser,
+  GoogleLoginProvider,
+  GoogleSigninButtonDirective
+} from '@abacritt/angularx-social-login';
 import { visualStore } from '../../store/display.store';
 import { MatDialogRef } from '@angular/material/dialog';
-import {initialUserData, loginStore, settingsResponse, userData} from '../../store/login.store';
+import { initialUserData, loginStore, settingsResponse, userData } from '../../store/login.store';
 import { LanguageListComponent } from '../../langlist/language-list.component';
-import {HttpErrorResponse, HttpResourceRef} from '@angular/common/http';
+import { HttpErrorResponse, HttpResourceRef } from '@angular/common/http';
 import { getUILabel } from '../../lang.utils';
 import { GoogleAuthService, GoogleUser } from '../google-auth.service';
 
 @Component({
   standalone: true,
   selector: 'login',
-  imports: [CommonModule, LanguageListComponent],
+  imports: [GoogleSigninButtonDirective, LanguageListComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

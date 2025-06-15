@@ -91,19 +91,6 @@ export const loginStore = signalStore(
         : undefined),
   })),
   withMethods((store) => ({
-    initFromStorage: () => {
-      if (storedUser) {
-        store.load_UserSettings();
-      }
-    },
-    setLoginState: (log: GoogleUser | undefined) => {
-      patchState(store, { user: log, loggedIn: !!log });
-      if (log) {
-        localStorage.setItem('googleUser', JSON.stringify(log));
-      } else {
-        localStorage.removeItem('googleUser');
-      }
-    },
     load_UserSettings: () => {
       if ( store.user()?.id === ''
         || store.user()?.email === ''
@@ -122,6 +109,16 @@ export const loginStore = signalStore(
         store.display.set_lang(store.userSettings_Resource.value().settings);
       }
     },
+  })),
+  withMethods((store) => ({
+    setLoginState: (log: GoogleUser | undefined) => {
+      patchState(store, { user: log, loggedIn: !!log });
+      if (log) {
+        localStorage.setItem('googleUser', JSON.stringify(log));
+      } else {
+        localStorage.removeItem('googleUser');
+      }
+    },
     load_UpdateSettings: (lang: string) => {
       patchState(store, {
         settings: {
@@ -135,5 +132,10 @@ export const loginStore = signalStore(
     },
     refresh_UserSettings: () => store.userSettings_Resource.reload(),
     refresh_UpdateSettings: () => store.updateSettings_Resource.reload(),
+    initFromStorage: () => {
+      if (storedUser) {
+        store.load_UserSettings();
+      }
+    },
   }))
 );

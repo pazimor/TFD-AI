@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatDialog } from '@angular/material/dialog';
 import { selectorComponent } from '../selector/selector.component';
 import { buildStore } from '../../store/build.store';
@@ -12,7 +12,7 @@ import { dataStore } from '../../store/data.store';
 @Component({
   standalone: true,
   selector: 'reactor-build',
-  imports: [CommonModule, ReactorDisplayComponent],
+  imports: [ReactorDisplayComponent],
   templateUrl: './reactor.component.html',
   styleUrls: ['./reactor.component.scss', '../main/main.component.scss']
 })
