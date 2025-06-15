@@ -1,12 +1,10 @@
 import {
-  Component, computed, effect,
+  Component,
   inject,
   Signal,
-  ViewChild,
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { LanguageListComponent } from './langlist/language-list.component';
 import { sidebarComponent } from './sidebar/sidebar.component';
 import { dataStore } from './store/data.store';
 import { visualStore } from './store/display.store';
@@ -19,8 +17,6 @@ import { getUILabel } from './lang.utils';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { loginStore } from './store/login.store';
-
-
 
 @Component({
   imports: [
@@ -62,7 +58,6 @@ export class AppComponent {
 
   constructor() {
     this.login_store.initFromStorage();
-    this.login_store.userSettings_Resource
     this.updateIndexFromUrl(this.router.url);
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
