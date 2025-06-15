@@ -1,1 +1,5 @@
-connectionString="mysql+pymysql://tfdai:Tfd-Pr0ject-41@192.168.1.198:3306/tfd_ai"
+"""Database connection string loaded from the DB_CONN environment variable."""
+
+import os
+
+connectionString = os.environ["DB_CONN"]

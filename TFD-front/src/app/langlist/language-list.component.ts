@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, inject, OnInit, Signal, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { visualStore } from '../store/display.store';
 import { loginStore } from '../store/login.store';
 
 @Component({
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   selector: 'language-list',
   templateUrl: './language-list.component.html',
   styleUrls: ['./language-list.component.scss']

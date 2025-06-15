@@ -1,5 +1,5 @@
 import { Component, inject, computed, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {ModuleBuildComponent} from '../module/module.component';
 import { selectorData } from '../../types/selector.types';
 import { WeaponDisplayComponent } from './display/weapon-display.component';
@@ -13,7 +13,7 @@ import { dataStore } from '../../store/data.store';
 @Component({
   standalone: true,
   selector: 'weapon-build',
-  imports: [CommonModule, ModuleBuildComponent, WeaponDisplayComponent],
+  imports: [ModuleBuildComponent, WeaponDisplayComponent],
   templateUrl: './weapon.component.html',
   styleUrls: ['./weapon.component.scss', '../main/main.component.scss' ,'../../../styles.scss']
 })

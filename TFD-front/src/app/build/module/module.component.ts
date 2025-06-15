@@ -1,5 +1,5 @@
 import {Component, ChangeDetectorRef, inject, Input, EventEmitter, Output} from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { selectorComponent } from '../selector/selector.component';
 import { MatDialog } from '@angular/material/dialog';
 import { dataStore } from '../../store/data.store';
@@ -11,7 +11,7 @@ import { defaultDescendants } from '../../types/descendant.types';
 @Component({
   standalone: true,
   selector: 'module-build',
-  imports: [CommonModule, ModuleComponent],
+  imports: [ModuleComponent],
   templateUrl: './module.component.html',
   styleUrls: ['./module.component.scss', '../main/main.component.scss' ,'../../../styles.scss']
 })

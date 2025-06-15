@@ -4,7 +4,7 @@ import {
   Signal,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { LanguageListComponent } from './langlist/language-list.component';
 import { sidebarComponent } from './sidebar/sidebar.component';
@@ -23,7 +23,6 @@ import { filter } from 'rxjs';
 
 @Component({
   imports: [
-    CommonModule,
     FormsModule,
     sidebarComponent,
     MatTab,
@@ -31,7 +30,7 @@ import { filter } from 'rxjs';
     MainBuildComponent,
     SavedBuildsListComponent,
     SearchComponent
-  ],
+],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

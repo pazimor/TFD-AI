@@ -2,8 +2,20 @@ import { inject, Injector} from '@angular/core';
 import {signalStore, withState, withMethods, withProps, patchState} from '@ngrx/signals';
 import { httpResource } from "@angular/common/http";
 import { environment } from '../../env/environment';
-import { SocialUser } from '@abacritt/angularx-social-login';
+import { GoogleUser } from '../auth/google-auth.service';
 import { visualStore } from './display.store';
+
+function loadStoredUser(): GoogleUser | undefined {
+  const raw = localStorage.getItem('googleUser');
+  if (!raw) return undefined;
+  try {
+    return JSON.parse(raw) as GoogleUser;
+  } catch {
+    return undefined;
+  }
+}
+
+const storedUser = loadStoredUser();
 
 export type settingsResponse = {
   settings: string,
@@ -11,7 +23,7 @@ export type settingsResponse = {
 }
 
 export type loginStore = {
-  user: SocialUser | undefined,
+  user: GoogleUser | undefined,
   settings: settingsResponse,
   _userSettingsResourceEnabled: boolean,
   _updateSettingsResourceEnabled: boolean,
@@ -24,11 +36,11 @@ const initsettings: settingsResponse = {
 }
 
 const initialState: loginStore = {
-  user: undefined,
+  user: storedUser,
   settings: initsettings,
   _userSettingsResourceEnabled: false,
   _updateSettingsResourceEnabled: false,
-  loggedIn: false
+  loggedIn: !!storedUser
 };
 
 export type userData = {
@@ -79,9 +91,6 @@ export const loginStore = signalStore(
         : undefined),
   })),
   withMethods((store) => ({
-    setLoginState: (log: SocialUser | undefined) => {
-      patchState(store, { user: log, loggedIn: !!log });
-    },
     load_UserSettings: () => {
       if ( store.user()?.id === ''
         || store.user()?.email === ''
@@ -100,6 +109,16 @@ export const loginStore = signalStore(
         store.display.set_lang(store.userSettings_Resource.value().settings);
       }
     },
+  })),
+  withMethods((store) => ({
+    setLoginState: (log: GoogleUser | undefined) => {
+      patchState(store, { user: log, loggedIn: !!log });
+      if (log) {
+        localStorage.setItem('googleUser', JSON.stringify(log));
+      } else {
+        localStorage.removeItem('googleUser');
+      }
+    },
     load_UpdateSettings: (lang: string) => {
       patchState(store, {
         settings: {
@@ -113,5 +132,10 @@ export const loginStore = signalStore(
     },
     refresh_UserSettings: () => store.userSettings_Resource.reload(),
     refresh_UpdateSettings: () => store.updateSettings_Resource.reload(),
+    initFromStorage: () => {
+      if (storedUser) {
+        store.load_UserSettings();
+      }
+    },
   }))
 );

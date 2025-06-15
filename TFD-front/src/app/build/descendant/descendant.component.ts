@@ -1,5 +1,5 @@
 import { Component, inject, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ModuleBuildComponent } from '../module/module.component';
 import { ReactorBuildComponent } from '../reactor/reactor.component';
 import { ExternalBuildComponent } from '../external/external.component';
@@ -16,12 +16,11 @@ import { buildStore } from '../../store/build.store';
   standalone: true,
   selector: 'descendant-build',
   imports: [
-    CommonModule,
     ModuleBuildComponent,
     DescendantDisplayComponent,
     ReactorBuildComponent,
-    ExternalBuildComponent,
-  ],
+    ExternalBuildComponent
+],
   templateUrl: './descendant.component.html',
   styleUrls: ['./descendant.component.scss', '../main/main.component.scss' ,'../../../styles.scss']
 })
