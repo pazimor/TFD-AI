@@ -27,10 +27,8 @@
 html, body {
   font-family: 'MesloLGS NF', sans-serif;
   overflow-x: hidden;
-  height: 100%;
 }
 
-/* Prevent nested scrolling issues inside Material tabs */
 .mat-mdc-tab-body-content {
   overflow: visible;
 }
