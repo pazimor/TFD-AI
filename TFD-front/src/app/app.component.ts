@@ -17,6 +17,7 @@ import { getUILabel } from './lang.utils';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { loginStore } from './store/login.store';
+import { SwipeTabsDirective } from './swipe-tabs.directive';
 
 @Component({
   imports: [
@@ -26,7 +27,8 @@ import { loginStore } from './store/login.store';
     MatTabGroup,
     MainBuildComponent,
     SavedBuildsListComponent,
-    SearchComponent
+    SearchComponent,
+    SwipeTabsDirective
 ],
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -70,6 +72,18 @@ export class AppComponent {
     const route =
       index === 1 ? '/my-builds' : index === 2 ? '/build-maker' : '/search';
     this.router.navigateByUrl(route);
+  }
+
+  nextTab() {
+    if (this.selectedIndex < 2) {
+      this.onTabChange(this.selectedIndex + 1);
+    }
+  }
+
+  previousTab() {
+    if (this.selectedIndex > 0) {
+      this.onTabChange(this.selectedIndex - 1);
+    }
   }
 
   private updateIndexFromUrl(url: string) {

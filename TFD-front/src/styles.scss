@@ -29,6 +29,10 @@ html, body {
   overflow-x: hidden;
 }
 
+.mat-mdc-tab-body-content {
+  overflow: visible;
+}
+
 .material-icons-outlined {
   color: white;
 }

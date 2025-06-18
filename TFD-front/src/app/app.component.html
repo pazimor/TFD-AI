@@ -1,7 +1,12 @@
 <div class="container">
   <sidebar></sidebar>
   <div class="tabs sidebar-small">
-    <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
+    <mat-tab-group
+      [(selectedIndex)]="selectedIndex"
+      (selectedIndexChange)="onTabChange($event)"
+      appSwipeTabs
+      (swipeLeft)="nextTab()"
+      (swipeRight)="previousTab()">
       <mat-tab [label]="label('search')">
         <search-tab></search-tab>
       </mat-tab>
