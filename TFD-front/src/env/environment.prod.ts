@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiBaseUrl: '/api'
+  apiBaseUrl: '/api',
+  copyLink: 'http://theory-crafter.pazimor.dev/'
 };

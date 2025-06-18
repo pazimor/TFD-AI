@@ -41,7 +41,9 @@ export class SavedBuildsListComponent {
   }
 
   LoadBuild(buildId: number): void {
-    this.router.navigate(['/build-maker'], { queryParams: { build: buildId } });
+    if (buildId !== 0) {
+      this.router.navigate(['/build-maker'], { queryParams: { build: buildId } });
+    }
   }
 
   refresh(): void {

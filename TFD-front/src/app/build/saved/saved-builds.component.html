@@ -23,7 +23,7 @@
   @if (!isLoading() && !errorLoading() && builds().length > 0) {
     <div class="builds-grid">
       @for (build of builds(); track build.build_id) {
-        <app-build-card [build]="build" (click)="LoadBuild(build.build_id)"></app-build-card>
+        <app-build-card [build]="build" (viewBuild)="LoadBuild($event)"></app-build-card>
       }
     </div>
   }

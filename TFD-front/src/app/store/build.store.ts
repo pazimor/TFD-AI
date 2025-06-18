@@ -70,7 +70,7 @@ export const buildStore = signalStore(
   })),
   withProps((store) => ({
     getBuildRessource: httpResource<SavedBuild | undefined>(() =>
-      store._load_build()
+      store._load_build() && store.currentBuild().build_id > 0
         ? {
           url: `${environment.apiBaseUrl}/build/${store.currentBuild().build_id}`,
           method: 'GET',
@@ -123,7 +123,6 @@ export const buildStore = signalStore(
       store.getBuildRessource.reload();
       if (store.getBuildRessource.hasValue()) {
         const saved = store.getBuildRessource.value()!;
-        console.log(saved)
         patchState(store, { currentBuild: saved });
       }
     },
@@ -134,7 +133,7 @@ export const buildStore = signalStore(
       store.SaveBuildResource.reload();
     },
     setBuildID: (id: number) => {
-      patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id } , _save_build: false });
-    }
+      patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id } , _load_build: false });
+    },
   }))
 );

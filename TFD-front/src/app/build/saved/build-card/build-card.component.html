@@ -1,12 +1,29 @@
-<div class="build-card" role="button" [attr.aria-label]="'View build ' + build.build_name">
-  <h3 (click)="onCardClick()" >{{ build.build_name }}</h3>
-  @if (build.updated_at) { <!-- not working -->
-    <p>Last updated: {{ build.updated_at | date:'mediumDate' }}</p>
+<div>
+
+  <div class="build-card" role="button" [attr.aria-label]="'View build ' + build.build_name">
+    <h3 (click)="onSelect()">{{ build.build_name }}</h3>
+    @if (build.updated_at) { <!-- not working -->
+      <p>Last updated: {{ build.updated_at | date:'mediumDate' }}</p>
+    }
+  </div>
+
+  @if (isSelected()) {
+    <div class="but">
+      <h3 class="material-icons-outlined" >
+        <div (click)="unlinkgBuild()">check_circle</div>
+      </h3>
+    </div>
   }
-  <!-- <p *ngIf="build.user_google_id">Creator ID: {{ build.user_google_id }}</p>  TODO: feture to subscribe to others Creators-->
-  <!-- TODO: export link for other peoples -->
-  <h3 class="material-icons-outlined" >
-    <div>delete</div>
-    <div (click)="copyBuild()">content_copy</div>
-  </h3>
+  <div class="but">
+    <h3 class="material-icons-outlined" >
+      <div>delete</div>
+    </h3>
+  </div>
+
+  <div class="but">
+    <h3 class="material-icons-outlined" >
+      <div (click)="copyBuild()">content_copy</div>
+    </h3>
+  </div>
+
 </div>

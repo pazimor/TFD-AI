@@ -97,7 +97,7 @@ export class MainBuildComponent implements OnInit {
       const idParam = params.get('build');
       if (idParam) {
         const buildId = Number(idParam);
-        if (!Number.isNaN(buildId)) {
+        if (!Number.isNaN(buildId) && buildId > 0) {
           this.build_store.loadFromApi(buildId);
         }
       }
