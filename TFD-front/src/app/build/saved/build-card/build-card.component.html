@@ -1,7 +1,7 @@
 <div>
 
-  <div class="build-card" role="button" [attr.aria-label]="'View build ' + build.build_name">
-    <h3 (click)="onSelect()">{{ build.build_name }}</h3>
+  <div class="build-card" role="button" [attr.aria-label]="'View build ' + build.build_name" (click)="onSelect()">
+    <h3>{{ build.build_name }}</h3>
     @if (build.updated_at) { <!-- not working -->
       <p>Last updated: {{ build.updated_at | date:'mediumDate' }}</p>
     }

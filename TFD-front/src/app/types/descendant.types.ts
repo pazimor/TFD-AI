@@ -30,7 +30,7 @@ export interface DescendantsResponse {
 }
 
 export const defaultDescendants: DescendantsResponse = {
-  id: 0,
+  id: -1,
   descendant_id: 0,
   descendant_name: 0, // FK translation_strings
   descendant_group_id: 0,
@@ -38,3 +38,5 @@ export const defaultDescendants: DescendantsResponse = {
   stats: undefined,
   skills: undefined
 }
+
+export const unsetDescendants: DescendantsResponse = { ...defaultDescendants, id: 0 };

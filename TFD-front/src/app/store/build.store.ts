@@ -1,7 +1,7 @@
 import { signalStore, withState, withMethods, patchState, withProps } from '@ngrx/signals';
 import { httpResource } from '@angular/common/http';
 import { ModuleResponse, defaultModule } from '../types/module.types';
-import { DescendantsResponse, defaultDescendants } from '../types/descendant.types';
+import { DescendantsResponse, defaultDescendants, unsetDescendants } from '../types/descendant.types';
 import { WeaponResponse, defaultWeapon } from '../types/weapon.types';
 import { Reactor, defaultReactor } from '../types/reactor.types';
 import { ExternalComponent, defaultExternalComponent } from '../types/external.types';
@@ -134,6 +134,6 @@ export const buildStore = signalStore(
     },
     setBuildID: (id: number) => {
       patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id } , _load_build: false });
-    },
+    }
   }))
 );

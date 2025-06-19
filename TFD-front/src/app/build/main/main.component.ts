@@ -89,6 +89,13 @@ export class MainBuildComponent implements OnInit {
     }
 
     this.build_store.saveToApi(userId, this.buildName);
+    computed(() => {
+      const resource = this.build_store.SaveBuildResource;
+      if (resource?.hasValue()) {
+        console.log("oui");
+        this.build_store.setBuildID(resource.value().build_id)
+      }
+    })
   }
 
   ngOnInit(): void {

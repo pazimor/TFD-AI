@@ -7,7 +7,7 @@ import { dataStore } from '../../store/data.store';
 import { selectorData } from '../../types/selector.types';
 import { DescendantDisplayComponent } from './display/descendant-display.component';
 import { ModuleResponse } from '../../types/module.types';
-import { defaultDescendants, DescendantsResponse } from '../../types/descendant.types';
+import { defaultDescendants, DescendantsResponse, unsetDescendants } from '../../types/descendant.types';
 import { selectorComponent } from '../selector/selector.component';
 import { MatDialog } from '@angular/material/dialog';
 import { buildStore } from '../../store/build.store';
@@ -27,6 +27,7 @@ import { buildStore } from '../../store/build.store';
 export class DescedantBuildComponent {
   readonly data_store = inject(dataStore);
   readonly build_store = inject(buildStore);
+
   readonly _syncEffect = effect(() => {
     this.module_data.descendant = this.build_store.descendant().descendant_id;
   });
@@ -86,7 +87,8 @@ export class DescedantBuildComponent {
 
       const res = this.data_store.descendantResource.value()
         ?.filter(des => des.descendant_id === id)[0]
-        ?? defaultDescendants
+        ?? unsetDescendants
+      console.log(res);
       this.build_store.setDescendant(res);
       this.module_data.descendant = res.descendant_id
 

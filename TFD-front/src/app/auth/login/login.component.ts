@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, AfterViewInit } from '@angular/core';
+import { Component, effect, inject, OnInit, AfterViewInit, computed, Signal } from '@angular/core';
 import { visualStore } from '../../store/display.store';
 import { MatDialogRef } from '@angular/material/dialog';
 import { loginStore } from '../../store/login.store';
@@ -18,7 +18,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
   readonly visual_store = inject(visualStore);
   readonly login_store = inject(loginStore);
 
-  error: HttpErrorResponse | undefined;
+  readonly error = computed<HttpErrorResponse | undefined>(() => {
+    if (!this.login_store.loggedIn()) {
+      return undefined;
+    }
+    const err = this.login_store.userSettings_Resource.error();
+    return err ? (err as HttpErrorResponse) : undefined;
+  });
 
   dialogStartedStatus= this.login_store.loggedIn();
   settings: any = {};
@@ -28,14 +34,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private dialogRef: MatDialogRef<LoginComponent>) {
 
     this.login_store.load_UserSettings()
-
-    effect(() => {
-      if (!this.login_store.loggedIn()) return;
-
-      if (this.login_store.userSettings_Resource.error()) {
-        this.error = this.login_store.userSettings_Resource.error() as HttpErrorResponse;
-      }
-    });
   }
 
   ngOnInit() {}
