@@ -1,5 +1,8 @@
 import { Component, Input, Output, EventEmitter, inject, computed, Signal, signal } from '@angular/core';
 import { buildStore } from '../../../store/build.store';
+import { buildListStore } from '../../../store/build-list.store';
+import { visualStore } from '../../../store/display.store';
+import { getUILabel } from '../../../lang.utils';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -22,6 +25,8 @@ export interface BuildSummary { // Exporting for potential use in parent
 })
 export class BuildCardComponent {
   private buildStore = inject(buildStore)
+  private listStore = inject(buildListStore)
+  private visualStore = inject(visualStore)
   @Input({ required: true }) build!: BuildSummary;
   @Output() viewBuild = new EventEmitter<number>();
 
@@ -41,5 +46,13 @@ export class BuildCardComponent {
   unlinkgBuild() {
     this.buildStore.setBuildID(0);
     this.viewBuild.emit(0);
+  }
+
+  confirmDelete() {
+    const message = getUILabel(this.visualStore.get_lang(), 'confirmDelete');
+    if (confirm(message)) {
+      this.listStore.deleteBuild(this.build.build_id);
+      this.listStore.refresh();
+    }
   }
 }

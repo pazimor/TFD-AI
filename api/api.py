@@ -190,5 +190,16 @@ def api_get_build(build_id):
         'build_data': build_data,
     })
 
+
+@app.route('/api/build/<int:build_id>', methods=['DELETE'])
+def api_delete_build(build_id):
+    try:
+        deleted = builds.delete_build(build_id)
+        if not deleted:
+            return jsonify({'success': False, 'error': 'not found'}), 404
+        return jsonify({'success': True}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4201)

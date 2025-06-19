@@ -81,9 +81,22 @@ def upgrade() -> None:
     END;
     """)
 
+    # Procédure de suppression
+    op.execute("DROP PROCEDURE IF EXISTS DeleteUserBuild;")
+    op.execute("""
+    CREATE PROCEDURE DeleteUserBuild(
+        IN p_build_id INT
+    )
+    BEGIN
+        DELETE FROM user_builds WHERE build_id = p_build_id;
+        SELECT ROW_COUNT() AS affected;
+    END;
+    """)
+
 
 def downgrade() -> None:
     op.execute("DROP PROCEDURE IF EXISTS AddUserBuild;")
     op.execute("DROP PROCEDURE IF EXISTS UpdateUserBuild;")
     op.execute("DROP PROCEDURE IF EXISTS GetUserBuilds;")
     op.execute("DROP PROCEDURE IF EXISTS GetUserBuild;")
+    op.execute("DROP PROCEDURE IF EXISTS DeleteUserBuild;")
