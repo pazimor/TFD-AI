@@ -33,8 +33,8 @@ export const buildListStore = signalStore(
           }
         : undefined,
     ),
-    deleteResource: httpResource<unknown>(() =>
-      store._delete() && store.delete_id() > 0
+    deleteResource: httpResource<{success: boolean}>(() =>
+      store._delete()
         ? {
             url: `${environment.apiBaseUrl}/build/${store.delete_id()}`,
             method: 'DELETE',
@@ -51,10 +51,12 @@ export const buildListStore = signalStore(
     deleteBuild: (id: number) => {
       patchState(store, { delete_id: id, _delete: true });
       store.deleteResource.reload();
-      patchState(store, { _delete: false });
+      //TODO: find a way to clean state after resources loaded
+      //patchState(store, { delete_id: 0, _delete: false });
     },
     refresh: () => {
       store.resource.reload();
     },
-  }))
+  })),
+  
 );

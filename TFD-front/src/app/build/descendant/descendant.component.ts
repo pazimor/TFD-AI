@@ -88,7 +88,6 @@ export class DescedantBuildComponent {
       const res = this.data_store.descendantResource.value()
         ?.filter(des => des.descendant_id === id)[0]
         ?? unsetDescendants
-      console.log(res);
       this.build_store.setDescendant(res);
       this.module_data.descendant = res.descendant_id
 

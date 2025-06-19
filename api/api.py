@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 CORS(app)
 CORS(app, resource={r"/api/*": {"origins": "http://localhost:4200"}}, supports_credentials=True)
-CORS(app, supports_credentials=True, methods=["GET", "POST"], allow_headers=["Content-Type"])
+CORS(app, supports_credentials=True, methods=["GET", "POST", "DELETE"], allow_headers=["Content-Type"])
 
 @app.route('/api/user_settings', methods=['POST'])
 def get_user_settings():
