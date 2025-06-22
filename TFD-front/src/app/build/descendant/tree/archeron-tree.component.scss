@@ -1,0 +1,67 @@
+.tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.board {
+  display: grid;
+  gap: 4px;
+}
+
+.cell {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.cell.active {
+  outline: 2px solid #ffffff;
+}
+
+.cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.gradient-square.Tier1 {
+  background: linear-gradient(
+      135deg,
+      rgba(23, 113, 153, 0.5) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(23, 113, 153, 0.5) 100%
+  );
+}
+
+.gradient-square.Tier2 {
+  background: linear-gradient(
+      135deg,
+      rgba(125, 23, 153, 0.5) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(125, 23, 153, 0.5) 100%
+  );
+}
+
+.gradient-square.Tier3 {
+  background: linear-gradient(
+      135deg,
+      rgba(153, 136, 23, 0.5) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(153, 136, 23, 0.5) 100%
+  );
+}
+
+.gradient-square.Tier4 {
+  background: linear-gradient(
+      135deg,
+      rgba(153, 53, 23, 0.5) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(153, 53, 23, 0.5) 100%
+  );
+}
+
+.info {
+  margin-top: 10px;
+}
