@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 CORS(app)
 CORS(app, resource={r"/api/*": {"origins": "http://localhost:4200"}}, supports_credentials=True)
-CORS(app, supports_credentials=True, methods=["GET", "POST"], allow_headers=["Content-Type"])
+CORS(app, supports_credentials=True, methods=["GET", "POST", "DELETE"], allow_headers=["Content-Type"])
 
 @app.route('/api/user_settings', methods=['POST'])
 def get_user_settings():
@@ -189,6 +189,17 @@ def api_get_build(build_id):
         'build_name': b.build_name,
         'build_data': build_data,
     })
+
+
+@app.route('/api/build/<int:build_id>', methods=['DELETE'])
+def api_delete_build(build_id):
+    try:
+        deleted = builds.delete_build(build_id)
+        if not deleted:
+            return jsonify({'success': False, 'error': 'not found'}), 404
+        return jsonify({'success': True}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4201)

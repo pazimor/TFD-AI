@@ -67,3 +67,20 @@ def update_build(build_id: int, user_id: str, name: str, data: dict) -> bool:
         return False
     finally:
         session.close()
+
+
+def delete_build(build_id: int) -> bool:
+    session: Session = SessionLocal()
+    try:
+        result = session.execute(
+            text("CALL DeleteUserBuild(:build_id)"),
+            {"build_id": build_id}
+        )
+        session.commit()
+        return result.rowcount > 0
+    except Exception as e:
+        print(f"❌ delete_build (SP): {e}")
+        session.rollback()
+        return False
+    finally:
+        session.close()
