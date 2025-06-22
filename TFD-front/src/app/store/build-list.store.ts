@@ -36,4 +36,5 @@ export const buildListStore = signalStore(
       store.resource.reload();
     },
   }))
+
 );
