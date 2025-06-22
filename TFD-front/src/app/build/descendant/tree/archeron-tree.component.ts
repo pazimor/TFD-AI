@@ -6,6 +6,7 @@ import { dataStore, defaultTranslate, TranslationString, BoardNode, Boards, Node
 import { visualStore } from '../../../store/display.store';
 import { getTranslationField } from '../../../lang.utils';
 import { DescendantsResponse } from '../../../types/descendant.types';
+import { BoardNodePosition } from '../../../types/build.types';
 
 @Component({
   standalone: true,
@@ -29,7 +30,7 @@ export class ArcheronTreeComponent {
   }
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { descendant: DescendantsResponse; nodes: number[] },
+    @Inject(MAT_DIALOG_DATA) public data: { descendant: DescendantsResponse; nodes: BoardNodePosition[] },
     private dialogRef: MatDialogRef<ArcheronTreeComponent>
   ) {
     this.data_store.load_boards();
@@ -38,9 +39,9 @@ export class ArcheronTreeComponent {
       this.board = this.shiftBoard(this.board);
       if (this.board && this.data.nodes?.length) {
         const set = new Set<string>();
-        this.data.nodes.forEach(id => {
-          const n = this.board!.nodes.find(node => node.node_id === id);
-          if (n) set.add(this.key(n));
+        this.data.nodes.forEach(pos => {
+          const key = `${pos.row}-${pos.column}`;
+          set.add(key);
         });
         this.active.set(set);
       }
@@ -146,11 +147,10 @@ export class ArcheronTreeComponent {
       this.dialogRef.close([]);
       return;
     }
-    const ids = Array.from(this.active()).map(key => {
-      const [r, c] = key.split('-').map(Number);
-      const n = this.board!.nodes.find(node => node.position_row === r && node.position_column === c);
-      return n?.node_id ?? 0;
-    }).filter(id => id !== 0);
-    this.dialogRef.close(ids);
+    const positions: BoardNodePosition[] = Array.from(this.active()).map(key => {
+      const [row, column] = key.split('-').map(Number);
+      return { row, column };
+    });
+    this.dialogRef.close(positions);
   }
 }

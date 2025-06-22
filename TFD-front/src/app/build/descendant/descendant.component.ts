@@ -12,6 +12,7 @@ import { selectorComponent } from '../selector/selector.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ArcheronTreeComponent } from './tree/archeron-tree.component';
 import { buildStore } from '../../store/build.store';
+import { BoardNodePosition } from '../../types/build.types';
 
 @Component({
   standalone: true,
@@ -81,7 +82,7 @@ export class DescedantBuildComponent {
       data: { descendant: this.build_store.descendant(), nodes: this.build_store.boardNodes() },
       width: '600px',
     });
-    dialogRef.afterClosed().subscribe((nodes: number[] | undefined) => {
+    dialogRef.afterClosed().subscribe((nodes: BoardNodePosition[] | undefined) => {
       if (nodes) {
         this.build_store.setBoardNodes(nodes);
       }

@@ -1,5 +1,10 @@
 import { defaultModule } from './module.types';
 
+export interface BoardNodePosition {
+  row: number;
+  column: number;
+}
+
 export interface BuildFromDataBase {
   descendant: number;
   descendantModules: number[];
@@ -7,7 +12,7 @@ export interface BuildFromDataBase {
   weaponsModules: number[][];
   reactor: number;
   externals: number[];
-  boardNodes: number[];
+  boardNodes: BoardNodePosition[];
 }
 
 export const initBuildFromDataBase: BuildFromDataBase = {

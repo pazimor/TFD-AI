@@ -6,7 +6,7 @@ import { WeaponResponse, defaultWeapon } from '../types/weapon.types';
 import { Reactor, defaultReactor } from '../types/reactor.types';
 import { ExternalComponent, defaultExternalComponent } from '../types/external.types';
 import { environment } from '../../env/environment';
-import { SavedBuild, initSavedBuild, BuildFromDataBase } from '../types/build.types';
+import { SavedBuild, initSavedBuild, BuildFromDataBase, BoardNodePosition } from '../types/build.types';
 
 export interface BuildToHydrate {
   descendant: DescendantsResponse;
@@ -15,7 +15,7 @@ export interface BuildToHydrate {
   weaponsModules: ModuleResponse[][];
   reactor: Reactor;
   externals: ExternalComponent[];
-  boardNodes: number[];
+  boardNodes: BoardNodePosition[];
 }
 
 export interface BuildState {
@@ -25,7 +25,7 @@ export interface BuildState {
   weaponsModules: ModuleResponse[][];
   reactor: Reactor;
   externals: ExternalComponent[];
-  boardNodes: number[];
+  boardNodes: BoardNodePosition[];
   _load_build: boolean;
   _save_build: boolean;
   currentBuild: SavedBuild;
@@ -123,7 +123,7 @@ export const buildStore = signalStore(
       externals[index] = external;
       patchState(store, { externals });
     },
-    setBoardNodes: (nodes: number[]) => {
+    setBoardNodes: (nodes: BoardNodePosition[]) => {
       patchState(store, { boardNodes: nodes });
     },
     loadFromApi: (id: number) => {
