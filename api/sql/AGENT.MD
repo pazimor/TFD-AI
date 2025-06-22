@@ -30,6 +30,9 @@ sql/
 3. Apply migration (`alembic upgrade head`)
 4. PR should mention any DB schema change
 
+## alembic revisions
+- don't create migration yourself it break things you don't have alembic.ini
+
 ## Data Import
 - Data fetched from remote JSON APIs is normalized before DB insert
 - All importers should handle upserts to avoid duplicates

@@ -92,7 +92,6 @@ export class MainBuildComponent implements OnInit {
     computed(() => {
       const resource = this.build_store.SaveBuildResource;
       if (resource?.hasValue()) {
-        console.log("oui");
         this.build_store.setBuildID(resource.value().build_id)
       }
     })

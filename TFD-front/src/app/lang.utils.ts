@@ -13,6 +13,7 @@ export interface UILabels {
   noBuilds: string;
   refresh: string;
   wipMessage: string;
+  confirmDelete: string;
 }
 
 export const uiTranslations: Record<string, UILabels> = {
@@ -30,7 +31,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: 'Error loading builds',
     noBuilds: 'No builds found',
     refresh: 'Refresh',
-    wipMessage: 'Work in progress'
+    wipMessage: 'Work in progress',
+    confirmDelete: 'Are you sure you want to delete this build?'
   },
   fr: {
     search: 'Recherche',
@@ -46,7 +48,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: "Erreur lors du chargement des builds",
     noBuilds: 'Aucun build disponible',
     refresh: 'Rafraîchir',
-    wipMessage: 'Travail en cours'
+    wipMessage: 'Travail en cours',
+    confirmDelete: 'Êtes-vous sûr de vouloir supprimer ce build ?'
   },
   ko: {
     search: '검색',
@@ -62,7 +65,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: '빌드를 불러오는 데 오류 발생',
     noBuilds: '저장된 빌드가 없습니다',
     refresh: '새로고침',
-    wipMessage: '작업 진행 중'
+    wipMessage: '작업 진행 중',
+    confirmDelete: '이 빌드를 삭제하시겠습니까?'
   },
   de: {
     search: 'Suche',
@@ -78,7 +82,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: 'Fehler beim Laden der Builds',
     noBuilds: 'Keine Builds gefunden',
     refresh: 'Aktualisieren',
-    wipMessage: 'In Arbeit'
+    wipMessage: 'In Arbeit',
+    confirmDelete: 'Möchten Sie diesen Build wirklich löschen?'
   },
   ja: {
     search: '検索',
@@ -94,7 +99,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: 'ビルドの読み込みエラー',
     noBuilds: 'ビルドが見つかりません',
     refresh: '更新',
-    wipMessage: '作業中'
+    wipMessage: '作業中',
+    confirmDelete: 'このビルドを削除してよろしいですか？'
   },
   'zh-CN': {
     search: '搜索',
@@ -110,7 +116,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: '加载构建时出错',
     noBuilds: '没有找到构建',
     refresh: '刷新',
-    wipMessage: '开发中'
+    wipMessage: '开发中',
+    confirmDelete: '确定要删除此构建吗？'
   },
   'zh-TW': {
     search: '搜尋',
@@ -126,7 +133,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: '載入構建時出錯',
     noBuilds: '沒有找到構建',
     refresh: '重新整理',
-    wipMessage: '開發中'
+    wipMessage: '開發中',
+    confirmDelete: '確定要刪除此構建嗎？'
   },
   it: {
     search: 'Cerca',
@@ -142,7 +150,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: 'Errore nel caricamento delle build',
     noBuilds: 'Nessuna build trovata',
     refresh: 'Aggiorna',
-    wipMessage: 'Lavori in corso'
+    wipMessage: 'Lavori in corso',
+    confirmDelete: 'Sei sicuro di voler eliminare questa build?'
   },
   pl: {
     search: 'Szukaj',
@@ -158,7 +167,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: 'Błąd ładowania buildów',
     noBuilds: 'Brak zapisanych buildów',
     refresh: 'Odśwież',
-    wipMessage: 'Prace w toku'
+    wipMessage: 'Prace w toku',
+    confirmDelete: 'Czy na pewno chcesz usunąć ten build?'
   },
   pt: {
     search: 'Buscar',
@@ -174,7 +184,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: 'Erro ao carregar builds',
     noBuilds: 'Nenhum build encontrado',
     refresh: 'Atualizar',
-    wipMessage: 'Em desenvolvimento'
+    wipMessage: 'Em desenvolvimento',
+    confirmDelete: 'Tem certeza de que deseja excluir este build?'
   },
   ru: {
     search: 'Поиск',
@@ -190,7 +201,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: 'Ошибка загрузки билдов',
     noBuilds: 'Билды не найдены',
     refresh: 'Обновить',
-    wipMessage: 'В разработке'
+    wipMessage: 'В разработке',
+    confirmDelete: 'Вы уверены, что хотите удалить этот билд?'
   },
   es: {
     search: 'Buscar',
@@ -206,7 +218,8 @@ export const uiTranslations: Record<string, UILabels> = {
     errorLoadingBuilds: 'Error al cargar las builds',
     noBuilds: 'No se encontraron builds',
     refresh: 'Actualizar',
-    wipMessage: 'Trabajo en progreso'
+    wipMessage: 'Trabajo en progreso',
+    confirmDelete: '¿Estás seguro de que deseas eliminar esta build?'
   }
 };
 

@@ -60,3 +60,6 @@ TFD-front/
 ## PR/Commit Guidelines
 - All commit / PR messages / branch name in English
 - Link changes to related feature/bug in message
+
+## display
+- every displayed messages / letters should be fully translated and use uiTranslations feature
