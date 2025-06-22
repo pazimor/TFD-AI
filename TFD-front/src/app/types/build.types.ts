@@ -7,6 +7,7 @@ export interface BuildFromDataBase {
   weaponsModules: number[][];
   reactor: number;
   externals: number[];
+  boardNodes: number[];
 }
 
 export const initBuildFromDataBase: BuildFromDataBase = {
@@ -16,6 +17,7 @@ export const initBuildFromDataBase: BuildFromDataBase = {
   weaponsModules: Array.from({ length: 3 }, () => Array.from({ length: 10 }, () => 0)),
   reactor: 0,
   externals: Array.from({ length: 4 }, () => 0),
+  boardNodes: [],
 }
 export interface SavedBuild {
   build_id: number;

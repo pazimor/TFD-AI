@@ -1,6 +1,7 @@
 import { Component, Inject, inject, effect, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { dataStore, defaultTranslate, TranslationString, BoardNode, Boards, NodeEffect } from '../../../store/data.store';
 import { visualStore } from '../../../store/display.store';
 import { getTranslationField } from '../../../lang.utils';
@@ -9,7 +10,7 @@ import { DescendantsResponse } from '../../../types/descendant.types';
 @Component({
   standalone: true,
   selector: 'archeron-tree',
-  imports: [CommonModule, MatDialogModule],
+  imports: [CommonModule, MatDialogModule, MatButtonModule],
   templateUrl: './archeron-tree.component.html',
   styleUrls: ['./archeron-tree.component.scss']
 })
@@ -27,11 +28,22 @@ export class ArcheronTreeComponent {
     return `${node.position_row}-${node.position_column}`;
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public descendant: DescendantsResponse) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { descendant: DescendantsResponse; nodes: number[] },
+    private dialogRef: MatDialogRef<ArcheronTreeComponent>
+  ) {
     this.data_store.load_boards();
     effect(() => {
       this.board = computed(() => this.data_store.BoardResource.value() ?? [])()[1];
-      this.board = this.shiftBoard(this.board)
+      this.board = this.shiftBoard(this.board);
+      if (this.board && this.data.nodes?.length) {
+        const set = new Set<string>();
+        this.data.nodes.forEach(id => {
+          const n = this.board!.nodes.find(node => node.node_id === id);
+          if (n) set.add(this.key(n));
+        });
+        this.active.set(set);
+      }
     });
   };
 
@@ -127,5 +139,18 @@ export class ArcheronTreeComponent {
     const tr: TranslationString = translations ? translations[node.name_id - 1] : defaultTranslate;
     this.hoverName.set((tr as any)[langKey] ?? '');
     this.hoverEffects.set(node.effects);
+  }
+
+  confirmSelection(): void {
+    if (!this.board) {
+      this.dialogRef.close([]);
+      return;
+    }
+    const ids = Array.from(this.active()).map(key => {
+      const [r, c] = key.split('-').map(Number);
+      const n = this.board!.nodes.find(node => node.position_row === r && node.position_column === c);
+      return n?.node_id ?? 0;
+    }).filter(id => id !== 0);
+    this.dialogRef.close(ids);
   }
 }

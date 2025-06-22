@@ -60,6 +60,7 @@ export class MainBuildComponent implements OnInit {
         weaponsModules: build.weaponsModules.map(slot => slot.map(id => this.data_store.modulesResource.value()?.find(m => m.module_id === id) ?? defaultModule)),
         reactor: this.data_store.reactorResource.value()?.find(item => item.reactor_id === build.reactor) ?? defaultReactor,
         externals: build.externals.map(id => this.data_store.externalResource.value()?.find(e => e.external_component_id === id) ?? defaultExternalComponent),
+        boardNodes: build.boardNodes,
       };
       this.build_store.hydrate(data);
     }
