@@ -119,16 +119,20 @@ export interface BoardNode {
   node_type:             string | null;
   tier_id:               string | null;
   required_tuning_point: number | null;
+  position_row:          number;
+  position_column:       number;
   effects:               NodeEffect[];
 }
 
 export interface Boards {
-  id:              number;
-  board_id:        number;
-  board_name_id:   number;
-  board_group_id:  number;
+  id: number;
+  board_id: number;
+  board_name_id: number;
+  arche_tuning_board_id: number;
+  row_size: number;
+  column_size: number;
   board_image_url: string | null;
-  nodes:           BoardNode[];
+  nodes: BoardNode[];
 }
 
 export type unlock = {
@@ -216,7 +220,7 @@ export const dataStore = signalStore(
       withCredentials: true,
       transferCache: true,
     }) : undefined),
-    BoardResource: httpResource<Boards | undefined>(() => store.unlock.boards() ? ({
+    BoardResource: httpResource<Boards[] | undefined>(() => store.unlock.boards() ? ({
       url: `${API_URL}/boards`,
       method: 'GET',
       withCredentials: true,
@@ -250,6 +254,10 @@ export const dataStore = signalStore(
       patchState(store, { unlock: { ...store.unlock(), reactors: true } });
       store.reactorResource?.reload();
     },
+    load_boards: () => {
+      patchState(store, { unlock: { ...store.unlock(), boards: true } });
+      store.BoardResource?.reload();
+    },
     load_all: () => {
       patchState(store, {
         unlock: {
@@ -270,11 +278,15 @@ export const dataStore = signalStore(
       store.weaponResource?.reload();
       store.externalResource?.reload();
       store.reactorResource?.reload();
+      if (store.unlock().boards) {
+        store.BoardResource?.reload();
+      }
     },
     refresh_modules: () => store.modulesResource?.reload(),
     refresh_translation: () => store.translationResource?.reload(),
     refresh_descendants: () => store.descendantResource?.reload(),
     refresh_externals: () => store.externalResource?.reload(),
     refresh_reactors: () => store.reactorResource?.reload(),
+    refresh_boards: () => store.BoardResource?.reload(),
   }))
 );

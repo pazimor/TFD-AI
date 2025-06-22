@@ -1,0 +1,78 @@
+.tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background: #333333 !important;
+  color: #fff;
+}
+
+.board {
+  --scale: 25px;
+  padding: 10px;
+  display: grid;
+  gap: 1px;
+}
+
+.cell {
+  position: relative;
+  width: var(--scale);
+  height: var(--scale);
+  cursor: pointer;
+}
+
+.cell.active {
+  outline: 2px solid #ffffff;
+}
+
+.cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.gradient-square.Tier1 {
+  background: rgba(23, 113, 153, 0.2);
+}
+
+.gradient-square.Tier1.active {
+  background: rgba(39, 184, 255, 0.7);
+}
+
+.gradient-square.Tier2 {
+  background: rgba(125, 23, 153, 0.2);
+}
+
+.gradient-square.Tier2.active {
+  background: rgba(207, 35, 253, 0.7);
+}
+
+.gradient-square.Tier3 {
+  background: rgba(153, 136, 23, 0.2)
+}
+
+.gradient-square.Tier3.active {
+  background: rgba(255, 226, 38, 0.7)
+}
+
+.gradient-square.Tier4 {
+  background: rgba(153, 53, 23, 0.2)
+}
+
+.gradient-square.Tier4.active {
+  background: rgba(251, 87, 39, 0.7)
+}
+
+.info {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .board {
+    --scale: 18px;
+  }
+  .info {
+    font-size: 8px;
+  }
+}

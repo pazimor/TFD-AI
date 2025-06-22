@@ -10,6 +10,7 @@ import { ModuleResponse } from '../../types/module.types';
 import { defaultDescendants, DescendantsResponse, unsetDescendants } from '../../types/descendant.types';
 import { selectorComponent } from '../selector/selector.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ArcheronTreeComponent } from './tree/archeron-tree.component';
 import { buildStore } from '../../store/build.store';
 
 @Component({
@@ -72,6 +73,15 @@ export class DescedantBuildComponent {
   }
 
   constructor(private dialog: MatDialog) {}
+
+  openSkillTreeDialog(): void {
+    this.data_store.load_boards();
+    this.dialog.open(ArcheronTreeComponent, {
+      autoFocus: true,
+      data: this.build_store.descendant(),
+      width: '600px',
+    });
+  }
 
   openDialog(): void {
 
