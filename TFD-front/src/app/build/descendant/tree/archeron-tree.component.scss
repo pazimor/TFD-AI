@@ -8,7 +8,7 @@
 }
 
 .board {
-  --scale: 28px;
+  --scale: 25px;
   padding: 10px;
   display: grid;
   gap: 1px;
@@ -35,16 +35,32 @@
   background: rgba(23, 113, 153, 0.2);
 }
 
+.gradient-square.Tier1.active {
+  background: rgba(39, 184, 255, 0.7);
+}
+
 .gradient-square.Tier2 {
   background: rgba(125, 23, 153, 0.2);
+}
+
+.gradient-square.Tier2.active {
+  background: rgba(207, 35, 253, 0.7);
 }
 
 .gradient-square.Tier3 {
   background: rgba(153, 136, 23, 0.2)
 }
 
+.gradient-square.Tier3.active {
+  background: rgba(255, 226, 38, 0.7)
+}
+
 .gradient-square.Tier4 {
   background: rgba(153, 53, 23, 0.2)
+}
+
+.gradient-square.Tier4.active {
+  background: rgba(251, 87, 39, 0.7)
 }
 
 .info {

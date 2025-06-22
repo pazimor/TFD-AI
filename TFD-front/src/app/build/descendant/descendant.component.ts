@@ -77,9 +77,9 @@ export class DescedantBuildComponent {
   openSkillTreeDialog(): void {
     this.data_store.load_boards();
     this.dialog.open(ArcheronTreeComponent, {
-      autoFocus: false,
+      autoFocus: true,
       data: this.build_store.descendant(),
-      width: '550px',
+      width: '600px',
     });
   }
 

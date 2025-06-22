@@ -1,45 +1,31 @@
-  active = signal(new Set<string>());
-  key(node: BoardNode): string {
-    return `${node.position_row}-${node.position_column}`;
-  }
+import { Component, Inject, inject, effect, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { dataStore, defaultTranslate, TranslationString, BoardNode, Boards, NodeEffect } from '../../../store/data.store';
+import { visualStore } from '../../../store/display.store';
+import { getTranslationField } from '../../../lang.utils';
+import { DescendantsResponse } from '../../../types/descendant.types';
 
-  track = (_: number, node: BoardNode) => this.key(node);
-
-    const key = this.key(node);
-    if (set.has(key)) {
-      set.delete(key);
-      if (this.board) {
-        for (const n of this.board.nodes) {
-          const k = this.key(n);
-          if (set.has(k) && n.node_type?.toLowerCase() !== 'start' && !this.pathExistsWithSet(n, set)) {
-            set.delete(k);
-          }
-        }
-      }
-      if (!this.canActivate(node)) return;
-      set.add(key);
-
-    return this.pathExistsWithSet(target, this.active());
-  }
-
-  private pathExistsWithSet(target: BoardNode, active: Set<string>): boolean {
-    const visited = new Set<string>();
-    const targetKey = this.key(target);
-      const currentKey = this.key(current);
-      if (currentKey === targetKey) return true;
-      visited.add(currentKey);
-        const k = this.key(n);
-        if ((active.has(k) || k === targetKey) && !visited.has(k)) {
-    return this.pathExistsWithSet(node, this.active());
+@Component({
+  standalone: true,
+  selector: 'archeron-tree',
+  imports: [CommonModule, MatDialogModule],
+  templateUrl: './archeron-tree.component.html',
+  styleUrls: ['./archeron-tree.component.scss']
 })
 export class ArcheronTreeComponent {
   readonly data_store = inject(dataStore);
   readonly visual_store = inject(visualStore);
 
   board?: Boards;
-  active = signal(new Set<number>());
   hoverName = signal('');
   hoverEffects = signal<NodeEffect[]>([]);
+  active = signal(new Set<string>());
+  readonly MAX_ACTIVE = 40;   // Limite maximale de cases actives en même temps
+
+  key(node: BoardNode): string {
+    return `${node.position_row}-${node.position_column}`;
+  }
 
   constructor(@Inject(MAT_DIALOG_DATA) public descendant: DescendantsResponse) {
     this.data_store.load_boards();
@@ -53,22 +39,38 @@ export class ArcheronTreeComponent {
     ...board,
     nodes: board.nodes.map(node => ({
       ...node,
-      position_row:    node.position_row    + 1,
+      position_row: node.position_row + 1,
       position_column: node.position_column + 1,
     }))
   });
 
   toggle(node: BoardNode): void {
-    if (!this.canActivate(node)) {
-      return;
-    }
+    if (!this.board) return;
+
     const set = new Set(this.active());
-    if (set.has(node.node_id)) {
-      set.delete(node.node_id);
+    const key = this.key(node);
+    const isActive = set.has(key);
+
+    if (isActive) {
+      set.delete(key);
+
+      for (const n of this.board.nodes) {
+        const k = this.key(n);
+        if (
+          set.has(k) &&
+          n.node_type?.toLowerCase() !== 'start' &&
+          !this.pathExistsWithSet(n, set)
+        ) {
+          return;
+        }
+      }
+
+      this.active.set(set);
     } else {
-      set.add(node.node_id);
+      if (!this.canActivate(node)) return;
+      set.add(key);
+      this.active.set(set);
     }
-    this.active.set(set);
   }
 
   private neighbors(node: BoardNode): BoardNode[] {
@@ -78,29 +80,45 @@ export class ArcheronTreeComponent {
     );
   }
 
-  private pathExists(target: BoardNode): boolean {
-    if (!this.board) return false;
-    const starts = this.board.nodes.filter(n => n.node_type?.toLowerCase() === 'start');
-    const visited = new Set<number>();
-    const stack = [...starts];
-    const active = this.active();
-    while (stack.length) {
-      const current = stack.pop()!;
-      if (current.node_id === target.node_id) return true;
-      visited.add(current.node_id);
-      for (const n of this.neighbors(current)) {
-        if ((active.has(n.node_id) || n.node_id === target.node_id) && !visited.has(n.node_id)) {
-          stack.push(n);
-        }
-      }
-    }
-    return false;
-  }
-
   canActivate(node: BoardNode): boolean {
     if (!this.board) return false;
     if (node.node_type?.toLowerCase() === 'start') return true;
-    return this.pathExists(node);
+
+    if (this.active().size >= this.MAX_ACTIVE) return false;
+
+    return this.neighbors(node).some(
+      n =>
+        n.node_type?.toLowerCase() === 'start' ||
+        this.active().has(this.key(n))
+    );
+  }
+
+  private pathExistsWithSet(target: BoardNode, active: Set<string>): boolean {
+    if (!this.board) return false;
+
+    const start = this.board.nodes.find(
+      n => n.node_type?.toLowerCase() === 'start'
+    );
+    if (!start) return false;
+
+    const visited = new Set<string>();
+    const stack: BoardNode[] = [start];
+
+    while (stack.length) {
+      const current = stack.pop()!;
+      const currentKey = this.key(current);
+      if (currentKey === this.key(target)) return true;
+      visited.add(currentKey);
+
+      for (const neigh of this.neighbors(current)) {
+        const k = this.key(neigh);
+        if (!visited.has(k) && (k === this.key(target) || active.has(k))) {
+          stack.push(neigh);
+        }
+      }
+    }
+
+    return false;
   }
 
   updateInfo(node: BoardNode): void {
