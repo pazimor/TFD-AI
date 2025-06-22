@@ -78,7 +78,8 @@ export class DescedantBuildComponent {
     this.data_store.load_boards();
     this.dialog.open(ArcheronTreeComponent, {
       autoFocus: false,
-      data: this.build_store.descendant()
+      data: this.build_store.descendant(),
+      width: '550px',
     });
   }
 
@@ -97,7 +98,6 @@ export class DescedantBuildComponent {
       const res = this.data_store.descendantResource.value()
         ?.filter(des => des.descendant_id === id)[0]
         ?? unsetDescendants
-      console.log(res);
       this.build_store.setDescendant(res);
       this.module_data.descendant = res.descendant_id
 

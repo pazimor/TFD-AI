@@ -125,14 +125,14 @@ export interface BoardNode {
 }
 
 export interface Boards {
-  id:              number;
-  board_id:        number;
-  board_name_id:   number;
-  board_group_id:  number;
-  row_size:        number;
-  column_size:     number;
+  id: number;
+  board_id: number;
+  board_name_id: number;
+  arche_tuning_board_id: number;
+  row_size: number;
+  column_size: number;
   board_image_url: string | null;
-  nodes:           BoardNode[];
+  nodes: BoardNode[];
 }
 
 export type unlock = {

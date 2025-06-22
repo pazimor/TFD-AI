@@ -2,17 +2,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
+  background: #333333 !important;
+  color: #fff;
 }
 
 .board {
+  --scale: 28px;
+  padding: 10px;
   display: grid;
-  gap: 4px;
+  gap: 1px;
 }
 
 .cell {
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: var(--scale);
+  height: var(--scale);
   cursor: pointer;
 }
 
@@ -27,41 +32,27 @@
 }
 
 .gradient-square.Tier1 {
-  background: linear-gradient(
-      135deg,
-      rgba(23, 113, 153, 0.5) 0%,
-      rgba(255, 255, 255, 0) 50%,
-      rgba(23, 113, 153, 0.5) 100%
-  );
+  background: rgba(23, 113, 153, 0.2);
 }
 
 .gradient-square.Tier2 {
-  background: linear-gradient(
-      135deg,
-      rgba(125, 23, 153, 0.5) 0%,
-      rgba(255, 255, 255, 0) 50%,
-      rgba(125, 23, 153, 0.5) 100%
-  );
+  background: rgba(125, 23, 153, 0.2);
 }
 
 .gradient-square.Tier3 {
-  background: linear-gradient(
-      135deg,
-      rgba(153, 136, 23, 0.5) 0%,
-      rgba(255, 255, 255, 0) 50%,
-      rgba(153, 136, 23, 0.5) 100%
-  );
+  background: rgba(153, 136, 23, 0.2)
 }
 
 .gradient-square.Tier4 {
-  background: linear-gradient(
-      135deg,
-      rgba(153, 53, 23, 0.5) 0%,
-      rgba(255, 255, 255, 0) 50%,
-      rgba(153, 53, 23, 0.5) 100%
-  );
+  background: rgba(153, 53, 23, 0.2)
 }
 
 .info {
   margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .board {
+    --scale: 18px;
+  }
 }

@@ -1,17 +1,23 @@
-<div class="tree" *ngIf="board">
-  <div class="board" [style.gridTemplateColumns]="'repeat(' + board.column_size + ', 50px)'" [style.gridTemplateRows]="'repeat(' + board.row_size + ', 50px)'">
-    @for (n of board.nodes; track n.node_id) {
-      <div class="cell gradient-square" [ngClass]="n.tier_id ?? ''" [class.active]="active().has(n.node_id)" [style.gridColumn]="n.position_column" [style.gridRow]="n.position_row" (click)="toggle(n)" (mouseenter)="updateInfo(n)">
-        <img [src]="n.image_url ?? ''" />
-      </div>
-    }
-  </div>
+<div class="tree">
+  @if (board) {
+    <div class="board"
+         [style.gridTemplateColumns]="'repeat(' + board.column_size + ', var(--scale))'"
+         [style.gridTemplateRows]="'repeat(' + board.row_size + ', var(--scale))'">
+      @for (n of board.nodes; track n.node_id) {
+        <div class="cell gradient-square" [ngClass]="n.tier_id ?? ''" [class.active]="active().has(n.node_id)" [style.gridColumn]="n.position_column" [style.gridRow]="n.position_row" (click)="toggle(n)" (mouseenter)="updateInfo(n)">
+          <img [src]="n.image_url ?? ''" />
+        </div>
+      }
+    </div>
+  }
   <div class="info">
     <h3>{{ hoverName() }}</h3>
+    <!--
     <ul>
       @for (e of hoverEffects(); track e.stat_id) {
         <li>{{ e.stat_id }} {{ e.operator_type }} {{ e.stat_value }}</li>
       }
     </ul>
+    -->
   </div>
 </div>

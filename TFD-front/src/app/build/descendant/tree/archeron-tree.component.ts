@@ -1,4 +1,4 @@
-import { Component, Inject, inject, effect, signal } from '@angular/core';
+import { Component, Inject, inject, effect, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { dataStore, defaultTranslate, TranslationString, BoardNode, Boards, NodeEffect } from '../../../store/data.store';
@@ -25,10 +25,19 @@ export class ArcheronTreeComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public descendant: DescendantsResponse) {
     this.data_store.load_boards();
     effect(() => {
-      const boards = this.data_store.BoardResource.value() ?? [];
-      this.board = boards.find((b: Boards) => b.board_group_id === descendant.descendant_group_id);
+      this.board = computed(() => this.data_store.BoardResource.value() ?? [])()[1];
+      this.board = this.shiftBoard(this.board)
     });
-  }
+  };
+
+  shiftBoard = (board: Boards): Boards => ({
+    ...board,
+    nodes: board.nodes.map(node => ({
+      ...node,
+      position_row:    node.position_row    + 1,
+      position_column: node.position_column + 1,
+    }))
+  });
 
   toggle(node: BoardNode): void {
     if (!this.canActivate(node)) {
