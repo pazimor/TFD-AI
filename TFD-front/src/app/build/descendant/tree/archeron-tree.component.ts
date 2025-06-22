@@ -1,17 +1,36 @@
-import { Component, Inject, inject, effect, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { dataStore, defaultTranslate, TranslationString, BoardNode, Boards, NodeEffect } from '../../../store/data.store';
-import { visualStore } from '../../../store/display.store';
-import { getTranslationField } from '../../../lang.utils';
-import { DescendantsResponse } from '../../../types/descendant.types';
+  active = signal(new Set<string>());
+  key(node: BoardNode): string {
+    return `${node.position_row}-${node.position_column}`;
+  }
 
-@Component({
-  standalone: true,
-  selector: 'archeron-tree',
-  imports: [CommonModule, MatDialogModule],
-  templateUrl: './archeron-tree.component.html',
-  styleUrls: ['./archeron-tree.component.scss']
+  track = (_: number, node: BoardNode) => this.key(node);
+
+    const key = this.key(node);
+    if (set.has(key)) {
+      set.delete(key);
+      if (this.board) {
+        for (const n of this.board.nodes) {
+          const k = this.key(n);
+          if (set.has(k) && n.node_type?.toLowerCase() !== 'start' && !this.pathExistsWithSet(n, set)) {
+            set.delete(k);
+          }
+        }
+      }
+      if (!this.canActivate(node)) return;
+      set.add(key);
+
+    return this.pathExistsWithSet(target, this.active());
+  }
+
+  private pathExistsWithSet(target: BoardNode, active: Set<string>): boolean {
+    const visited = new Set<string>();
+    const targetKey = this.key(target);
+      const currentKey = this.key(current);
+      if (currentKey === targetKey) return true;
+      visited.add(currentKey);
+        const k = this.key(n);
+        if ((active.has(k) || k === targetKey) && !visited.has(k)) {
+    return this.pathExistsWithSet(node, this.active());
 })
 export class ArcheronTreeComponent {
   readonly data_store = inject(dataStore);
