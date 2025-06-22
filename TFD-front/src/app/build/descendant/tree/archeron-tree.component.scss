@@ -65,10 +65,14 @@
 
 .info {
   margin-top: 10px;
+  font-size: 13px;
 }
 
 @media (max-width: 600px) {
   .board {
     --scale: 18px;
+  }
+  .info {
+    font-size: 8px;
   }
 }
