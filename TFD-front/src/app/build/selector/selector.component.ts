@@ -2,7 +2,7 @@ import {Component, Inject, inject, Input} from '@angular/core';
 
 import {dataStore, defaultTranslate, TranslationString} from '../../store/data.store';
 import { visualStore } from '../../store/display.store';
-import { getTranslationField } from '../../lang.utils';
+import { getTranslationField, getUILabel } from '../../lang.utils';
 import { ModuleComponent } from '../module/display/module-display.component';
 import { ReactorDisplayComponent } from '../reactor/display/reactor-display.component';
 import { ExternalDisplayComponent } from '../external/display/external-display.component';
@@ -43,6 +43,7 @@ export class selectorComponent {
 
   searchText = '';
   requireDescendant = false;
+  selectedReactorGroup: Reactor[] | null = null;
 
   compareDescendantIDs(module: ModuleResponse): boolean {
     const ids = (module.available_descendant_id ?? '')
@@ -85,6 +86,19 @@ export class selectorComponent {
     return this.data_store.reactorResource.value()
   }
 
+  reactorGroups() {
+    const list = this.data_store.reactorResource.value() ?? [];
+    const groups: Record<string, Reactor[]> = {};
+    for (const r of list) {
+      const key = r.image_url ?? '';
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+      groups[key].push(r);
+    }
+    return Object.values(groups);
+  }
+
   filteredExternals() {
     return this.data_store.externalResource.value()
   }
@@ -105,6 +119,10 @@ export class selectorComponent {
     // resources are preloaded in main component
   }
 
+  label(key: Parameters<typeof getUILabel>[1]) {
+    return getUILabel(this.visual_store.get_lang(), key);
+  }
+
   selectModules(module: ModuleResponse): void {
     this.dialogRef.close(module.module_id);
   }
@@ -119,6 +137,22 @@ export class selectorComponent {
 
   selectReactor(reactor: Reactor): void {
     this.dialogRef.close(reactor.reactor_id);
+  }
+
+  chooseReactorGroup(group: Reactor[]): void {
+    if (group.length === 1) {
+      this.selectReactor(group[0]);
+    } else {
+      this.selectedReactorGroup = group;
+    }
+  }
+
+  selectSubReactor(reactor: Reactor): void {
+    this.selectReactor(reactor);
+  }
+
+  backToReactorImages(): void {
+    this.selectedReactorGroup = null;
   }
 
   selectExternal(external: ExternalComponent): void {
