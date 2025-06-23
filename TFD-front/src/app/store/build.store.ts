@@ -6,7 +6,7 @@ import { WeaponResponse, defaultWeapon } from '../types/weapon.types';
 import { Reactor, defaultReactor } from '../types/reactor.types';
 import { ExternalComponent, defaultExternalComponent } from '../types/external.types';
 import { environment } from '../../env/environment';
-import { SavedBuild, initSavedBuild, BuildFromDataBase } from '../types/build.types';
+import { SavedBuild, initSavedBuild, BuildFromDataBase, BoardNodePosition } from '../types/build.types';
 
 export interface BuildToHydrate {
   descendant: DescendantsResponse;
@@ -15,6 +15,7 @@ export interface BuildToHydrate {
   weaponsModules: ModuleResponse[][];
   reactor: Reactor;
   externals: ExternalComponent[];
+  boardNodes: BoardNodePosition[];
 }
 
 export interface BuildState {
@@ -24,6 +25,7 @@ export interface BuildState {
   weaponsModules: ModuleResponse[][];
   reactor: Reactor;
   externals: ExternalComponent[];
+  boardNodes: BoardNodePosition[];
   _load_build: boolean;
   _save_build: boolean;
   currentBuild: SavedBuild;
@@ -38,6 +40,7 @@ const initialBuildState: BuildState = {
   ),
   reactor: defaultReactor,
   externals: Array.from({ length: 4 }, () => ({ ...defaultExternalComponent })),
+  boardNodes: [],
   _load_build: false,
   _save_build: false,
   currentBuild: initSavedBuild
@@ -56,6 +59,7 @@ export const buildStore = signalStore(
       weaponsModules: store.weaponsModules().map(weapons => weapons.map(module => module.module_id)),
       reactor: store.reactor().reactor_id,
       externals: store.externals().map(compo => compo.external_component_id),
+      boardNodes: store.boardNodes(),
     }),
     hydrate: (build: BuildToHydrate) => {
       patchState(store, {
@@ -64,7 +68,8 @@ export const buildStore = signalStore(
         weapons: build.weapons,
         weaponsModules: build.weaponsModules,
         reactor: build.reactor,
-        externals: build.externals
+        externals: build.externals,
+        boardNodes: build.boardNodes,
       })
     },
   })),
@@ -117,6 +122,9 @@ export const buildStore = signalStore(
       const externals = [...store.externals()];
       externals[index] = external;
       patchState(store, { externals });
+    },
+    setBoardNodes: (nodes: BoardNodePosition[]) => {
+      patchState(store, { boardNodes: nodes });
     },
     loadFromApi: (id: number) => {
       patchState(store, { currentBuild: { ...store.currentBuild(), build_id: id }, _load_build: true });

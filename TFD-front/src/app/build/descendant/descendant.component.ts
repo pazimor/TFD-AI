@@ -12,6 +12,7 @@ import { selectorComponent } from '../selector/selector.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ArcheronTreeComponent } from './tree/archeron-tree.component';
 import { buildStore } from '../../store/build.store';
+import { BoardNodePosition } from '../../types/build.types';
 
 @Component({
   standalone: true,
@@ -76,10 +77,15 @@ export class DescedantBuildComponent {
 
   openSkillTreeDialog(): void {
     this.data_store.load_boards();
-    this.dialog.open(ArcheronTreeComponent, {
+    const dialogRef = this.dialog.open(ArcheronTreeComponent, {
       autoFocus: true,
-      data: this.build_store.descendant(),
+      data: { descendant: this.build_store.descendant(), nodes: this.build_store.boardNodes() },
       width: '600px',
+    });
+    dialogRef.afterClosed().subscribe((nodes: BoardNodePosition[] | undefined) => {
+      if (nodes) {
+        this.build_store.setBoardNodes(nodes);
+      }
     });
   }
 
