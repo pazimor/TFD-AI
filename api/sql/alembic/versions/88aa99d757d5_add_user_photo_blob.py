@@ -110,8 +110,8 @@ def upgrade() -> None:
                             'level',              rsp.level,
                             'skill_atk_power',    rsp.skill_atk_power,
                             'sub_skill_atk_power', rsp.sub_skill_atk_power,
-                            'coefficient',       CAST(COALESCE(c.coeff_json, JSON_ARRAY()) AS JSON),
-                            'enchant_effect',    CAST(COALESCE(e.enchant_json, JSON_ARRAY()) AS JSON)
+                            'coefficient',       COALESCE(c.coeff_json, JSON_ARRAY()),
+                            'enchant_effect',    COALESCE(e.enchant_json, JSON_ARRAY())
                         )
                     ) AS skill_power_json
                 FROM reactor_skill_power rsp
