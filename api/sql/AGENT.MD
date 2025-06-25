@@ -45,7 +45,9 @@ sql/
 
 ### Stored Procedures
 - `GetAllReactors` aggregates `base_stat` and `skill_power` for each reactor.
-  Only level `100` values are returned to keep the query fast.
+  Coefficient and enchant effect arrays are embedded as JSON and only level
+  `100` values are returned. The `set_option_detail` field was removed to speed
+  up the query.
 
 ## PR/Commit Guidelines
 - PRs must document schema changes

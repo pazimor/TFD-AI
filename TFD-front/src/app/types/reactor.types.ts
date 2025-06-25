@@ -4,12 +4,6 @@ export interface ReactorBaseStat {
   stat_value: number;
 }
 
-export interface ReactorSetDetail {
-  set_option_id: number;
-  set_count: number;
-  set_option_effect_id: number;
-}
-
 export interface ReactorSkillPowerCoeff {
   coeff_stat_id: number;
   coeff_stat_value: number;
@@ -38,7 +32,6 @@ export interface Reactor {
   reactor_tier_id?: string;
   base_stat: ReactorBaseStat[];
   skill_power: ReactorSkillPower[];
-  set_option_detail: ReactorSetDetail[];
 }
 
 export const defaultReactor: Reactor = {
@@ -50,5 +43,4 @@ export const defaultReactor: Reactor = {
   reactor_tier_id: '',
   base_stat: [],
   skill_power: [],
-  set_option_detail: [],
 };

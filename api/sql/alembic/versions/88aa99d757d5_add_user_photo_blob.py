@@ -59,71 +59,67 @@ def upgrade() -> None:
         '''
         CREATE PROCEDURE GetAllReactors()
         BEGIN
-            /* Only keep maximum level (100) to speed up requests -------- */
-            CREATE TEMPORARY TABLE tmp_stats AS
-            SELECT
-                rc.reactor_id,
-                JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        'level',      rc.level,
-                        'stat_id',    rc.coeff_stat_id,
-                        'stat_value', rc.coeff_stat_value
-                    )
-                ) AS stats_json
-            FROM reactor_coeff rc
-            WHERE rc.level = 100
-            GROUP BY rc.reactor_id;
-
-            /* Coefficients at level 100 -------------------------------- */
-            CREATE TEMPORARY TABLE tmp_coeff AS
-            SELECT
-                rc.reactor_id,
-                JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        'coeff_stat_id',    rc.coeff_stat_id,
-                        'coeff_stat_value', rc.coeff_stat_value
-                    )
-                ) AS coeff_json
-            FROM reactor_coeff rc
-            WHERE rc.level = 100
-            GROUP BY rc.reactor_id;
-
-            /* Enchant effects at level 100 ------------------------------ */
-            CREATE TEMPORARY TABLE tmp_enchant AS
-            SELECT
-                re.reactor_id,
-                JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        'enchant_level', re.enchant_level,
-                        'stat_id',       re.stat_id,
-                        'value',         re.value
-                    )
-                    ORDER BY re.enchant_level
-                ) AS enchant_json
-            FROM reactor_enchant re
-            WHERE re.level = 100
-            GROUP BY re.reactor_id;
-
-            /* Skill power with nested data ------------------------------ */
-            CREATE TEMPORARY TABLE tmp_skill AS
-            SELECT
-                rsp.reactor_id,
-                JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        'level',              rsp.level,
-                        'skill_atk_power',    rsp.skill_atk_power,
-                        'sub_skill_atk_power', rsp.sub_skill_atk_power,
-                        'coefficient',       COALESCE(tc.coeff_json, JSON_ARRAY()),
-                        'enchant_effect',    COALESCE(te.enchant_json, JSON_ARRAY())
-                    )
-                ) AS skill_power_json
-            FROM reactor_skill_power rsp
-            LEFT JOIN tmp_coeff  tc ON tc.reactor_id = rsp.reactor_id
-            LEFT JOIN tmp_enchant te ON te.reactor_id = rsp.reactor_id
-            WHERE rsp.level = 100
-            GROUP BY rsp.reactor_id;
-
-            /* Final selection ------------------------------------------- */
+            WITH
+            stats AS (
+                SELECT
+                    rc.reactor_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'level',      rc.level,
+                            'stat_id',    rc.coeff_stat_id,
+                            'stat_value', rc.coeff_stat_value
+                        )
+                    ) AS stats_json
+                FROM reactor_coeff rc
+                WHERE rc.level = 100
+                GROUP BY rc.reactor_id
+            ),
+            coeff AS (
+                SELECT
+                    rc.reactor_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'coeff_stat_id',    rc.coeff_stat_id,
+                            'coeff_stat_value', rc.coeff_stat_value
+                        )
+                    ) AS coeff_json
+                FROM reactor_coeff rc
+                WHERE rc.level = 100
+                GROUP BY rc.reactor_id
+            ),
+            enchant AS (
+                SELECT
+                    re.reactor_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'enchant_level', re.enchant_level,
+                            'stat_id',       re.stat_id,
+                            'value',         re.value
+                        )
+                        ORDER BY re.enchant_level
+                    ) AS enchant_json
+                FROM reactor_enchant re
+                WHERE re.level = 100
+                GROUP BY re.reactor_id
+            ),
+            skill AS (
+                SELECT
+                    rsp.reactor_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'level',              rsp.level,
+                            'skill_atk_power',    rsp.skill_atk_power,
+                            'sub_skill_atk_power', rsp.sub_skill_atk_power,
+                            'coefficient',       CAST(COALESCE(c.coeff_json, JSON_ARRAY()) AS JSON),
+                            'enchant_effect',    CAST(COALESCE(e.enchant_json, JSON_ARRAY()) AS JSON)
+                        )
+                    ) AS skill_power_json
+                FROM reactor_skill_power rsp
+                LEFT JOIN coeff   c ON c.reactor_id = rsp.reactor_id
+                LEFT JOIN enchant e ON e.reactor_id = rsp.reactor_id
+                WHERE rsp.level = 100
+                GROUP BY rsp.reactor_id
+            )
             SELECT
                 r.id,
                 r.reactor_id,
@@ -132,18 +128,12 @@ def upgrade() -> None:
                 r.image_url,
                 r.reactor_tier_id,
 
-                COALESCE(ts.stats_json,  JSON_ARRAY()) AS base_stat,
-                COALESCE(tsp.skill_power_json, JSON_ARRAY()) AS skill_power,
-                JSON_ARRAY() AS set_option_detail
+                COALESCE(s.stats_json,  JSON_ARRAY()) AS base_stat,
+                COALESCE(sk.skill_power_json, JSON_ARRAY()) AS skill_power
             FROM reactor r
-                LEFT JOIN tmp_stats ts  ON ts.reactor_id  = r.reactor_id
-                LEFT JOIN tmp_skill tsp ON tsp.reactor_id = r.reactor_id
+                LEFT JOIN stats s ON s.reactor_id = r.reactor_id
+                LEFT JOIN skill sk ON sk.reactor_id = r.reactor_id
             ORDER BY r.reactor_id;
-
-            DROP TEMPORARY TABLE tmp_stats;
-            DROP TEMPORARY TABLE tmp_coeff;
-            DROP TEMPORARY TABLE tmp_enchant;
-            DROP TEMPORARY TABLE tmp_skill;
         END
         '''
     )
