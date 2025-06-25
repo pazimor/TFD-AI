@@ -1,5 +1,5 @@
 <div class="contain">
-  <input class="input" type="text" placeholder="Search ..." [(ngModel)]="searchText" />
+  <input class="input" type="text" [placeholder]="label('search')" [(ngModel)]="searchText" />
 
   <div class="modules-container">
     @if(type === "modules") {
@@ -19,8 +19,24 @@
         <weapon [weapon]="m" (click)="selectWeapon(m)"></weapon>
       }
     } @else if (type === "reactors") {
-      @for (m of filteredReactors(); track m.id) {
-        <reactor [reactor]="m" (click)="selectReactor(m)"></reactor>
+      @if (!selectedReactorKey) {
+        @for (m of filteredReactors(); track m.reactor_name_id + '-' + m.reactor_tier_id) {
+          <reactor [reactor]="m" (click)="selectReactorGroup(m)"></reactor>
+        }
+      } @else {
+        <div class="row">
+          <button class="back" type="button" (click)="backToGroups()">{{ label('back') }}</button>
+          @for (m of filteredReactorsbynameid(); track m.reactor_name_id) {
+            <div class="reactor-option" (click)="selectReactor(m)">
+              <reactor [reactor]="m"></reactor>
+              <div class="stats">
+                @for (s of m.base_stat.slice(0,2); track s.stat_id) {
+                  <span>{{ name(s.stat_id) }}: {{s.stat_value}}</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
       }
     } @else if (type === "externals") {
       @for (m of filteredExternals(); track m.id) {

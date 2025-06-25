@@ -14,6 +14,8 @@ export interface UILabels {
   refresh: string;
   wipMessage: string;
   confirmDelete: string;
+  selectSubStats: string;
+  back: string;
 }
 
 export const uiTranslations: Record<string, UILabels> = {
@@ -32,7 +34,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'No builds found',
     refresh: 'Refresh',
     wipMessage: 'Work in progress',
-    confirmDelete: 'Are you sure you want to delete this build?'
+    confirmDelete: 'Are you sure you want to delete this build?',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   fr: {
     search: 'Recherche',
@@ -49,7 +53,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'Aucun build disponible',
     refresh: 'Rafraîchir',
     wipMessage: 'Travail en cours',
-    confirmDelete: 'Êtes-vous sûr de vouloir supprimer ce build ?'
+    confirmDelete: 'Êtes-vous sûr de vouloir supprimer ce build ?',
+    selectSubStats: 'Choisir Sous-Stat',
+    back: 'Retour'
   },
   ko: {
     search: '검색',
@@ -66,7 +72,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: '저장된 빌드가 없습니다',
     refresh: '새로고침',
     wipMessage: '작업 진행 중',
-    confirmDelete: '이 빌드를 삭제하시겠습니까?'
+    confirmDelete: '이 빌드를 삭제하시겠습니까?',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   de: {
     search: 'Suche',
@@ -83,7 +91,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'Keine Builds gefunden',
     refresh: 'Aktualisieren',
     wipMessage: 'In Arbeit',
-    confirmDelete: 'Möchten Sie diesen Build wirklich löschen?'
+    confirmDelete: 'Möchten Sie diesen Build wirklich löschen?',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   ja: {
     search: '検索',
@@ -100,7 +110,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'ビルドが見つかりません',
     refresh: '更新',
     wipMessage: '作業中',
-    confirmDelete: 'このビルドを削除してよろしいですか？'
+    confirmDelete: 'このビルドを削除してよろしいですか？',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   'zh-CN': {
     search: '搜索',
@@ -117,7 +129,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: '没有找到构建',
     refresh: '刷新',
     wipMessage: '开发中',
-    confirmDelete: '确定要删除此构建吗？'
+    confirmDelete: '确定要删除此构建吗？',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   'zh-TW': {
     search: '搜尋',
@@ -134,7 +148,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: '沒有找到構建',
     refresh: '重新整理',
     wipMessage: '開發中',
-    confirmDelete: '確定要刪除此構建嗎？'
+    confirmDelete: '確定要刪除此構建嗎？',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   it: {
     search: 'Cerca',
@@ -151,7 +167,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'Nessuna build trovata',
     refresh: 'Aggiorna',
     wipMessage: 'Lavori in corso',
-    confirmDelete: 'Sei sicuro di voler eliminare questa build?'
+    confirmDelete: 'Sei sicuro di voler eliminare questa build?',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   pl: {
     search: 'Szukaj',
@@ -168,7 +186,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'Brak zapisanych buildów',
     refresh: 'Odśwież',
     wipMessage: 'Prace w toku',
-    confirmDelete: 'Czy na pewno chcesz usunąć ten build?'
+    confirmDelete: 'Czy na pewno chcesz usunąć ten build?',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   pt: {
     search: 'Buscar',
@@ -185,7 +205,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'Nenhum build encontrado',
     refresh: 'Atualizar',
     wipMessage: 'Em desenvolvimento',
-    confirmDelete: 'Tem certeza de que deseja excluir este build?'
+    confirmDelete: 'Tem certeza de que deseja excluir este build?',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   ru: {
     search: 'Поиск',
@@ -202,7 +224,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'Билды не найдены',
     refresh: 'Обновить',
     wipMessage: 'В разработке',
-    confirmDelete: 'Вы уверены, что хотите удалить этот билд?'
+    confirmDelete: 'Вы уверены, что хотите удалить этот билд?',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   },
   es: {
     search: 'Buscar',
@@ -219,7 +243,9 @@ export const uiTranslations: Record<string, UILabels> = {
     noBuilds: 'No se encontraron builds',
     refresh: 'Actualizar',
     wipMessage: 'Trabajo en progreso',
-    confirmDelete: '¿Estás seguro de que deseas eliminar esta build?'
+    confirmDelete: '¿Estás seguro de que deseas eliminar esta build?',
+    selectSubStats: 'Select Sub Stat',
+    back: 'Back'
   }
 };
 

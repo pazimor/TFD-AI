@@ -2,7 +2,7 @@ import {Component, Inject, inject, Input} from '@angular/core';
 
 import {dataStore, defaultTranslate, TranslationString} from '../../store/data.store';
 import { visualStore } from '../../store/display.store';
-import { getTranslationField } from '../../lang.utils';
+import { getTranslationField, getUILabel } from '../../lang.utils';
 import { ModuleComponent } from '../module/display/module-display.component';
 import { ReactorDisplayComponent } from '../reactor/display/reactor-display.component';
 import { ExternalDisplayComponent } from '../external/display/external-display.component';
@@ -43,6 +43,9 @@ export class selectorComponent {
 
   searchText = '';
   requireDescendant = false;
+  selectedReactorGroup: Reactor[] | null = null;
+
+  selectedReactorKey: string | undefined = undefined;
 
   compareDescendantIDs(module: ModuleResponse): boolean {
     const ids = (module.available_descendant_id ?? '')
@@ -81,8 +84,37 @@ export class selectorComponent {
     return this.data_store.weaponResource.value()
   }
 
+  filteredReactorsbynameid() {
+    const reactors = this.data_store.reactorResource.value() ?? []
+    return reactors.filter(reactor => {
+      const key = this.selectedReactorKey?.split("-") ?? ["0", "Tier1"]
+      return (reactor.reactor_name_id === +key[0] && reactor.reactor_tier_id === key[1])
+    })
+  }
+
   filteredReactors() {
-    return this.data_store.reactorResource.value()
+    const reactors = this.data_store.reactorResource.value() ?? [];
+    const seen = new Set<string>();
+    return reactors.filter(r => {
+      const key = `${r.reactor_name_id}_${r.reactor_tier_id ?? ''}`;
+      if (seen.has(key)) { return false; }
+      seen.add(key);
+      return true;
+    });
+
+  }
+
+  reactorGroups() {
+    const list = this.data_store.reactorResource.value() ?? [];
+    const groups: Record<string, Reactor[]> = {};
+    for (const r of list) {
+      const key = r.image_url ?? '';
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+      groups[key].push(r);
+    }
+    return Object.values(groups);
   }
 
   filteredExternals() {
@@ -105,6 +137,10 @@ export class selectorComponent {
     // resources are preloaded in main component
   }
 
+  label(key: Parameters<typeof getUILabel>[1]) {
+    return getUILabel(this.visual_store.get_lang(), key);
+  }
+
   selectModules(module: ModuleResponse): void {
     this.dialogRef.close(module.module_id);
   }
@@ -118,10 +154,27 @@ export class selectorComponent {
   }
 
   selectReactor(reactor: Reactor): void {
+    console.log(reactor);
     this.dialogRef.close(reactor.reactor_id);
+  }
+
+  selectReactorGroup(reactor: Reactor): void {
+    this.selectedReactorKey = reactor.reactor_name_id + '-' + reactor.reactor_tier_id;
+  }
+
+  backToGroups(): void {
+    this.selectedReactorKey = undefined;
   }
 
   selectExternal(external: ExternalComponent): void {
     this.dialogRef.close(external.external_component_id);
+  }
+
+  name(id: number): string {
+    const langKey = getTranslationField(this.visual_store.get_lang());
+    const translation = this.get_translate(id);
+    // Guard against missing translation object or key
+    const value = (translation as any)?.[langKey];
+    return value ?? '';
   }
 }
