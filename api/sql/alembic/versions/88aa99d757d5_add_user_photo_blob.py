@@ -59,7 +59,7 @@ def upgrade() -> None:
         '''
         CREATE PROCEDURE GetAllReactors()
         BEGIN
-            /* Base stat aggregation -------------------------------------- */
+            /* Only keep maximum level (100) to speed up requests -------- */
             CREATE TEMPORARY TABLE tmp_stats AS
             SELECT
                 rc.reactor_id,
@@ -69,16 +69,15 @@ def upgrade() -> None:
                         'stat_id',    rc.coeff_stat_id,
                         'stat_value', rc.coeff_stat_value
                     )
-                    ORDER BY rc.level
                 ) AS stats_json
             FROM reactor_coeff rc
+            WHERE rc.level = 100
             GROUP BY rc.reactor_id;
 
-            /* Coefficient per level ------------------------------------- */
+            /* Coefficients at level 100 -------------------------------- */
             CREATE TEMPORARY TABLE tmp_coeff AS
             SELECT
                 rc.reactor_id,
-                rc.level,
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'coeff_stat_id',    rc.coeff_stat_id,
@@ -86,13 +85,13 @@ def upgrade() -> None:
                     )
                 ) AS coeff_json
             FROM reactor_coeff rc
-            GROUP BY rc.reactor_id, rc.level;
+            WHERE rc.level = 100
+            GROUP BY rc.reactor_id;
 
-            /* Enchant effects per level --------------------------------- */
+            /* Enchant effects at level 100 ------------------------------ */
             CREATE TEMPORARY TABLE tmp_enchant AS
             SELECT
                 re.reactor_id,
-                re.level,
                 JSON_ARRAYAGG(
                     JSON_OBJECT(
                         'enchant_level', re.enchant_level,
@@ -102,9 +101,10 @@ def upgrade() -> None:
                     ORDER BY re.enchant_level
                 ) AS enchant_json
             FROM reactor_enchant re
-            GROUP BY re.reactor_id, re.level;
+            WHERE re.level = 100
+            GROUP BY re.reactor_id;
 
-            /* Skill power with nested data ------------------------------- */
+            /* Skill power with nested data ------------------------------ */
             CREATE TEMPORARY TABLE tmp_skill AS
             SELECT
                 rsp.reactor_id,
@@ -116,11 +116,11 @@ def upgrade() -> None:
                         'coefficient',       COALESCE(tc.coeff_json, JSON_ARRAY()),
                         'enchant_effect',    COALESCE(te.enchant_json, JSON_ARRAY())
                     )
-                    ORDER BY rsp.level
                 ) AS skill_power_json
             FROM reactor_skill_power rsp
-            LEFT JOIN tmp_coeff  tc ON tc.reactor_id = rsp.reactor_id AND tc.level = rsp.level
-            LEFT JOIN tmp_enchant te ON te.reactor_id = rsp.reactor_id AND te.level = rsp.level
+            LEFT JOIN tmp_coeff  tc ON tc.reactor_id = rsp.reactor_id
+            LEFT JOIN tmp_enchant te ON te.reactor_id = rsp.reactor_id
+            WHERE rsp.level = 100
             GROUP BY rsp.reactor_id;
 
             /* Final selection ------------------------------------------- */

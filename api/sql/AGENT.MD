@@ -44,7 +44,8 @@ sql/
 - CRUD modules execute stored procedures rather than inline SQL queries.
 
 ### Stored Procedures
-- `GetAllReactors` aggregates `base_stat`, `skill_power` (with `coefficient` and `enchant_effect`) for each reactor.
+- `GetAllReactors` aggregates `base_stat` and `skill_power` for each reactor.
+  Only level `100` values are returned to keep the query fast.
 
 ## PR/Commit Guidelines
 - PRs must document schema changes
