@@ -45,6 +45,8 @@ export class selectorComponent {
   requireDescendant = false;
   selectedReactorGroup: Reactor[] | null = null;
 
+  selectedReactorKey: string | undefined = undefined;
+
   compareDescendantIDs(module: ModuleResponse): boolean {
     const ids = (module.available_descendant_id ?? '')
       .split(',')
@@ -82,8 +84,24 @@ export class selectorComponent {
     return this.data_store.weaponResource.value()
   }
 
+  filteredReactorsbynameid() {
+    const reactors = this.data_store.reactorResource.value() ?? []
+    return reactors.filter(reactor => {
+      const key = this.selectedReactorKey?.split("-") ?? ["0", "Tier1"]
+      return (reactor.reactor_name_id === +key[0] && reactor.reactor_tier_id === key[1])
+    })
+  }
+
   filteredReactors() {
-    return this.data_store.reactorResource.value()
+    const reactors = this.data_store.reactorResource.value() ?? [];
+    const seen = new Set<string>();
+    return reactors.filter(r => {
+      const key = `${r.reactor_name_id}_${r.reactor_tier_id ?? ''}`;
+      if (seen.has(key)) { return false; }
+      seen.add(key);
+      return true;
+    });
+
   }
 
   reactorGroups() {
@@ -136,26 +154,27 @@ export class selectorComponent {
   }
 
   selectReactor(reactor: Reactor): void {
+    console.log(reactor);
     this.dialogRef.close(reactor.reactor_id);
   }
 
-  chooseReactorGroup(group: Reactor[]): void {
-    if (group.length === 1) {
-      this.selectReactor(group[0]);
-    } else {
-      this.selectedReactorGroup = group;
-    }
+  selectReactorGroup(reactor: Reactor): void {
+    this.selectedReactorKey = reactor.reactor_name_id + '-' + reactor.reactor_tier_id;
   }
 
-  selectSubReactor(reactor: Reactor): void {
-    this.selectReactor(reactor);
-  }
-
-  backToReactorImages(): void {
-    this.selectedReactorGroup = null;
+  backToGroups(): void {
+    this.selectedReactorKey = undefined;
   }
 
   selectExternal(external: ExternalComponent): void {
     this.dialogRef.close(external.external_component_id);
+  }
+
+  name(id: number): string {
+    const langKey = getTranslationField(this.visual_store.get_lang());
+    const translation = this.get_translate(id);
+    // Guard against missing translation object or key
+    const value = (translation as any)?.[langKey];
+    return value ?? '';
   }
 }

@@ -19,22 +19,24 @@
         <weapon [weapon]="m" (click)="selectWeapon(m)"></weapon>
       }
     } @else if (type === "reactors") {
-      @if (!selectedReactorGroup) {
-        @for (g of reactorGroups(); track g[0].id) {
-          <reactor [reactor]="g[0]" (click)="chooseReactorGroup(g)"></reactor>
+      @if (!selectedReactorKey) {
+        @for (m of filteredReactors(); track m.reactor_name_id + '-' + m.reactor_tier_id) {
+          <reactor [reactor]="m" (click)="selectReactorGroup(m)"></reactor>
         }
       } @else {
-        <button class="back" (click)="backToReactorImages()">{{ label('back') }}</button>
-        @for (r of selectedReactorGroup; track r.id) {
-          <div class="reactor-option" (click)="selectSubReactor(r)">
-            <reactor [reactor]="r"></reactor>
-            <div class="stats">
-              @for (s of r.base_stat; track s.stat_id) {
-                <span>{{ s.stat_id }}: {{ s.stat_value }}</span>
-              }
+        <div class="row">
+          <button class="back" type="button" (click)="backToGroups()">{{ label('back') }}</button>
+          @for (m of filteredReactorsbynameid(); track m.reactor_name_id) {
+            <div class="reactor-option" (click)="selectReactor(m)">
+              <reactor [reactor]="m"></reactor>
+              <div class="stats">
+                @for (s of m.base_stat.slice(0,2); track s.stat_id) {
+                  <span>{{ name(s.stat_id) }}: {{s.stat_value}}</span>
+                }
+              </div>
             </div>
-          </div>
-        }
+          }
+        </div>
       }
     } @else if (type === "externals") {
       @for (m of filteredExternals(); track m.id) {
