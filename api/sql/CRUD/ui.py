@@ -112,7 +112,7 @@ def get_all_reactors_full():
 
         data = [dict(r) for r in rows]
         for rec in data:
-            for key in ("base_stat", "set_option_detail"):
+            for key in ("base_stat", "skill_power"):
                 raw = rec.get(key)
                 if isinstance(raw, str):
                     try:

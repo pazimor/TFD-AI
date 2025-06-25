@@ -5,6 +5,7 @@ import { ModuleResponse } from '../types/module.types';
 import { DescendantsResponse } from '../types/descendant.types';
 import { WeaponResponse } from '../types/weapon.types';
 import { environment } from '../../env/environment';
+import { Reactor } from '../types/reactor.types';
 
 // translation string
 export interface TranslationString {
@@ -79,30 +80,6 @@ export interface ExternalComponents {
   external_component_tier_id?: string;
   base_stat:          ExtBaseStat[];
   set_option_detail:  ExtSetDetail[];
-}
-
-//reactor
-export interface ReactorBaseStat {
-  level:      number;
-  stat_id:    number;
-  stat_value: number;
-}
-
-export interface ReactorSetDetail {
-  set_option_id:        number;
-  set_count:            number;
-  set_option_effect_id: number;
-}
-
-export interface Reactor {
-  id:                   number;
-  reactor_id:           number;
-  reactor_name_id:      number;
-  equipment_type_id:    number;
-  image_url?:           string;
-  reactor_tier_id?:     string;
-  base_stat:           ReactorBaseStat[];
-  set_option_detail:   ReactorSetDetail[];
 }
 
 // archeron
