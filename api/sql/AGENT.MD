@@ -43,6 +43,9 @@ sql/
 - Alembic migrations live in `alembic/versions` with descriptive filenames.
 - CRUD modules execute stored procedures rather than inline SQL queries.
 
+### Stored Procedures
+- `GetAllReactors` aggregates `base_stat`, `skill_power` (with `coefficient` and `enchant_effect`) for each reactor.
+
 ## PR/Commit Guidelines
 - PRs must document schema changes
 - All comments/messages in English
