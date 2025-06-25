@@ -54,9 +54,104 @@ def upgrade() -> None:
         '''
     )
 
+    op.execute("DROP PROCEDURE IF EXISTS GetAllReactors;")
+    op.execute(
+        '''
+        CREATE PROCEDURE GetAllReactors()
+        BEGIN
+            /* Base stat aggregation -------------------------------------- */
+            CREATE TEMPORARY TABLE tmp_stats AS
+            SELECT
+                rc.reactor_id,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'level',      rc.level,
+                        'stat_id',    rc.coeff_stat_id,
+                        'stat_value', rc.coeff_stat_value
+                    )
+                    ORDER BY rc.level
+                ) AS stats_json
+            FROM reactor_coeff rc
+            GROUP BY rc.reactor_id;
+
+            /* Coefficient per level ------------------------------------- */
+            CREATE TEMPORARY TABLE tmp_coeff AS
+            SELECT
+                rc.reactor_id,
+                rc.level,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'coeff_stat_id',    rc.coeff_stat_id,
+                        'coeff_stat_value', rc.coeff_stat_value
+                    )
+                ) AS coeff_json
+            FROM reactor_coeff rc
+            GROUP BY rc.reactor_id, rc.level;
+
+            /* Enchant effects per level --------------------------------- */
+            CREATE TEMPORARY TABLE tmp_enchant AS
+            SELECT
+                re.reactor_id,
+                re.level,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'enchant_level', re.enchant_level,
+                        'stat_id',       re.stat_id,
+                        'value',         re.value
+                    )
+                    ORDER BY re.enchant_level
+                ) AS enchant_json
+            FROM reactor_enchant re
+            GROUP BY re.reactor_id, re.level;
+
+            /* Skill power with nested data ------------------------------- */
+            CREATE TEMPORARY TABLE tmp_skill AS
+            SELECT
+                rsp.reactor_id,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'level',              rsp.level,
+                        'skill_atk_power',    rsp.skill_atk_power,
+                        'sub_skill_atk_power', rsp.sub_skill_atk_power,
+                        'coefficient',       COALESCE(tc.coeff_json, JSON_ARRAY()),
+                        'enchant_effect',    COALESCE(te.enchant_json, JSON_ARRAY())
+                    )
+                    ORDER BY rsp.level
+                ) AS skill_power_json
+            FROM reactor_skill_power rsp
+            LEFT JOIN tmp_coeff  tc ON tc.reactor_id = rsp.reactor_id AND tc.level = rsp.level
+            LEFT JOIN tmp_enchant te ON te.reactor_id = rsp.reactor_id AND te.level = rsp.level
+            GROUP BY rsp.reactor_id;
+
+            /* Final selection ------------------------------------------- */
+            SELECT
+                r.id,
+                r.reactor_id,
+                r.reactor_name_id,
+                r.optimized_condition_type AS equipment_type_id,
+                r.image_url,
+                r.reactor_tier_id,
+
+                COALESCE(ts.stats_json,  JSON_ARRAY()) AS base_stat,
+                COALESCE(tsp.skill_power_json, JSON_ARRAY()) AS skill_power,
+                JSON_ARRAY() AS set_option_detail
+            FROM reactor r
+                LEFT JOIN tmp_stats ts  ON ts.reactor_id  = r.reactor_id
+                LEFT JOIN tmp_skill tsp ON tsp.reactor_id = r.reactor_id
+            ORDER BY r.reactor_id;
+
+            DROP TEMPORARY TABLE tmp_stats;
+            DROP TEMPORARY TABLE tmp_coeff;
+            DROP TEMPORARY TABLE tmp_enchant;
+            DROP TEMPORARY TABLE tmp_skill;
+        END
+        '''
+    )
+
 
 def downgrade() -> None:
     op.execute("DROP PROCEDURE IF EXISTS GetUserPhoto;")
     op.execute("DROP PROCEDURE IF EXISTS SyncUser;")
+    op.execute("DROP PROCEDURE IF EXISTS GetAllReactors;")
     op.add_column('users', sa.Column('photo_url', sa.String(length=255), nullable=True))
     op.drop_column('users', 'photo_data')
