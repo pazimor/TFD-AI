@@ -119,8 +119,7 @@ export class selectorComponent {
   }
 
   filteredExternals() {
-    return this.data_store.externalResource.value()
-      ?.filter(ext => !this.equipmentType || ext.equipment_type_id === this.equipmentType)
+    return this.data_store.externalResource.value()?.filter(ext => !this.equipmentType || ext.equipment_type_id === this.equipmentType)
   }
 
   get_translate(id: number): TranslationString {
@@ -157,7 +156,6 @@ export class selectorComponent {
   }
 
   selectReactor(reactor: Reactor): void {
-    console.log(reactor);
     this.dialogRef.close(reactor.reactor_id);
   }
 
