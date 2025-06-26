@@ -26,12 +26,14 @@ export class ExternalBuildComponent {
   externalData: selectorData = {
     selectitems: 'externals',
     filterClass: 0,
-    descendant: undefined
+    descendant: undefined,
+    equipmentType: 0
   };
 
   constructor(private dialog: MatDialog) {}
 
   openDialog(): void {
+    this.externalData.equipmentType = this.index + 1;
     const dialogRef = this.dialog.open(selectorComponent, {
       autoFocus: true,
       data: this.externalData

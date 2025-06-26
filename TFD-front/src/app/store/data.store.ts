@@ -265,5 +265,9 @@ export const dataStore = signalStore(
     refresh_externals: () => store.externalResource?.reload(),
     refresh_reactors: () => store.reactorResource?.reload(),
     refresh_boards: () => store.BoardResource?.reload(),
+    getExternalsByType: (type: number) => {
+      return store.externalResource.value()
+        ?.filter(ext => ext.equipment_type_id === type) ?? [];
+    },
   }))
 );
