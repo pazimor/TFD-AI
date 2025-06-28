@@ -20,18 +20,21 @@ export class ExternalBuildComponent {
   readonly build_store = inject(buildStore);
   readonly data_store = inject(dataStore);
   @Input() index = 0;
+  @Input() equipmentType = 0;
 
   external = computed(() => this.build_store.externals()[this.index]);
 
   externalData: selectorData = {
     selectitems: 'externals',
     filterClass: 0,
-    descendant: undefined
+    descendant: undefined,
+    equipmentType: 0
   };
 
   constructor(private dialog: MatDialog) {}
 
   openDialog(): void {
+    this.externalData.equipmentType = this.equipmentType;
     const dialogRef = this.dialog.open(selectorComponent, {
       autoFocus: true,
       data: this.externalData

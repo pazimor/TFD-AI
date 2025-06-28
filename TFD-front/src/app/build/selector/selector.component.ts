@@ -40,6 +40,7 @@ export class selectorComponent {
 
   filterClass: number;
   type: string = "";
+  equipmentType: number | undefined;
 
   searchText = '';
   requireDescendant = false;
@@ -118,7 +119,7 @@ export class selectorComponent {
   }
 
   filteredExternals() {
-    return this.data_store.externalResource.value()
+    return this.data_store.externalResource.value()?.filter(ext => !this.equipmentType || ext.equipment_type_id === this.equipmentType)
   }
 
   get_translate(id: number): TranslationString {
@@ -134,6 +135,7 @@ export class selectorComponent {
     private dialogRef: MatDialogRef<selectorComponent>) {
     this.filterClass = data.filterClass ?? 0;
     this.type = data.selectitems;
+    this.equipmentType = data.equipmentType;
     // resources are preloaded in main component
   }
 
@@ -154,7 +156,6 @@ export class selectorComponent {
   }
 
   selectReactor(reactor: Reactor): void {
-    console.log(reactor);
     this.dialogRef.close(reactor.reactor_id);
   }
 

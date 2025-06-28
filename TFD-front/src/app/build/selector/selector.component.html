@@ -30,9 +30,7 @@
             <div class="reactor-option" (click)="selectReactor(m)">
               <reactor [reactor]="m"></reactor>
               <div class="stats">
-                @for (s of m.base_stat.slice(0,2); track s.stat_id) {
-                  <span>{{ name(s.stat_id) }}: {{s.stat_value}}</span>
-                }
+                <span>{{ name(m.equipment_type_id).split(":")[1] }}</span>
               </div>
             </div>
           }

@@ -89,8 +89,8 @@ export class DescedantBuildComponent {
     });
   }
 
-  openDialog(): void {
 
+  openDialog(): void {
     const dialogRef = this.dialog.open(selectorComponent, {
       autoFocus: true,
       data: this.descendant_data
