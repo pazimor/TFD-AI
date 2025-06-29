@@ -13,6 +13,11 @@ export class HoldActionDirective {
   private isHolding = false;
   private pointerDown = false;
 
+  @HostListener('contextmenu', ['$event'])
+  onContextMenu(event: Event): void {
+    event.preventDefault();
+  }
+
   @HostListener('pointerdown')
   onPointerDown(): void {
     this.isHolding = false;
