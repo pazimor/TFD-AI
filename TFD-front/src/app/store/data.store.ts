@@ -265,5 +265,24 @@ export const dataStore = signalStore(
     refresh_externals: () => store.externalResource?.reload(),
     refresh_reactors: () => store.reactorResource?.reload(),
     refresh_boards: () => store.BoardResource?.reload(),
+    getExternalsByType: (type: number) => {
+      return store.externalResource.value()
+        ?.filter(ext => ext.equipment_type_id === type) ?? [];
+    },
+    /**
+     * Returns up to four distinct `equipment_type_id` values present in the
+     * currently loaded external components.  If the external components have
+     * not been loaded yet, it returns an empty array.
+     */
+    getDistinctEquipmentTypeIds: (): number[] => {
+      const externals = store.externalResource.value();
+      if (!externals) {
+        return [];
+      }
+      const uniqueIds = Array.from(
+        new Set(externals.map(ext => ext.equipment_type_id))
+      );
+      return uniqueIds.slice(0, 4);
+    },
   }))
 );

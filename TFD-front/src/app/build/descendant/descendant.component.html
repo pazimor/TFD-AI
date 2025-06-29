@@ -27,8 +27,8 @@
     </div>
     <div class="row">
       <reactor-build></reactor-build>
-      @for (e of externals(); track e; let i = $index) {
-        <external-build [index]="i"></external-build>
+      @for (e of data_store.getDistinctEquipmentTypeIds(); track e; let i = $index) {
+        <external-build [equipmentType]="e" [index]="i"></external-build>
       }
     </div>
   </div>
