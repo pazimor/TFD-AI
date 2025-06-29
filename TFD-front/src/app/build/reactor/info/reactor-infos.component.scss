@@ -1,0 +1,22 @@
+.reactor-image {
+  width: 100%;
+  max-width: 200px;
+  display: block;
+  margin: auto;
+}
+
+:host {
+  display: block;
+  background: #333333;
+  color: white;
+  padding: 10px;
+}
+
+.equip {
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.skill-power {
+  margin-bottom: 10px;
+}

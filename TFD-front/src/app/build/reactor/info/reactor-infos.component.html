@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<h2>{{ name(data.reactor_name_id) }}</h2>
+<p class="equip">{{ name(data.equipment_type_id) }}</p>
+<img *ngIf="data.image_url" [src]="data.image_url" class="reactor-image" />
 
-</body>
-</html>
+<section>
+  <h3>Base stats</h3>
+  <ul>
+    @for (stat of data.base_stat; track stat)
+      {
+        <li>{{ name(stat.stat_id) }}: {{ stat.stat_value }}</li>
+      }
+  </ul>
+</section>
+
+<section>
+  <h3>Skill Power</h3>
+  @for (sp of data.skill_power; track sp.level) {
+    <div class="skill-power">
+      <h4>Level {{ sp.level }}</h4>
+      <p>Skill: {{ sp.skill_atk_power }} / {{ sp.sub_skill_atk_power }}</p>
+      <ul>
+        @for (coef of sp.coefficient; track coef) {
+          <li>{{ name(coef.coeff_stat_id) }}: {{ coef.coeff_stat_value }}</li>
+        }
+      </ul>
+      <ul>
+        @for (eff of sp.enchant_effect; track eff) {
+          <li>{{ name(eff.stat_id) }} (Lv {{ eff.enchant_level }}): {{ eff.value }}</li>
+        }
+      </ul>
+    </div>
+  }
+</section>
+
+<button mat-button (click)="close()">Close</button>
