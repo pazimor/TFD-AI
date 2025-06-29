@@ -34,7 +34,8 @@ export class ReactorBuildComponent {
     this.dialog.open(ReactorInfosComponent, {
       data: this.reactor(),
       autoFocus: false,
-      width: '400px'
+      width: '400px',
+      panelClass: 'info-dialog'
     });
   }
 

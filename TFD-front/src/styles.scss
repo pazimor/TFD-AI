@@ -37,6 +37,11 @@ html, body {
   color: white;
 }
 
+.info-dialog .mat-mdc-dialog-container {
+  background: #333333;
+  color: white;
+}
+
 :root {
   --responsive-scale: 1;
 }
