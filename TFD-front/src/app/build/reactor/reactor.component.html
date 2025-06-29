@@ -1,5 +1,6 @@
-<reactor [reactor]="reactor()" (click)="openDialog()"></reactor>
-<button> info </button>
+<reactor [reactor]="reactor()" holdAction
+         (holdActionClick)="openDialog()"
+         (holdActionHold)="openInfo()"></reactor>
 @for (stat of reactor().base_stat; track stat) {
   {{ stat.stat_id }} {{ stat.stat_value}}
 }

@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<h2>{{ name(data.reactor_name_id) }}</h2>
+<img *ngIf="data.image_url" [src]="data.image_url" class="reactor-image" />
+<section>
+  <h3>Base stats</h3>
+  <ul>
+    @for (stat of data.base_stat; track stat)
+      {
+        <li>{{ stat.stat_id }}: {{ stat.stat_value }}</li>
+      }
+  </ul>
+</section>
+<button mat-button (click)="close()">Close</button>
