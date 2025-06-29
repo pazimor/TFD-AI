@@ -11,24 +11,40 @@ export class HoldActionDirective {
 
   private timeoutId: any;
   private isHolding = false;
+  private pointerDown = false;
 
   @HostListener('pointerdown')
   onPointerDown(): void {
     this.isHolding = false;
+    this.pointerDown = true;
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {
-      this.isHolding = true;
-      this.holdActionHold.emit();
+      if (this.pointerDown) {
+        this.isHolding = true;
+        this.pointerDown = false;
+        this.holdActionHold.emit();
+      }
     }, this.holdDelay);
   }
 
   @HostListener('pointerup')
-  @HostListener('pointerleave')
-  @HostListener('pointercancel')
   onPointerUp(): void {
     clearTimeout(this.timeoutId);
-    if (!this.isHolding) {
+    if (!this.isHolding && this.pointerDown) {
       this.holdActionClick.emit();
     }
+    this.pointerDown = false;
+  }
+
+  @HostListener('pointerleave')
+  onPointerLeave(): void {
+    clearTimeout(this.timeoutId);
+    this.pointerDown = false;
+  }
+
+  @HostListener('pointercancel')
+  onPointerCancel(): void {
+    clearTimeout(this.timeoutId);
+    this.pointerDown = false;
   }
 }
